@@ -1,0 +1,100 @@
+<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		/*
+		$('#sign').change(function(){
+			var sign = $(this).val();
+			if(sign != ''){
+				$.post(
+						'/admin/horoscope/get-horoscope-by-type-and-sign',
+						{
+							'sign': sign,
+						},
+						function(data){
+							if(data.hasOwnProperty('description')){
+								CKEDITOR.instances.desc.setData(data.description);
+							}
+						},'json');
+			}
+		});
+		*/
+		$('#type,#sign').change(function(){
+			var sign = $('#sign option:selected').val();
+			var type = $('#type option:selected').val();
+			if(sign != '' && type != ''){
+				$.post(
+						'/admin/horoscope/get-horoscope-by-type-and-sign',
+						{
+							'type': type,
+							'sign': sign,
+						},
+						function(data){
+							if(data.hasOwnProperty('description')){
+								CKEDITOR.instances.desc.setData(data.description);
+							}
+						},'json');
+			}
+		});
+		$('#save').click(function(){
+			var sign = $('#sign option:selected').val();
+			var type = $('#type option:selected').val();
+			if(sign != '' && type != ''){
+				$.post(
+						'/admin/horoscope/save-by-type-and-sign',
+						{
+							'sign': sign,
+							'type': type,
+							'description': CKEDITOR.instances.desc.getData()
+						},
+						function(){
+							
+						});
+			}
+		});
+	});
+//-->
+</script>
+<h1>Гороскоп по типам</h1>
+<div>
+	Выберите знак и тип гороскопа 
+	<select id="sign">
+		<option value=""></option>
+		<?php foreach($this->signs as $sign):?>
+			<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+		<?php endforeach;?>
+	</select>
+	<select id="type">
+		<option value=""></option>
+		<?php foreach($this->types as $type):?>
+			<option value="<?=$type['id']?>"><?=$type['description']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<table>
+	<tr>
+		<td>
+			Описание знака
+		</td>
+		<td>
+			<textarea name="desc" rows="2" cols="30"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:right">
+			<input id="save" type="button" value="Сохранить"/>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'desc',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

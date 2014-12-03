@@ -1,0 +1,94 @@
+<div class="left-column">
+	<ul>
+		<li>
+			<a href="/profile">Мой кабинет</a>
+		</li>
+		<li>
+			<a href="/profile/edit">Настроить профиль</a>
+		</li>
+		<li>
+			<a href="#">Мои избранные гадания</a>
+		</li>
+		<li>
+			<a href="#">Гороскоп на сегодня</a>
+		</li>
+		<li>
+			<a href="#">Карта Таро дня</a>
+		</li>
+		<li>
+			<a href="#">Руна дня</a>
+		</li>
+		<li>
+			<a href="#">Гексаграмма дня</a>
+		</li>
+		<li>
+			<a href="#">Число дня</a>
+		</li>
+	</ul>
+</div>
+<div class="main-content">
+	<div class="content-header" style="border: 1px solid grey;">
+		<?=$this->sign['pageTitle']?>
+	</div>
+	<?=$this->sign['description']?>
+</div>
+<div class="right-column">
+	<table>
+		<tr>
+			<td>
+				<input type="button" onclick="window.location.href='/user/logout'" value="Выйти"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img src="/files/avatar/<?=(isset($this->userdata->avatar) && !empty($this->userdata->avatar) )?$this->userdata->avatar:'noavatar.jpg' ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?=(!empty($this->userdata->fullname))?$this->userdata->fullname:''?><br>
+				<?php if(!empty($this->userdata->birthday)):?>
+					<?php $date = new Zend_Date($this->userdata->birthday);
+						echo $date->toString(Zend_Date::DATE_LONG);?>
+				<?php endif;?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="/profile/edit">Изменить профиль</a>
+			</td>
+		</tr>
+	</table>
+	<div class="activity" style="border: 1px solid grey; margin-top: 20px;">
+		<b>Активность</b>
+		<table>
+			<tr>
+				<td>
+					Регистрация
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?php $date = new Zend_Date($this->userdata->register_date);
+						echo $date->toString(Zend_Date::DATE_LONG); ?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Последний вход
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?php $date = new Zend_Date($this->userdata->last_login);
+						echo $date->toString(Zend_Date::DATETIME);?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a id="remove-profile" style="cursor:pointer;">Удалить мою учетную запись</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

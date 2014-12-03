@@ -1,0 +1,33 @@
+<div style="border: 1px solid grey;margin: 5px;">
+	<table>
+		<tr>
+			<td style="vertical-align: top;">
+				<img src="/files/images/test-taro.jpg"/>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<h2><a href="/gadaniya/taro/<?=$this->item['alias']?>"><?=$this->item['name']?></a></h2>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<?=$this->item['description']?>
+							<hr>
+						</td>
+					</tr>
+					<?php if(count($this->item['children'])):?>
+					<?php foreach ($this->item['children'] as $child):?>
+						<tr>
+							<td>
+								<a href="/gadaniya/taro/<?=$this->item['alias']?>/<?=$child['alias']?>"><?=$child['name']?></a>
+							</td>
+						</tr>
+					<?php endforeach;?>
+					<?php endif;?>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>

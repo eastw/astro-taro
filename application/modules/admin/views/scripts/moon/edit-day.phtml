@@ -1,0 +1,29 @@
+<?php
+$this->headScript()
+				->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+$this->headLink()
+		->appendStylesheet(
+			'/css/jquery-ui.css	');
+?>
+<?php if($this->type == 'edit'):?>
+	Редактирование лунного дня
+<?php else:?>
+	Добавление лунного дня
+<?php endif;?>
+<?=$this->form?>
+<script type="text/javascript">
+<!--
+	
+	CKEDITOR.replace( 'desc',{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+	
+//-->
+</script>

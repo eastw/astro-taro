@@ -1,0 +1,140 @@
+<?php
+	$this->headScript()->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+?>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		loadDescription();
+		$('#type').change(function(){
+			loadDescription();
+		});
+		$('#number_type').change(function(){
+			loadDescription();
+		});
+		$('#number1').change(function(){
+			loadDescription();
+		});
+		$('#number2').change(function(){
+			
+			loadDescription();
+		});
+		$('#save').click(function(){
+			saveDescription();
+		});
+	});
+	
+	function loadDescription(){
+		var type = $('#type option:selected').val();
+		var number_type = $('#number_type option:selected').val();
+		var number1 = $('#number1 option:selected').val();
+		var number2 = $('#number2 option:selected').val();
+		if(type != '' && number_type != '' && number1 != '' && number2 != '' ){
+			$.post(
+					'/admin/numerology/load-compability',
+					{
+						'type' 			: type,
+						'number_type'	: number_type,
+						'number1'		: number1,
+						'number2'		: number2
+						},
+					function(data){
+							CKEDITOR.instances.description.setData(data.description);
+							if(data.compability_percent != null){
+								$('#compability-percent').val(data.compability_percent);
+							}else{
+								$('#compability-percent').val('');
+							}
+					},'json');
+		}else{
+			CKEDITOR.instances.description.setData('');
+		}
+	}
+
+	function saveDescription(){
+		var type = $('#type option:selected').val();
+		var number_type = $('#number_type option:selected').val();
+		var number1 = $('#number1 option:selected').val();
+		var number2 = $('#number2 option:selected').val();
+		var percent = $('#compability-percent').val(); 
+		if(type != '' && number_type != '' && number1 != '' && number2 != '' && percent != ''){
+			$.post(
+					'/admin/numerology/save-compability',
+					{
+						'type' 			: type,
+						'number_type'	: number_type,
+						'number1'		: number1,
+						'number2'		: number2,
+						'percent'		: percent,
+						'description'	: CKEDITOR.instances.description.getData() 
+						},
+					function(data){
+						
+					},'json');
+		}else{
+			alert('Одно из обязательных полей не выбрано');
+		}
+	}
+//-->
+</script>
+<h1>Совместимость</h1>
+<div>
+	Типы совместимости
+	<select id="type">
+		<option value=""></option>
+		<?php foreach($this->types as $type):?>
+			<option value="<?=$type['id']?>"><?=$type['type_ru']?></option>	
+		<?php endforeach;?>
+	</select>
+</div>
+<div id="number_type_wrapper">
+	Тип числа
+	<select id="number_type">
+		<option value=""></option>
+		<?php foreach($this->compTypes as $type):?>
+			<option value="<?=$type['id']?>"><?=$type['type']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<div id="number1_wrapper">
+	Ваше число
+	<select id="number1">
+		<option value=""></option>
+		<?php for($i=1; $i < 10;$i++):?>
+			<option value="<?=$i?>"><?=$i?></option>
+		<?php endfor;?>
+		<option value="11">11</option>
+		<option value="22">22</option>
+	</select>
+	Число партнера
+	<select id="number2">
+		<option value=""></option>
+		<?php for($i=1; $i < 10;$i++):?>
+			<option value="<?=$i?>"><?=$i?></option>
+		<?php endfor;?>
+		<option value="11">11</option>
+		<option value="22">22</option>
+	</select>
+</div>
+<div>
+	Процент совместимости <input type="text" id="compability-percent" value=""/><span style="color:red">просто число без символа "%"</span>
+</div>
+<div>
+	<textarea rows="1" cols="5" name="description"></textarea>
+</div>
+<div style="text-align: right">
+	<input type="button"value="Сохранить" id="save"/>
+</div>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'description',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

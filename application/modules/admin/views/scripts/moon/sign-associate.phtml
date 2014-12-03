@@ -1,0 +1,157 @@
+<?php
+$this->headScript()->appendFile(
+		'/js/plugins/jquery.ui.datepicker-ru.js',
+		'text/javascript')
+		->appendFile(
+		'/js/ckeditor/ckeditor.js',
+		'text/javascript')
+		->appendFile(
+		'/js/plugins/jquery.maskedinput.min.js',
+		'text/javascript');
+$this->headLink()
+	->appendStylesheet(
+		'/css/jquery-ui.css	');
+?>
+<script type="text/javascript">
+<!--
+	var monthes = ['января','февраля','марта','апреля','мая',
+	           		'июня','июля','августа','сентября','октября','ноября','декабря'];
+	$(document).ready(function(){
+		loadDays();
+		$('#second_day').removeAttr('checked');
+		$('#day').datepicker({
+			changeYear: true,
+			changeMonth: true,
+			 yearRange: '-100:+10',
+		});
+		$.mask.definitions['h']='[0-2]';
+		$.mask.definitions['s']='[0-9]';
+		$.mask.definitions['m']='[0-5]';
+		$('#second_day_time').mask('hs:m9:m9');
+		$('#second_day_time_container').hide();
+		$('#day').change(function(){
+			loadDays();
+			var selectedDate = new Date($(this).val());
+			var html = selectedDate.getDate() + ' ' + monthes[selectedDate.getMonth()] + ' ' + selectedDate.getFullYear() + ' года';
+			$('#cur-date').html(html);
+			//console.log(monthes[selectedDate.getMonth()]);
+		});
+		$('#add').click(function(){
+			var moonDay = $('#moon-day option:selected').val();
+			var day = $('#day').val();
+			var daynumber = $('#moon-day option:selected').text();
+			var time = $('#second_day_time').val();
+			var error = false;
+			if( moonDay == '' || day == ''){
+				error = true;
+			}
+			if($('#second_day_time_container').is(':visible') && time == ''){
+				error = true;
+			}
+			if( !error){
+				$.post(
+						'/admin/moon/sign-add-associate',
+						{
+							'date'		: day,
+							'moon-day'	: moonDay,
+							'startday' 	: time,
+							'daynumber'	: daynumber
+						},
+						function(data){
+							buildByData(data);
+						},'json');
+			}else{
+				alert('Заполнены/выбраны не все поля');
+			}
+		});
+		$('#save').click(function(){
+			var date = $('#day').val();
+			if(day != '' ){
+				$.post(
+						'/admin/moon/sign-save-associate',
+						{
+							'date' 	: date
+						},
+						function(data){
+							
+						});
+			}else{
+				alert('Не все значения выбраны');
+			}
+		});
+	});
+	function loadDays(){
+		var date = $('#day').val();
+		if(date != ''){
+			$.post(
+					'/admin/moon/sign-get-associate',
+					{
+						'date' 	: date,
+						},
+						function(data){
+							buildByData(data);
+						},'json');
+			}
+	}
+	function deleteMoonDay(id){
+		$.post(
+				'/admin/moon/sign-delete-associate',
+				{
+					'dayid' : id
+				},
+				function(data){
+					buildByData(data);
+				},'json');
+	}
+	function buildByData(data){
+		var html = '';
+		for(var i = 0; i < data.moonDays.length;i++ ){
+			if(data.moonDays[i]['day_number'] != null){
+				html += '<div class="tag" id="moon-day-' + data.moonDays[i]['moon_in_sign_id'] + '"><a>Луна в знаке: ' + data.moonDays[i]['day_number'] + ', Начало: ';//</a><img onclick="deleteMoonDay(\''+data.moonDays[i]['moon_day_id']+'\')" src="/files/images/input_clear.gif"/></div>';
+				if(data.moonDays[i]['signstart'] != null){
+					html += data.moonDays[i]['signstart'] + '&nbsp;'; 
+				}else{
+					html += '00:00:00';
+				}
+				html += '</a><img onclick="deleteMoonDay(\''+data.moonDays[i]['moon_in_sign_id']+'\')" src="/files/images/input_clear.gif"/></div>';
+			}
+		}
+		$('#days_container').html(html);
+		if((data.moonDays.length > 1 ) || (data.moonDays.length == 1 && data.moonDays[0].moon_in_sign_id != null)){
+			$('#second_day_time_container').show();
+		}else{
+			$('#second_day_time_container').hide();
+			$('#second_day_time').val('');
+		}
+	}
+//-->
+</script>
+<h1>Привязка луны в знаке к числу</h1>
+<div>
+	Число  
+	<input type="text" id="day" value=""/>
+</div>
+<div style="margin:5px; border: 1px solid black;width: 400px;">
+	Луна в знаке
+	<select id="moon-day">
+		<option value=""></option>
+		<?php foreach($this->signs as $sign):?>
+			<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+		<?php endforeach;?>
+	</select>
+	<div id="second_day_time_container">
+		Начало фазы луны в знаке <input type="text" id="second_day_time" value=""/>
+	</div>
+	<input id="add" type="button" value="Добавить"/>
+</div>
+<div>
+	Набор луны в знаках для <span id="cur-date"></span><br>
+	<span style="color:red">Внимание, изменения не вступят в силу, пока вы не нажали кнопку "Сохранить"  </span>
+</div>
+<div id="days_container" style="width:500px;min-height:200px;border:1px solid black;margin-left:100px;">
+	<div style="width:250px;">
+	</div>
+</div>
+<div style="text-align: right;width: 600px;">
+	<input type="button" id="save" value="Сохранить" />
+</div>

@@ -1,0 +1,320 @@
+			<?=$this->partial('partials/slider.phtml',array('sliders' => $this->sliders))?>
+			<?php if(!isset($this->userdata)):?>
+			<div id="cosmo">
+            	<div id="know_thyself">
+                	<img src="files/images/profile.jpg" alt="" />
+                    <div class="text">
+                    	<span>Узнай больше о себе!</span>
+                        <p>Вы не только Знак Зодиака! Пройдите регистрацию и получите бесплатно ваш Космический профиль. Раскройте для себя, Таро личности, Число жизненного пути, ваш Кармический гороскоп и другую персональную информацию.</p>
+                    </div>
+                </div>
+                <div class="button">
+                    <div class="button_left"></div>
+                    <div class="button_content"><a href="/user/registration">Регистрация</a></div>
+                    <div class="button_right"></div>
+                </div>
+            </div>
+            <?php endif;?>
+            <?=$this->partial('partials/horoscope.phtml',array('horoscopeData' => $this->horoscopeData))?>
+            <div id="divination">
+            	<div id="divi_header">Предсказание дня</div>
+                <div id="divi_zak">
+                	<div id="zak_pult">
+                    	<div class="pult_item">Таро карта дня</div>
+                        <div class="pult_item">Руна дня</div>
+                        <div class="pult_item">Гексаграмма дня</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div id="zak_content">
+                    	<div class="zak_item">
+                        	<div class="left_block">
+                            	<div class="card_back">
+                            		<img style="height: 220px;width: 122px;" src="<?=$this->taroDayData['taroDayImage']?>" />
+                                </div>
+                            </div>
+                            <div class="right_block">
+                            	<div class="zak_header">Ваша карта дня</div>
+                                <div class="zak_item_header_main"><?=$this->taroDayData['taroTitle'];?></div>
+                                <div class="text"><?=$this->taroDayData['taroDay']?> ... <br>
+                                	<div style="text-align:right;">
+                                		<?php if(isset($this->userdata)):?>
+                                			<a href="/profile/day-description/taro">читать полностью →</a>
+                                		<?php else:?>
+                                			<a href="/gadaniya/day-description/taro">читать полностью →</a>
+                                		<?php endif;?>
+                                	</div>
+                                </div>
+                                <div class="button">
+                                    <div class="button_left"></div>
+                                    <div class="button_content">
+                                    	<a href="/gadaniya/taro">Гадания на картах Таро</a></div>
+                                    <div class="button_right"></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="zak_item">
+                        	<div class="left_block">
+<!--                                 <div id="runa_img1"></div> -->
+                        		<img style="margin-left: 35px;margin-top: 15px;width: 83px;" src="<?=$this->runeDayData['runeDayImage']?>"/>
+                            </div>
+                            <div class="right_block">
+                            	<div class="zak_header">Ваша Руна дня</div>
+                                <div class="zak_item_header_main"><?=$this->runeDayData['runeTitle']?></div>
+                                <div class="text" style=""><?=$this->runeDayData['runeDay']?> ... <br>
+                                	<div style="text-align:right;">
+                                		<?php if(isset($this->userdata)):?>
+                                			<a href="/profile/day-description/rune">читать полностью →</a>
+                                		<?php else:?>
+                                			<a href="/gadaniya/day-description/rune">читать полностью →</a>
+                                		<?php endif;?>
+                                	</div>
+                                </div>
+                                <div class="button">
+                                    <div class="button_left"></div>
+                                    <div class="button_content"><a href="/gadaniya/rune">Гадания на Рунах</a></div>
+                                    <div class="button_right"></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="zak_item">
+                        	<div class="left_block">
+                                <img style="margin-left: 30px;margin-top: 10px;" src="<?=$this->hexagrammDayData['hexagrammDayImage']?>"/>
+                            </div>
+                            <div class="right_block">
+                            	<div class="zak_header">Ваша Гексаграмма дня</div>
+                                <div class="zak_item_header_main">Гекс. <?=$this->hexagrammDayData['order']?> <?=$this->hexagrammDayData['title']?></div>
+                                <div class="text"><?=$this->hexagrammDayData['hexagrammDay']?> ... <br>
+                                	<div style="text-align:right;">
+                                		<?php if(isset($this->userdata)):?>
+                                			<a href="/profile/day-description/hexagramm">читать полностью →</a>
+                                		<?php else:?>
+                                			<a href="/gadaniya/day-description/hexagramm">читать полностью →</a>
+                                		<?php endif;?>
+                                	</div>
+                                </div>
+                                <div class="button">
+                                    <div class="button_left"></div>
+                                    <div class="button_content"><a href="/gadaniya/book">Гадания на книге перемен</a></div>
+                                    <div class="button_right"></div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="divi_other">
+                	<div id="cards">
+                    	<div class="divi_header">Гадание на картах</div>
+                        <a href="/gadaniya/classic"><img src="files/images/divination_cards.jpg" alt="" /></a>
+                    </div>
+                    <div id="other">
+                    	<div class="divi_header">Другие гадания</div>
+                        <a href="/gadaniya/other"><img src="files/images/divination_other.jpg" alt="" /></a>
+                    </div>
+                </div>
+               <?=$this->partial('partials/banner-right1.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+                <div class="clear"></div>
+            </div>
+            <div id="moon_number">
+            	<div id="moon">
+                	<div class="header">Лунный календарь</div>
+                    <div class="left_block"><img src="files/moon-days/<?=(isset($this->moonData['moonDays'][0]['day_detail']['image']))?$this->moonData['moonDays'][0]['day_detail']['image']:'';?>" alt="" /></div>
+                    <div class="right_block">
+                    	<div class="moon_header">Сегодня <a href="/moon/day/<?=date('Y-m-d')?>"><?=(isset($this->moonData['today_long']))?$this->moonData['today_long']:''?></a><br /><span>Луна сегодня, описание лунного дня.</span></div>
+                        <?php if(isset($this->moonData['moonDays']) && count($this->moonData['moonDays'])):?>
+                        <div class="moon_text">
+                        <?=$this->moonData['moonDays'][0]['day_detail']['phase']?><br>
+                        <?php foreach ($this->moonData['moonDays'] as $index => $day):?>
+                        	<?php if($index > 0):?>
+					<br>далее <?=$day['day_detail']['day_number']?> лунный день 
+				<?php else:?>
+					<?php if(!empty($this->moonData['second_day_time'])):?>
+						до <?=$this->moonData['second_day_time']?>(UT) <?=$day['day_detail']['day_number']?> лунный день
+					<?php else:?>
+						<?=$day['day_detail']['day_number']?> лунный день
+					<?php endif;?>
+                        	<?php endif;?>
+                        <?php endforeach;?>
+                        <br>
+                        <?php if(isset($this->moonData['in_signs']) && !empty($this->moonData['in_signs'])):?>
+                        	<?php foreach($this->moonData['in_signs'] as $index => $inSign):?>
+                        		<?php if($index > 0):?>
+                        			далее Луна в знаке <?=$inSign['sign_ru']?>
+                        		<?php else:?>
+                        			<?php if(!empty($this->moonData['second_sign_time'])):?>
+							до <?=$this->moonData['second_sign_time']?>(UT) Луна в знаке <?=$inSign['sign_ru']?><br>
+							<?php else:?>
+								Луна в знаке <?=$inSign['sign_ru']?><br>
+							<?php endif;?>
+                        		<?php endif;?>
+                        	<?php endforeach;?>
+                        <?php endif;?>
+                        </div>
+                        <?php endif;?>
+                    </div>
+                    <div class="clear"></div>
+                    <div id="stars_line">
+                    	<?php if(isset($this->moonData['moonDays']) && !empty($this->moonData['moonDays'])):?>
+	                    	<?php foreach ($this->moonData['moonDays'][0]['attributes'] as $attribute):?>
+		                    	<?php if(in_array($attribute['attribute_id'], array(1,14,21))):?>
+		                    	<div class="stars_item" <?=($attribute['attribute_id'] == 14)?'id="stars_center"':''?>>
+		                        	<div class="stars_header"><?=$attribute['name']?></div>
+		                            <div class="stars">
+		                            	<?php foreach($attribute['view_rating'] as $star):?>
+		                            		<div class="<?=$star?>"></div>
+		                            	<?php endforeach;?>
+			                                <div class="clear"></div>
+			                            </div>
+			                        </div>
+		                        <?php endif;?>
+	                        <?php endforeach;?>
+                        <?php endif;?>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="text"><?=(isset($this->moonData['moonDays'][0]['day_detail']['short_day_desc']))?$this->moonData['moonDays'][0]['day_detail']['short_day_desc']:''?> ... <a href="/moon/today">полное описание дня →</a></div>
+                    <div class="button">
+                        <div class="button_left"></div>
+                        <div class="button_content"><a href="/moon">Лунный календарь</a></div>
+                        <div class="button_right"></div>
+                    </div>
+                </div>
+                <div id="number">
+                	<div class="header">Число дня</div>
+                    <div class="left_block">
+                    	<?php if(isset($this->userdata) && !empty($this->userdata)):?>
+                    		<?php if(isset($this->userdata->birthday) && !empty($this->userdata->birthday)):?>
+                    			<img src="/files/images/profile/number/<?=$this->numberDayData['number']?>.png" alt="" title=""/>
+                    		<?php else:?>
+                    			<img src="/files/images/vopros.png" alt="число не определено" title="число не определено"/>
+                    		<?php endif;?>
+                    	<?php else:?>
+                    		<img src="/files/images/vopros.png" alt="число не определено" title="число не определено"/>
+                    	<?php endif;?>
+                    </div>
+                    <div class="right_block">
+                    	<div class="number_header">Ваш персональный день</div>
+                    	<?php if(isset($this->userdata) && !empty($this->userdata)):?>
+                    		<?php if(isset($this->userdata->birthday) && !empty($this->userdata->birthday)):?>
+	                    		<div class="number_item_header">Число <?=App_UtilsService::numberToString($this->numberDayData['number'])?></div>
+		                        <div class="sub_header">Ваше персональное число дня описывает тенденции и воздействия, которые оказывают на вас влияние в течение дня.</div>
+		                        <div class="text"><?=$this->numberDayData['short_desc']?> ... <a href="/profile/day-description/number">читать полностью →</a></div>
+	                        <?php else:?>
+	                        	<div class="sub_header">Ваше персональное число дня описывает тенденции и воздействия, которые оказывают на вас влияние в течение дня.</div>
+                    			<div class="text">Для отображения информации необходимо <a href="/profile">заполнить данные на сайте →</a></div>
+	                        <?php endif;?>
+                    	<?php else:?>
+                    		<div class="sub_header">Ваше персональное число дня описывает тенденции и воздействия, которые оказывают на вас влияние в течение дня.</div>
+                    		<div class="text">Для отображения информации необходимо <a href="/user/registration">зарегистрироваться на сайте →</a></div>
+                    	<?php endif;?>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="button">
+                        <div class="button_left"></div>
+                        <div class="button_content"><a href="/numerology">&nbsp;&nbsp;&nbsp;&nbsp;Нумерология&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
+                        <div class="button_right"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="magic">
+            	<div class="header">Магия</div>
+                <div id="magic_slyder">
+                    <div id="magic_arrow">
+                        <div class="magic_arrow_left"></div>
+                        <div class="magic_arrow_right"></div>
+                    </div>
+                    <div id="magic_content">
+                    	<?php if(count($this->magicData)):?>
+                    	<?php foreach($this->magicData as $magicItem):?>
+                        <div class="magic_item">
+                            <div class="magic_img">
+                            	<img src="files/magic/<?=$magicItem['image']?>" alt="" />
+                            </div>
+                            <div class="item_header">
+                            	<a href="/magic/content/<?=$magicItem['tag_data']['alias']?>/<?=$magicItem['alias']?>"><?=$magicItem['title']?></a>
+                            </div>
+                            <div class="text"><?=$magicItem['short_desc']?> ...</div>
+                        </div>
+                        <?php endforeach;?>
+                        <?php endif;?>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="button">
+                        <div class="button_left"></div>
+                        <div class="button_content"><a href="/magic">Все магические ритуалы</a></div>
+                        <div class="button_right"></div>
+                    </div>
+                </div>
+               	<?=$this->partial('partials/banner-right2.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+            </div>
+            <div id="article_news">
+            	<div class="left_block">
+                	<div class="header">Статьи</div>
+                    <div class="left_block">
+                    	<?php if(isset($this->articleData['left']) && count($this->articleData['left'])):?>
+                    	<?php foreach($this->articleData['left'] as $article):?>
+                    	<div class="article_news_item">
+                        	<img src="files/articles/<?=$article['image']?>" style="width:95px" alt="" />
+                            <div class="data">
+                            	<?php $date = new Zend_Date($article['date_created']);
+                            	echo $date->toString(Zend_Date::DATE_LONG);
+                            	?>
+                           	</div>
+                            <div class="item_header">
+                            	<a href="/statyi/content/<?=$article['tag_data']['alias']?>/<?=$article['alias']?>"><?=$article['title']?></a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <?php endforeach;?>
+                        <?php endif;?>
+                    </div>
+                    <div class="right_block">
+                    	<?php if(isset($this->articleData['right']) && count($this->articleData['right'])):?>
+                    	<?php foreach($this->articleData['right'] as $article):?>
+                    	<div class="article_news_item">
+                        	<img src="files/articles/<?=$article['image']?>" style="width:95px" alt="" />
+                            <div class="data">
+                            	<?php $date = new Zend_Date($article['date_created']);
+                            	echo $date->toString(Zend_Date::DATE_LONG);
+                            	?>
+                           	</div>
+                            <div class="item_header">
+                            	<a href="/statyi/content/<?=$article['tag_data']['alias']?>/<?=$article['alias']?>"><?=$article['title']?></a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <?php endforeach;?>
+                        <?php endif;?>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="all"><a href="/statyi">Все статьи</a></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="right_block">
+                	<div class="header">Новости</div>
+                    <div id="news">
+                    	<?php if(isset($this->newsData) && count($this->newsData)):?>
+                    	<?php foreach($this->newsData as $news):?>
+                    	<div class="article_news_item">
+                        	<img src="files/news/<?=$news['image']?>" style="width:95px" alt="" />
+                            <div class="data">
+                            	<?php $date = new Zend_Date($news['date_created']);
+                            	echo $date->toString(Zend_Date::DATE_LONG);
+                            	?>
+                           	</div>
+                            <div class="item_header">
+                            	<a href="/news/content/<?=$news['tag_data']['alias']?>/<?=$news['alias']?>"><?=$news['title']?></a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <?php endforeach;?>
+                        <?php endif;?>
+                    </div>
+                    <div class="all"><a href="/news">Все новости</a></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <?=$this->partial('partials/bottom-text-and-banner.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+            </div>

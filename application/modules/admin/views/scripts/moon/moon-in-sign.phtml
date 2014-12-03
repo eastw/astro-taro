@@ -1,0 +1,91 @@
+<?php
+$this->headScript()
+				->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+$this->headLink()
+		->appendStylesheet(
+			'/css/jquery-ui.css	');
+?>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		loadDescription();
+		$('#sign').change(function(){
+			loadDescription();
+		});
+		$('#save').click(function(){
+			save();
+		});
+	});
+	function loadDescription(){
+		var sign = $('#sign option:selected').val();
+		if(sign != ''){
+			$.post(
+					'/admin/moon/get-moon-sign',
+					{
+						'sign'			: sign,
+						},
+					function(data){
+							CKEDITOR.instances.desc.setData(data.description);
+					},'json');
+		}else{
+			
+		}
+	}
+	function save(){
+		var sign = $('#sign option:selected').val();
+		if(sign != ''){
+			$.post(
+					'/admin/moon/save-moon-sign',
+					{
+						'sign'			: sign,
+						'description'	: CKEDITOR.instances.desc.getData()
+						},
+					function(data){
+						
+					},'json');
+		}else{
+			alert('Не все значения выпадающих списков выбраны');
+		}
+	}
+//-->
+</script>
+<h1>Управление описанием для Луны в знаке зодиака</h1>
+<div>
+	Луна в знаке
+	<select id="sign" style="width:100px;">
+		<option value=""></option>
+		<?php foreach($this->signs as $sign):?>
+			<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<table>
+	<tr>
+		<td>
+			Описание 
+		</td>
+		<td>
+			<textarea rows="2" cols="30" name="desc"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:right">
+			<input type="button" id="save" value="Сохранить"/>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'desc',{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+	
+//-->
+</script>

@@ -1,0 +1,46 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/scripts/numerology_compability.js',
+				'text/javascript');
+?>
+<?=$this->partial('partials/numerology/menu.phtml',array('curType' => $this->curType))?>
+<div id="white_space">
+	<div id="deep_page">
+		<?=$this->navigation()->breadcrumbs()->setMinDepth(0)->setLinkLast(false)->setSeparator('<span class="span_arrow">→</span>'); ?>
+	</div>
+	<div class="tri_header"><?=$this->pageTitle?></div>
+	<div id="columns">
+		<div id="column1">
+			<?=$this->partial('partials/left-column.phtml',array('categories' => $this->categories))?>
+		</div>
+		<div id="column2">
+			<div id="opisanie">
+				<div class="item_header"><?=$this->pageTitle?></div>
+				<div class="text">
+					<?=$this->minidesc?>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div id="num_content">
+				<div class="num_what">
+					<img src="/files/images/num_what.png" alt="" title=""/>
+					<div class="text">Для отображения информации необходим нумерологический рассчет. Заполните, пожалуйста, форму и нажмите кнопку “Рассчитать”</div>
+					<div class="clear"></div>
+				</div>
+				<?=$this->form?>
+				<div id="description_wrapper">
+					
+				</div>
+				<?=$this->partial('partials/also.phtml',array('type'=>$this->controllerName))?>
+				<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>
+			</div>
+		</div>
+		<div id="column3">
+			<?=$this->partial('partials/numerology/compability-block.phtml',array('smalltype' => $this->smalltype))?>
+			<?=$this->partial('partials/banner-right1.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+			<?=$this->partial('partials/banner-right2.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+		</div>
+		<div class="clear"></div>
+		<?=$this->partial('partials/bottom-text-and-banner.phtml')?>
+	</div>	
+</div>

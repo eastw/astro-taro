@@ -1,0 +1,34 @@
+<div style="width:90%; border: 1px solid grey; margin: 5px;height: 130px;">
+	<table>
+		<tr>
+			<td style="width:20%">
+				<img src="/files/images/<?=isset($this->part['image'])?$this->part['image']:'astro-quest.jpg'?>"/>
+			</td>
+			<td style="width:80%">
+				
+				<table>
+					<tr>
+						<td>
+							<b><?=$this->part['name']?></b>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<?=isset($this->part['empty'])?$this->part['empty']:$this->part['value'];?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<?=(isset($this->part['desc']))?$this->part['desc']:'';?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<?php if(!isset($this->part['empty'])):?>
+	<div style="text-align: right">
+		<a href="/profile/opisaniye/<?=$this->part['type']?>">Описание</a>
+	</div>
+	<?php endif;?>
+</div>

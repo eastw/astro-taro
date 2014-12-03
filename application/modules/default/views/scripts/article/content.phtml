@@ -1,0 +1,26 @@
+<div id="article_full">
+	<?php if($this->article['show_in_list'] == 'y'):?>
+		<?=$this->partial('partials/favorite.phtml',array('voteCount' =>$this->article['raiting'],'resourse' => $this->article,'resourseType' => 'article','subtype' => '','userdata' =>$this->userdata))?>
+	<?php endif;?>
+	<div class="article_full_item">
+		<div class="data"><?php $date = new Zend_Date($this->article['date_created']); echo $date->toString(Zend_Date::DATE_LONG);?></div>
+		<div class="item_header"><?=$this->article['title']?></div>
+		<div class="text"><?=$this->article['content'];?></div>
+	</div>
+</div>
+<?php if($this->article['show_in_list'] == 'y'):?>
+<div class="the_same">
+	<div class="the_same_header">В материалах встречается:</div>
+	<?=$this->ArticleTags($this->article['quicktag'],$this->tags)?>
+</div>
+<?=$this->partial('partials/social.phtml',array())?>
+<div class="big_like"
+	<?=(isset($_COOKIE['vote_'.$this->article['id']]))?'':'onclick="bigArticleVote(\''.$this->article['id'].'\')"'?> 
+	<?=(isset($_COOKIE['vote_'.$this->article['id']]))?'style="cursor:default;"':''?>
+>
+	<div id="vote-count-<?=$this->article['id']?>" class="big_like_count">
+		<?=$this->article['raiting']?>
+	</div>
+</div>
+<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>
+<?php endif;?>

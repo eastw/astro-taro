@@ -1,0 +1,48 @@
+<?=$this->doctype();?>
+<html > 
+<head>
+	<?php 
+		$this->headTitle()->setSeparator(' - ');
+		$this->headTitle('Админка');
+	?>
+    <?=$this->headMeta();?>
+    <?=$this->headTitle();?>
+    <?=$this->JQuery()->setVersion('1.8.0')->enable()->setUiVersion('1.10.0')->uiEnable();?>
+    <?php $this->headScript()->appendFile(
+            '/js/scripts/menu.js',
+            'text/javascript'
+        )->appendFile(
+            '/js/plugins/jquery.loading.1.6.4.min.js',
+            'text/javascript'
+        ); ?>
+    <?=$this->headLink()->prependStylesheet($this->baseUrl().'/css/admin.css');?>
+    <?=$this->headScript();?>
+</head>
+<body>
+<div class="main">
+	<div class="header">
+		<div class="pre-header">
+		</div>
+		<div class="main-header">
+		</div>
+		<div class="menu">
+			
+		</div>
+	</div>
+	<div class="content">
+		<div class="left-column">
+			<?php include_once 'menu.phtml';?>
+		</div>
+		<div class="main-content">
+			<div class="content-header">
+				
+			</div>
+			<h1><?php echo $this->escape($this->title); ?></h1>
+    		<?php echo $this->layout()->content; ?>
+		</div>
+	</div>
+	<div class="footer">
+	</div>
+</div>
+</body>
+</html>

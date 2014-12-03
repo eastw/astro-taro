@@ -1,0 +1,15 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>"
+		class="article-form">
+	<table>
+		<?=$this->element->gate;?>
+		<?=$this->element->details;?>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+				<?=$this->element->cancel;?>
+			</td>
+		</tr>
+	</table>
+</form>

@@ -1,0 +1,255 @@
+<div id="top">
+    <div class="top_wrap">
+    	<?php
+    		$bannerData = null;
+    		if(isset($this->banners)){
+    			foreach($this->banners as $banner){
+		    		if(null !== $this->bannerSubtype){
+		    			if($banner['banner'] == 'top' && $this->bannerSubtype == $banner['position']){
+		    				$today = strtotime('now');
+		    				if($today >= strtotime($banner['date_started']) && $today <= strtotime($banner['date_ended'])){
+		    					$bannerData = $banner;
+				    			break;
+		    				}
+		    			}
+		    		}else{
+			    		if($banner['banner'] == 'top' && $this->controllerName == $banner['position']){
+			    			$today = strtotime('now');
+			    			if($today >= strtotime($banner['date_started']) && $today <= strtotime($banner['date_ended'])){
+				    			$bannerData = $banner;
+				    			break;
+			    			}
+			    		}
+		    		}
+		    	}
+    			foreach($this->banners as $banner){
+	    			if($banner['banner'] == 'top' && $banner['through'] == 'y'){
+	    				$today = strtotime('now');
+    					if($today >= strtotime($banner['date_started']) && $today <= strtotime($banner['date_ended'])){
+		    				$bannerData = $banner;
+		    				break;
+    					}
+	    			}
+	    		}
+    		}
+    	?>
+    	<?php if(null !== $bannerData):?>
+	        <div class="banner_top_970x90">
+	        	<?php if($bannerData['outer_type'] == 'order'):?>
+	        		<a href="<?=$bannerData['link']?>" target="blank">
+		            	<img src="/files/ad/<?=$bannerData['filename']?>" alt="">
+		            </a>
+	        	<?php endif;?>
+	        	<?php if($bannerData['outer_type'] == 'partner'):?>
+		        	<?=$bannerData['code']?>
+		        <?php endif;?>
+	        </div>
+        <?php endif;?>
+        <div id="top_info" <?=(null === $bannerData)?'style="margin-top:25px;"':''?>>
+            <div id="logo">
+                <a href="/"><img src="/files/images/logo.png" alt=""></a>
+            </div>
+            <div id="info_center">
+                <div id="search">
+                    <form action="/search">
+                        <input id="input" name="query" value="Я ищу..." type="text" />
+                        <input id="send" type="submit" value=""/>
+                    </form>
+                </div>
+                <div id="subscribe">
+                    <span>например, <span id="podstava">расклад на любовь</span></span>
+                    <span id="sub1">подписаться</span>
+                    <a target="_blank" href="https://www.facebook.com/groups/628871420540971/"><img src="/files/images/facebook.png" alt=""></a>
+                    <a target="_blank" href="https://vk.com/club71399535"><img src="/files/images/vk.png" alt=""></a>
+                    <a target="_blank" href="https://twitter.com/Astro_Tarot_ru"><img src="/files/images/twitter.png" alt=""></a>
+                </div>
+            </div>
+            <?php if(isset($this->userdata) && !empty($this->userdata)):?>
+	            <div id="registration">
+	            	<div class="profile_block">
+	                	<span>Мой Astro Tarot</span>
+	                    <img class="profile_mini" <?=isset($this->userdata->avatar)?'style="width:31px"':''?> src="<?=(isset($this->userdata->avatar)&& !empty($this->userdata->avatar))?'/files/avatar/'.$this->userdata->avatar:'/files/images/profile_mini_top.png'?>" alt="" />
+	                    <img src="/files/images/profile_min_arrow.png" alt="" />
+	                </div>
+	                <div id="enter_form">
+	                    <div class="header_min">Аккаунт</div>
+	                    <div class="enter_form_content">
+	                    	<img class="profile_block_img" <?=isset($this->userdata->avatar)?'style="width:61px"':''?> src="<?=(isset($this->userdata->avatar)&& !empty($this->userdata->avatar))?'/files/avatar/'.$this->userdata->avatar:'/files/images/profile_block_img.png'?>" alt="" />
+	                        <div class="profile_block_content">
+	                        	<div class="item_header">
+	                        		<?php 
+	                        			if(!empty($this->userdata->fullname)){
+											$names = explode(':',$this->userdata->fullname);
+											if(isset($names[0])){
+												echo $names[0];
+											}
+										}
+	                        		?>
+	                        	</div>
+	                            <div class="profile_email"><?=$this->userdata->email?></div>
+	                            <div class="profile_cabinet"><a href="/profile">Мой кабинет</a></div>
+	                            <div class="profile_pref">
+	                            	<span>
+	                            		<?php if(isset($this->userdata->birthday) && !empty($this->userdata->birthday)):?>
+	                                    	<span id="horoscope_today_link_profile" class="must_checked"><a href="/horoscope/<?=$this->userdata->sun_sign_alias?>/today">Гороскоп на сегодня</a></span>
+	                                    <?php else:?>
+	                                    	<span id="horoscope_today_link_profile" class="must_checked">Гороскоп на сегодня</span>
+	                                    	<span id="profile_edit_link" class="preference"><a href="/profile/edit">настроить</a></span>
+	                                    <?php endif;?>
+	                                </span><br />
+	                                <span class="checked">
+	                                    <span class="must_checked"><a href="/profile/day-description/taro">Карта Таро дня</a></span>
+	                                </span><br />
+	                                <span>
+	                                    <span class="must_checked"><a href="/profile/day-description/rune">Руна дня</a></span>
+	                                </span><br />
+	                                <span>
+	                                    <span class="must_checked"><a href="/profile/day-description/hexagramm">Гексаграмма дня</a></span>
+	                                </span><br />
+	                                <span>
+	                                	<?php if(isset($this->userdata->birthday)):?>
+	                                		<span id="lifenumber_profile_link" class="must_checked"><a href="/profile/day-description/number">Число дня</a></span>
+	                                	<?php else:?>
+		                                    <span id="lifenumber_profile_link" class="must_checked">Число дня</span>
+		                                    <span id="lifenumber_profile_edit" class="preference"><a href="/profile/edit">настроить</a></span>
+	                                    <?php endif;?>
+	                                </span><br />
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div id="call_back_exit">
+	                    	<a id="iemd" class="iemd" style="cursor:pointer;">Обратная связь</a>
+	                        <a href="/user/logout"><img src="/files/images/profile_block_exit.png" alt="" /></a>
+	                    </div>
+	                </div>
+	            </div>
+            <?php else:?>
+	            <div id="registration">
+	                <a href="/user/registration">Регистрация</a>&nbsp;  или  <div id="enter">Войти</div>
+	                <div id="enter_form">
+	                    <div class="header_min">Войти</div>
+	                    <div class="enter_form_content">
+	                        <form id="auth-form" >
+	                            <input class="enter_form_text" value="адрес e-mail" name="email" type="text" />
+	                            <div id="email-error" class="wrong_text"></div>
+	                            <input class="enter_form_text" value="пароль" name="pass" type="password" />
+	                            <div id="pass-error" class="wrong_text"></div>
+	                            <div class="forget"><a href="javascript:void(0)">Забыли пароль?</a></div>
+	                            <div class="check_left">
+	                                <label><input class="check" type="checkbox" /><span>Запомнить меня</span></label>
+	                            </div>
+	                            <input class="enter_send" type="image" id="auth-submit" src="/files/images/enter_form_button.png" />
+	                        </form>
+	                        <form id="recover-form" style="display:none;">
+	                            <input class="enter_form_text" value="адрес e-mail" name="remail" type="text" />
+	                            <div class="forget"><a href="javascript:void(0)">Авторизоваться</a></div>
+	                            <input class="enter_send" type="image" id="recover-submit" src="/files/images/enter_form_button_recover.png" />
+	                            <div id="password-sended" class="check_left" style="display:none;">
+	                            	<span style="color:green;">Новый пароль выслан на указанную почту</span>
+	                            </div>
+	                        </form>
+	                        <div class="clear"></div>
+	                        <div id="socnet">
+	                            <div>Войти через социальную сеть</div>
+	                            <!-- <div id="vk_auth"></div> -->
+	                            <a  id="fb_auth" href="javascript:void(0)"><img src="/files/images/socnet1_min.png" alt=""></a>
+	                            <a id="vk_auth" href="javascript:void(0)"><img src="/files/images/socnet2_min.png" alt=""></a>
+	                            <a href="<?=$this->twitterUrl?>"><img src="/files/images/socnet3_min.png" alt=""></a>
+	                        </div>
+	                    </div>
+	                    <div id="reg_new_user"><a href="/user/registration">Регистрация</a> нового пользователя</div>
+	                </div>
+	            </div>
+            <?php endif;?>
+            <div class="clear"></div>
+        </div>
+    </div>
+    
+    <div id="menu">
+        <div class="top_wrap">
+            <div id="menu_left">
+            	<div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'horoscope')?' corner_vip':''?>">
+                	<a href="/horoscope">Гороскопы</a>
+                    <?=''//$this->partial('partials/horoscope/menu.phtml',array('signs' => $this->signs,'curSign' => $this->curSign))?>
+                </div>
+                <div class="lilac_item">
+                	<a href="/gadaniya/taro">Гадания</a>
+                	<!-- 
+                    <div id="float_divi">
+                        <div class="orange_sign_item3">
+                            <a href="/gadaniya/taro">Таро</a>
+                        </div>
+                        <div class="orange_sign_item3">
+                            <a href="/gadaniya/classic">Карты</a>
+                        </div>
+                        <div class="orange_sign_item3">
+                            <a href="/gadaniya/rune">Руны</a>
+                        </div>
+                        <div class="orange_sign_item4">
+                            <a href="/gadaniya/book">Книга Перемен</a>
+                        </div>
+                        <div class="orange_sign_item4">
+                            <a href="/gadaniya/other">Другие гадания</a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                     -->
+                </div>
+                <div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'numerology')?' corner_vip':''?>">
+                	<a href="/numerology">Нумерология</a>
+                	<!-- 
+                    <div id="float_number">
+                        <div class="orange_sign_item4">
+                            <a href="/numerology/personal">Мои числа</a>
+                        </div>
+                        <div class="orange_sign_item4">
+                            <a href="/numerology/forecast">Прогнозы</a>
+                        </div>
+                        <div class="orange_sign_item4">
+                            <a href="/numerology/compability">Совместимость</a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                     -->
+                </div>
+                <div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'magic')?' corner_vip_white':''?>">
+                	<a href="/magic">Магия</a>
+                </div>
+                <div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'moon')?' corner_vip_white':''?>" >
+                	<a href="/moon">Лунный календарь</a>
+                </div>
+                <div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'service')?' corner_vip':''?>" >
+                	<a href="/service/horoscope">Услуги</a>
+                </div>
+            </div>
+            <div id="menu_right">
+            	<div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'news')?' corner_vip_white':''?>">
+                	<a href="/news">Новости</a>
+                </div>
+                <div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'article')?' corner_vip_white':''?>">
+                	<a href="/statyi">Статьи</a>
+                </div>
+                <!-- 
+                <div class="lilac_item">
+                	<a href="/forum">Форум</a>
+                </div>
+                 -->
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div id="feedback">
+        <div id="feedback_button"></div>
+        <form>
+            <span>Ваше имя<img src="/files/images/must.png" alt=""></span><br />
+            <input id="feedback-name" class="feedback_form_text" type="text" size="30" /><br />
+            <span>Адрес эл. почты<img src="/files/images/must.png" alt=""></span><br />
+            <input id="feedback-email" class="feedback_form_text" value="используйте действующий адрес" type="text" size="30" /><br />
+            <span>Письмо<img src="/files/images/must.png" alt=""></span><br />
+            <textarea id="feedback-content" class="feedback_form_text2"></textarea>
+            <div id="feedback-sended" style="display:none;"><span style="color:white;">Письмо отправлено</span></div>
+            <input id="feedback-send" class="feedback_send" type="image"  src="/files/images/feedback_send.png" />
+            <div id="nope">Я передумал</div>
+        </form>
+    </div>
+</div>

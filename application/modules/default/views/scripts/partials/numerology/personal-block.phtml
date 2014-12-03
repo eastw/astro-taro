@@ -1,0 +1,58 @@
+<div id="vklad">
+	<div class="actual_header">В этом разделе</div>
+	<div id="vklad_content">
+		<div class="vklad_item<?=($this->smalltype == 'lifepath')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'lifepath'):?>
+				Число жизненного пути
+			<?php else:?>
+				<a href="/numerology/personal/lifepath">Число жизненного пути</a>	
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'self-expression')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'self-expression'):?>
+				Число самовыражения
+			<?php else:?>
+				<img src="/files/images/horo_corner.png" alt="" />
+				<a href="/numerology/personal/self-expression">Число самовыражения</a>
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'identity')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'identity'):?>
+				Число личности
+			<?php else:?>
+				<img src="/files/images/horo_corner.png" alt="" />
+				<a href="/numerology/personal/identity">Число личности</a>
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'soul')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'soul'):?>
+				Число души
+			<?php else:?>
+				<img src="/files/images/horo_corner.png" alt="" />
+				<a href="/numerology/personal/soul">Число души</a>
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'achievement')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'achievement'):?>
+				Важные годы жизни
+			<?php else:?>
+				<img src="/files/images/horo_corner.png" alt="" />
+				<a href="/numerology/personal/achievement">Важные годы жизни</a>
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'karma')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'karma'):?>
+				Кармическая задача
+			<?php else:?>
+				<img src="/files/images/horo_corner.png" alt="" />
+				<a href="/numerology/personal/karma">Кармическая задача</a>
+			<?php endif;?>
+		</div>
+	</div>
+</div>

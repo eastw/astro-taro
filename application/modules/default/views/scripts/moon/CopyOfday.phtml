@@ -1,0 +1,78 @@
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		
+	});
+//-->
+</script>
+<h1>Лунный календарь</h1>
+<div >
+	Описание бла бла бла, один из самых древних календарей и прочее 
+</div>
+<?php $date = new Zend_Date($this->date); ?>
+<div>
+	<h2><?=$date->toString(Zend_Date::DATE_LONG);?></h2>
+</div>
+<div>
+	<?php if(isset($this->data['moonDays']) && count($this->data['moonDays'])):?>
+	<?php foreach($this->data['moonDays'] as $index => $day):?>
+		<?php if($index > 0):?>
+			c <?=$day['day_start']?> <?=$day['day_detail']['day_number']?> лунный день 
+		<?php else:?>
+			<?=$day['day_detail']['day_number']?> лунный день |
+		<?php endif;?>
+	<?php endforeach;?>
+	<?php endif;?>
+</div>
+<div>
+	<?php if(isset($this->data['in_signs']) && count($this->data['in_signs'])):?>
+	<?php foreach($this->data['in_signs'] as $index => $sign):?>
+		<?php if($index > 0):?>
+			c <?=$sign['signstart']?> Луна в знаке <?=$sign['sign_ru']?> 
+		<?php else:?>
+			Луна в знаке <?=$sign['sign_ru']?> |
+		<?php endif;?>
+	<?php endforeach;?>
+	<?php endif;?>
+</div>
+<?php if(isset($this->data['moonDays']) && count($this->data['moonDays'])):?>
+	<?php foreach($this->data['moonDays'] as $day):?>
+		<div style="width:400px;">
+			<b><?=$day['day_detail']['day_number']?> лунный день </b><br>
+			<b>Описание лунного дня</b>: 
+			<?=$day['day_detail']['description']?>
+			<?php foreach($day['attributes'] as $attribute):?>
+			<div>
+				<table>
+					<tr>
+						<td>
+							<?=$attribute['name']?><br>
+							rating - <?=$attribute['rating']?>
+						</td>
+						<td>
+							<?=$attribute['description']?>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<?php endforeach;?>
+			<div style="margin:5px">
+				<b>Фаза:</b> <?=$day['day_detail']['phase']?><br>
+				<?=$day['day_detail']['phase_desc']?>
+			</div>
+		</div>
+	<?php endforeach;?>
+<?php endif;?>
+<?php if(isset($this->data['in_signs']) && count($this->data['in_signs'])):?>
+	<?php foreach($this->data['in_signs'] as $index => $sign):?>
+		<div>
+			<b>Луна в знаке <?=$sign['sign_ru']?>:</b><br>
+			<?=$sign['description']?>
+		</div>
+	<?php endforeach;?>
+<?php endif;?>
+<?php if(isset($this->yesterday) && !empty($this->yesterday) && isset($this->tomorrow) && !empty($this->tomorrow)):?>
+<div>
+	<a style="margin-right:150px;" href="/moon/day/<?=$this->yesterday?>">Луна вчера</a><a href="/moon/day/<?=$this->tomorrow?>">Луна завтра</a>
+</div>
+<?php endif;?>

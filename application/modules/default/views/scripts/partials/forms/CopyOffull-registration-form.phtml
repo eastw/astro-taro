@@ -1,0 +1,66 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>" 
+		class="article-form">
+	<table>
+		<?=$this->element->email;?>
+		<?=$this->element->pass;?>
+		<?=$this->element->pass_confirm;?>
+		<tr>
+			<td colspan="2">
+				Как вас зовут
+				<table style="border: 1px solid grey;width:100%">
+					<tr>
+						<td>
+							<?=$this->element->fname?>
+						</td>
+						<td>
+							<?=$this->element->mname?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<?=$this->element->lname?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				Дата рождения
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table style="border: 1px solid grey;width:100%">
+					<tr>
+						<td>
+							<?=$this->element->byear?>
+						</td>
+						<td>
+							<?=$this->element->bmonth?>
+						</td>
+						<td>
+							<?=$this->element->bday?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<?=$this->element->gender;?>
+		<tr>
+			<td colspan="2">
+				<img id="full-refresh" src="/files/images/refresh.jpg" style="width:15px;cursor:pointer" title="Обновить"/>
+				<?=$this->element->full_captcha?>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->formtype;?>
+				<?=$this->element->submit;?>
+			</td>
+		</tr>
+	</table>
+</form>

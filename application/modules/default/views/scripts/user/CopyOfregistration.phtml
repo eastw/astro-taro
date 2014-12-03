@@ -1,0 +1,141 @@
+<?php
+/* 
+$this->headScript()->appendFile(
+		'/js/plugins/tabulous.min.js',
+		'text/javascript'
+);
+*/	
+$this->headLink()->appendStylesheet(
+		'/css/jquery-ui.css');
+?>
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+    //jquery ui tabs
+	$('#tabs').tabs();
+	$('#full-refresh,#simple-refresh').click(function(){
+		var type = '';
+		if($(this).attr('id') == 'full-refresh'){
+			type = 'full';
+		}
+		if($(this).attr('id') == 'simple-refresh'){
+			type = 'simple';
+		}
+		$.post('/user/refresh-captcha',
+				{'type': type},
+				function(data){
+					if(type == 'simple'){
+						$('#captcha-id').val(data['new_id']);
+						$('#simple-refresh').next().attr('src','/files/captcha/' + data['new_id'] + '.png');
+					}
+					if(type == 'full'){
+						$('#full_captcha-id').val(data['new_id']);
+						$('#full-refresh').next().attr('src','/files/captcha/' + data['new_id'] + '.png');
+					}
+				},
+				'json'
+		);
+	});
+	$('#tab-1 #submit,#tab-2 #submit').click(function(){
+		var type = $(this).prev().val();
+		var formdata;
+		if(type == "simple"){
+			formdata = $('#tab-1 form').serialize(); 
+		}
+		if(type == "full"){
+			formdata = $('#tab-2 form').serialize();
+		}
+		$.post(
+				'/user/check-form',
+				formdata,
+				function(data){
+					//console.log(data);
+					if(data.errors.length == 0){
+						//console.log('!!');
+						$('#tabs').remove();
+						//$('h1').text('Регистрация успешно завершена, пароль выслан на указанную почту');
+						window.location.href="/profile";
+					}else{
+						var selector = '';
+						if(type == 'simple'){
+							selector = '#tab-1';
+							$('#captcha-id').val(data.new_id);
+							$('#simple-refresh').next().attr('src','/files/captcha/' + data.new_id + '.png');
+						}
+						if(type == 'full'){
+							selector = '#tab-2';
+							$('#full_captcha-id').val(data.new_id);
+							$('#full-refresh').next().attr('src','/files/captcha/' + data.new_id + '.png');
+						}
+						var html = '';
+						$(selector + ' ul.errors').remove();
+						for(var i in data.errors){
+							//console.log(i);
+							html = '<ul class="errors">';
+							for(var j in data.errors[i]){
+								html += '<li>' + data.errors[i][j] + '</li>';
+								//console.log(data.errors[i][j]);
+							}
+							html += '</ul>';
+							if(i == 'captcha' || i == 'full_captcha'){
+								$(selector + ' #'+i + '-input').after(html);
+							}else{
+								$(selector + ' #'+i).after(html);
+							}
+						}
+					}
+				},
+				'json'
+				);
+	});
+
+	$('#byear,#bmonth').change(function(){
+		if($('#byear option:selected').val() != '' && $('#bmonth option:selected').val() != ''){
+			$.post(
+					'/user/days',
+					{
+						'year' : $('#byear option:selected').val(),
+					 	'month': $('#bmonth option:selected').val()
+					 },
+					 function(data){
+						var html = '';
+						for(var i in data){
+							html += '<option vallue="'+i+'">' + data[i] + '</option>';
+						}
+						$('#bday').html(html);
+					},
+					'json');
+		}
+	});
+});
+//-->
+</script>
+<h1>Регистрация нового пользователя</h1>
+<?php if($this->userAdded):?>
+<p>Спасибо за регистрацию, теперь вы можете войти на сайт используя ваш логин и пароль</p>
+<?php else:?>
+<div id="tabs" >
+	<ul >
+		<li style="border: 1px solid grey">
+			<a href="#tab-1" title="">Простая</a>
+		</li>
+		<li style="border: 1px solid grey">
+			<a href="#tab-2" title="">Полная</a>
+		</li>
+		<li style="border: 1px solid grey">
+			<a href="#tab-3" title="">Через соц сеть</a>
+		</li>
+	</ul>
+	<div id="tabs_container">
+		<div id="tab-1">
+			<?=$this->simpleform?>
+		</div>
+		<div id="tab-2">
+			<?=$this->fullform?>
+		</div>
+		<div id="tab-3">
+			
+		</div>
+	</div>
+</div>
+<?php endif;?>

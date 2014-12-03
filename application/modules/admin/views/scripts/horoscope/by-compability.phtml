@@ -1,0 +1,144 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+$this->headLink()
+		->appendStylesheet(
+			'/css/jquery-ui.css	');
+?>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		loadDescription();
+		$('#compability-type,#mainsign,#nestedsign').change(function(){
+			loadDescription();
+		});
+		
+		$('#save').click(function(){
+			var compability = $('#compability-type option:selected').val();
+			var mainsign = $('#mainsign option:selected').val();
+			var nestedsign = $('#nestedsign option:selected').val();
+
+			if(	compability != '' 
+				&& mainsign != ''
+				&& nestedsign != ''
+			){
+
+				var data = {};
+				$('#attributes input').each(function(){
+					data[$(this).attr('name')] = $(this).val();
+				});
+				data['description'] = CKEDITOR.instances.description.getData();
+				data['compability']  = compability;
+				data['mainsign']  = mainsign;
+				data['nestedsign']  = nestedsign;
+
+				$.post('/admin/horoscope/save-compability-item',data);
+			}
+		});
+	});
+	function loadDescription(){
+		var compability = $('#compability-type option:selected').val();
+		var mainsign = $('#mainsign option:selected').val();
+		var nestedsign = $('#nestedsign option:selected').val();
+		
+		if(	compability != '' 
+			&& mainsign != ''
+			&& nestedsign != ''
+			){
+
+			$.post(
+					'/admin/horoscope/get-compability-item',
+					{
+						'compability' : compability,
+						'mainsign': mainsign,
+						'nestedsign': nestedsign,
+					},
+					function(data){
+						var html = '<table>';
+						for(var i in data.attributes){
+							for(var j in data.attribute_values){
+								if(data.attributes[i]['id'] == data.attribute_values[j]['compability_attribute_id']){
+									html += '<tr>';
+									html += '<td>';
+									html += data.attributes[i]['name_ru'];
+									html += '</td>';
+									html += '<td>';
+									html += '<input type="text" name="'+data.attributes[i]['name']+'" value="' + data.attribute_values[j]['value'] + '"/>';
+									html += '</td>';
+									html += '</tr>';
+								}
+							}
+						}
+						html += '</table>';
+						$('#attributes').html(html);
+						CKEDITOR.instances.description.setData(data.description);
+					},'json');
+		}else{
+			
+		}
+	}
+//-->
+</script>
+<h1>Гороскоп совместимости</h1>
+<form id="compability-form" action="/admin/horoscope/save-compability-item" method="post">
+	<div>
+		Тип совместимости
+		<select id="compability-type" name="compability-type">
+			<option value=""></option>
+			<?php foreach($this->compabilityTypes as $type):?>
+				<option value="<?=$type['id']?>"><?=$type['name']?></option>
+			<?php endforeach;?>
+		</select>
+	</div>
+	<div id="attributes">
+		
+	</div>
+	<table>
+		<tr>
+			<td>
+				Первый знак
+				<select id="mainsign" name="mainsign">
+					<option value=""></option>
+					<?php foreach($this->signs as $sign):?>
+						<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+					<?php endforeach;?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Второй знак
+				<select id="nestedsign" name="nestedsign">
+					<option value=""></option>
+					<?php foreach($this->signs as $sign):?>
+						<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+					<?php endforeach;?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<textarea id="description" name="description"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align: right;">
+				<input type="hidden" id="description_hidden" name="description_hidden" value=""/>
+				<input type="button" id="save" value="Сохранить"/>
+			</td>
+		</tr>
+	</table>	
+</form>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'description',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

@@ -1,0 +1,23 @@
+<script type="text/javascript">
+	/*
+	$(document).ready(function(){
+		$('body').bind('copy',function(){
+			//console.log('!!!!!!!!!!');
+		});
+	});
+	*/
+</script>
+<div id="opisanie">
+	<div class="item_header"><?=$this->pageTitle?></div>
+	<div class="text">
+		<?=$this->minidesc?>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="all_divi">
+	<?php if($this->typeItems):?>
+		<?php foreach ($this->typeItems as $item):?>
+				<?=$this->partial('partials/payservice/list-item.phtml',array('item' => $item,'serviceType' => $this->serviceType))?>
+		<?php endforeach;?>
+	<?php endif;?>
+</div>

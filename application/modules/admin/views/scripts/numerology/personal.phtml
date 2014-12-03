@@ -1,0 +1,211 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+/*
+$this->headLink()
+		->appendStylesheet(
+			'/css/jquery-ui.css	');
+			*/
+?>
+<script type="text/javascript">
+<!--
+	const ANUMBERS = '5';
+
+	/*
+	var anumber1 = ['14','25','27','28','29','30','31','32','33','34','35','36'];
+	var anumber2 = ['23','34','36','37','38','39','40','41','42','43','44','45'];
+	var anumber3 = ['32','43','45','46','47','48','49','50','51','52','53','54'];
+	var anumber4 = ['41','52','54','55','56','57','58','59','60','61','62','63'];
+	*/
+	/*
+	var anumber = [
+						['14','25','27','28','29','30','31','32','33','34','35','36'],
+						['23','34','36','37','38','39','40','41','42','43','44','45'],
+						['32','43','45','46','47','48','49','50','51','52','53','54'],
+						['41','52','54','55','56','57','58','59','60','61','62','63']
+		           	];
+	*/
+	
+	$(document).ready(function(){
+		loadDescription();
+		$('#types').change(function(){
+			loadDescription();
+		});
+		$('#number').change(function(){
+			loadDescription();
+		});
+		$('#anumber').change(function(){
+			loadDescription();
+		});
+		$('#aloop').change(function(){
+			var html = '<option value=""></option>';
+			var aloop = $(this).val();
+			if(aloop != ''){
+				--aloop;
+				for(var i in anumber[aloop]){
+					html += '<option value="'+anumber[aloop][i]+'">'+anumber[aloop][i]+'</option>';
+				}
+				$('#anumber').html(html);
+			}else{
+				$('#anumber').html('');
+			}
+		});
+		$('#save').click(function(){
+			saveDescription();
+		});
+	});
+	function loadDescription(){
+		var type = $('#types option:selected').val();
+		var number = $('#number option:selected').val();
+		if(type == ANUMBERS){
+			/*
+			$('#number_wrapper').hide();
+			$('#anumber_wrapper').show();
+			var aloop = $('#aloop option:selected').val();
+			var anumber = $('#anumber option:selected').val();
+			if(aloop != '' && anumber != ''){
+				$.post(
+						'/admin/numerology/load-personal',
+						{
+							'type'		: type,
+							'number'	: anumber,
+							'aloop' 	: aloop,
+							},
+						function(data){
+								CKEDITOR.instances.description.setData(data.description);
+						},'json');
+			}else{
+				CKEDITOR.instances.description.setData('');
+			}
+			*/
+			//console.log('!!!');
+			$('#number option').each(function(){
+				if($(this).val() == '11' || $(this).val() == '22'){
+					$(this).attr('disabled','disabled');
+				}
+			});
+		}else{
+			$('#number option').each(function(){
+				if($(this).val() == '11' || $(this).val() == '22'){
+					$(this).removeAttr('disabled','disabled');
+				}
+			});
+		}
+		$('#number_wrapper').show();
+		$('#anumber_wrapper').hide();
+		if(type != '' && number != ''){
+			$.post(
+					'/admin/numerology/load-personal',
+					{
+						'type'		: type,
+						'number'	: number,
+						'aloop'		: ''
+						},
+					function(data){
+							CKEDITOR.instances.description.setData(data.description);
+					},'json');
+		}else{
+			CKEDITOR.instances.description.setData('');
+		}
+		//}
+	}
+	function saveDescription(){
+		var type = $('#types option:selected').val();
+		var number = $('#number option:selected').val();
+		/*
+		if(type == ANUMBERS){
+			$('#number_wrapper').hide();
+			$('#anumber_wrapper').show();
+			var aloop = $('#aloop option:selected').val();
+			var anumber = $('#anumber option:selected').val();
+			if(aloop != '' && anumber != ''){
+				$.post(
+						'/admin/numerology/save-personal',
+						{
+							'type'			: type,
+							'number'		: anumber,
+							'aloop' 		: aloop,
+							'description'	:  CKEDITOR.instances.description.getData()
+							},
+						function(data){
+							
+						},'json');
+			}
+			
+		}else{
+			*/
+			$('#number_wrapper').show();
+			$('#anumber_wrapper').hide();
+			if(type != '' && number != ''){
+				$.post(
+					'/admin/numerology/save-personal',
+					{
+						'type'		: type,
+						'number'	: number,
+						'aloop'		: '',
+						'description'	:  CKEDITOR.instances.description.getData()
+						},
+					function(data){
+						
+					},'json');
+			}
+		//}
+	}
+//-->
+</script>
+<h1>Управление персональными числами нумерологии</h1>
+<div>
+	Тип персонального числа
+	<select id="types">
+		<option value=""></option>
+		<?php foreach($this->types as $type):?>
+			<option value="<?=$type['id']?>"><?=$type['type_ru']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<div id="number_wrapper">
+	Число
+	<select id="number">
+		<option value=""></option>
+		<?php for($i=1;$i < 10;$i++):?>
+			<option value="<?=($i)?>"><?=$i?></option>
+		<?php endfor;?>
+		<option value="11">11</option>
+		<option value="22">22</option>
+	</select>
+</div>
+<div id="anumber_wrapper" style="display:none;">
+	Номер цикла
+	<select id="aloop">
+		<option value=""></option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+	</select>
+	Число достижения
+	<select id="anumber">
+		<option value=""></option>
+		
+	</select>
+</div>
+
+<div>
+	<textarea rows="2" cols="10" name="description"></textarea>
+</div>
+<div style="text-align: right">
+	<input type="button"value="Сохранить" id="save"/>
+</div>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'description',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

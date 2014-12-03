@@ -1,0 +1,53 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>"
+		class="article-form">
+	<table>
+		<?=$this->element->title;?>
+		
+		<?=$this->element->img_note4;?>
+		<?=$this->element->front_background;?>
+		
+		<?=$this->element->img_note;?>
+		<?=$this->element->image;?>
+		
+		<?=$this->element->img_note2;?>
+		<?=$this->element->image2;?>
+		
+		<?=$this->element->img_note3;?>
+		<?=$this->element->alignment_form;?>
+		
+		
+		
+		<?=$this->element->type;?>
+		<?=$this->element->category;?>
+		<?=$this->element->only_old_arkans;?>
+		<?=$this->element->desc;?>
+		<?=$this->element->activity;?>
+		<?=$this->element->cards;?>
+		<?=$this->element->significators;?>
+		<?=$this->element->seokeywords;?>
+		<?=$this->element->seodescription;?>
+		<tr>
+			<td>
+				Колоды
+			</td>
+			<td>
+				<?=$this->element->decks;?>
+				<?=$this->element->adddeck;?>
+			</td>
+		</tr>
+		<?=$this->element->decksplace?>
+		<tr>
+			<td colspan="2">
+			<?=$this->element->page;?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+				<?=$this->element->cancel;?>
+			</td>
+		</tr>
+	</table>
+</form>

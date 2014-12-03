@@ -1,0 +1,115 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/scripts/moon.js',
+				'text/javascript');
+?>
+<div id="column1">
+	<?=$this->partial('partials/left-column.phtml',array('categories' => $this->categories))?>
+</div>
+<div id="column2">
+	<div id="opisanie">
+		<div class="item_header">Лунный календарь</div>
+		<div class="text">
+			<?=$this->minidesc?>
+			<div class="more">
+				<a href="/statyi/tag/12-astrologiya">Статьи об астрологии →</a>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="moon_block">
+		<div id="moon_day">
+			<?php if(isset($this->data['moonDays']) && count($this->data['moonDays'])):?>
+				<img src="/files/moon-days/<?=$this->data['moonDays'][0]['day_detail']['image'];?>"	alt="" title=""/>
+			<?php endif;?>
+			<?php $date = new Zend_Date(date('Y-m-d')); ?>
+			<div class="item_header">
+				Сегодня <a href="/moon/day/<?=date('Y-m-d')?>"><?=$date->toString(Zend_Date::DATE_LONG);?></a>
+			</div>
+			<div class="data">Луна сегодня, описание лунного дня.</div>
+			<div class="text">
+				<?php if(isset($this->data['moonDays']) && count($this->data['moonDays'])):?>
+					<?=$this->data['moonDays'][0]['day_detail']['phase']?><br>
+					<?php foreach($this->data['moonDays'] as $index => $day):?>
+						<?php if($index > 0):?>
+							| c <?=$day['day_start']?>(UT) <?=$day['day_detail']['day_number']?> лунный день 
+						<?php else:?>
+							<?=$day['day_detail']['day_number']?> лунный день <?=(count($this->data['moonDays']) == 1)?'| весь день':''?> 
+						<?php endif;?>
+					<?php endforeach;?>
+				<?php endif;?>
+				<br>
+				<?php if(isset($this->data['in_signs']) && count($this->data['in_signs'])):?>
+					<?php foreach($this->data['in_signs'] as $index => $sign):?>
+						<?php if($index > 0):?>
+							| c <?=$sign['signstart']?>(UT) Луна в знаке <?=$sign['sign_ru']?> 
+						<?php else:?>
+							Луна в знаке <?=$sign['sign_ru']?> <?=(count($this->data['in_signs']) == 1)?'| весь день':''?>
+						<?php endif;?>
+					<?php endforeach;?>
+				<?php endif;?>
+				<br>
+			</div>
+		</div>
+		<div class="full_moon_day" style="border:none;margin:0;padding:0;">
+			<a href="/moon/today">Полное описание сегодняшнего дня →</a>
+		</div>
+		<?php if(isset($this->data['moonDays']) && count($this->data['moonDays'])):?>
+			<?php foreach($this->data['moonDays'] as $day):?>
+				<div class="moon_day_click" style="cursor:default;color:black;">
+					<?=$day['day_detail']['day_number']?> лунный день 
+					<img src="/files/images/moon_day_corner.png" style="display:block;" alt="" />
+				</div>
+				<div class="clear"></div>
+				<div class="moon_zebra">
+					<?php $modificator = true;?>
+					<?php foreach($day['attributes'] as $attribute):?>
+						<div class="moon_zebra_item<?=(!$modificator)?'2':''?>">
+							<div class="zebra_star">
+								<div class="zebra_star_header"><?=$attribute['name']?></div>
+								<div class="zebra_stars">
+									<?php foreach($attribute['view_rating'] as $star):?>
+		                            		<div class="<?=$star?>"></div>
+		                            	<?php endforeach;?>
+									<div class="clear"></div>
+								</div>
+							</div>
+							<div class="zebra_text"><?=$attribute['description']?></div>
+							<div class="clear"></div>
+						</div>
+					<?php $modificator = !$modificator;?>	
+					<?php endforeach;?>
+				</div>
+			<?php endforeach;?>	
+		<?php endif;?>
+		<div class="full_moon_day">
+			<a href="/moon/today">Полное описание сегодняшнего дня →</a>
+		</div>
+		<div id="moon_calendar">
+			<div class="moon_calendar_header">
+				<div class="item_header">Лунный календарь на:<div class="data">Выберите месяц</div></div>
+				<div class="vip_month">
+					<select id="month-year">
+						<?php foreach($this->monthArray as $item):?>
+							<option value="<?=$item['month'].'-'.$item['year']?>"
+								<?=($item['month'] == date('m'))?'selected="selected"':'';?>
+								><?=App_UtilsService::getMonthByNumber($item['month']).' '.$item['year'].' года'?></option>
+						<?php endforeach;?>
+					</select>
+				</div>
+			</div>
+			<div id="month-data" class="moon_calendar_content">
+				<?=$this->partial('moon/get-days.phtml',array('data'=>$this->monthDays))?>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="column3">
+	<?=$this->partial('partials/popular.phtml',array('ratingList' => $this->ratingList))?>
+	<?=$this->partial('partials/banner-right1.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+	<?=$this->partial('partials/horoscopes-block.phtml')?>
+	<?=$this->partial('partials/banner-right3.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+	<?=$this->partial('partials/banner-right2.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>
+</div>
+<div class="clear"></div>
+<?=$this->partial('partials/bottom-text-and-banner.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>	

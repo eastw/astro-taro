@@ -1,0 +1,31 @@
+<div id="vklad">
+	<div class="actual_header">В этом разделе</div>
+	<div id="vklad_content">
+		<div class="vklad_item<?=($this->smalltype == 'day')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'day'):?>
+				Персональный день
+			<?php else:?>
+				<a href="/numerology/forecast/day">Персональный день</a>	
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'month')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'month'):?>
+				Персональный месяц
+			<?php else:?>
+				<img src="/files/images/horo_corner.png" alt="" />
+				<a href="/numerology/forecast/month">Персональный месяц</a>
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'year')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'year'):?>
+				Персональный год
+			<?php else:?>
+				<img src="/files/images/horo_corner.png" alt="" />
+				<a href="/numerology/forecast/year">Персональный год</a>
+			<?php endif;?>
+		</div>
+	</div>
+</div>

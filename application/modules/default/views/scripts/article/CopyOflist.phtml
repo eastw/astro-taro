@@ -1,0 +1,15 @@
+<?php 
+	$this->headScript()->appendFile(
+            '/js/scripts/article.js',
+            'text/javascript'
+        );
+?>
+<div style="width:90%;border: 1px solid grey;margin: 5px;padding: 5px;">
+	<a href="/statyi/1/all">Все</a>&nbsp;<a href="/statyi/1/popular">Популярные</a>
+</div>
+<?php if(count($this->paginator)):?>
+<?php foreach($this->paginator as $item):?>
+<?=$this->partial('partials/article/article-anonse.phtml', array('data' => $item,'tags' => $this->tags)); ?>
+<?php endforeach;?>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'partials/article/article-pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray, 'funcName' => 'changeAgentListPage','type' => $this->type)) ?>
+<?php endif;?>

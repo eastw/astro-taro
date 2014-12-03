@@ -1,0 +1,31 @@
+<h1>Восстановление пароля</h1>
+<form action="" method="post">
+	<table>
+		<tr>
+			<td>
+				Введите вашу эл. почту
+			</td>
+			<td>
+				<input type="text" name="email" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<?php if(isset($this->errors)):?>
+					<ul>
+						<?php foreach($this->errors as $index => $error):?>
+							<li>
+								<?=$error;?>
+							</li>
+						<?php endforeach;?>
+					</ul>
+				<?php endif;?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align: right">
+				<input type="submit" value="Восстановить"/>
+			</td>
+		</tr>
+	</table>
+</form>

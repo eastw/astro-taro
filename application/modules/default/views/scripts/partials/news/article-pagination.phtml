@@ -1,0 +1,21 @@
+<?php if (($this->pageCount) > 1):?>
+	<div id="pagination">
+		<?php if (isset($this->previous)): ?>
+			<div class="page_item_big" onclick="document.location.href='/news/<?=$this->previous?>/<?=$this->type?>'">
+				<a href="<?='/news/'.$this->previous.'/'.$this->type?>">← Предыдущая</a>
+			</div>
+		<?php endif;?>
+		<?php foreach ($this->pagesInRange as $page): ?>
+			<?php if ($page != $this->current): ?>
+				 <div class="page_item" onclick="document.location.href='/news/<?=$page?>/<?=$this->type?>'">
+				 	<a href="<?='/news/'.$page.'/'.$this->type; ?>"><?= $page; ?></a>
+				 </div>
+			  <?php else: ?>
+			     <div class="page_item" style="background-color:#ff6a00; color:#fff;"><?= $page; ?></div>
+			  <?php endif; ?>
+		<?php endforeach;?>
+		<?php if (isset($this->next)): ?>
+		  <div class="page_item_big" onclick="document.location.href='/news/<?=$this->next?>/<?=$this->type?>'"><a href="<?='/news/'.$this->next.'/'.$this->type; ?>">Следующая →</a></div>
+		<?php endif; ?>
+	</div>
+<?php endif;?>

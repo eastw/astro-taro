@@ -1,0 +1,153 @@
+<script type="text/javascript">
+<!--
+var currentTime = 0;
+var divinationId = '<?=$this->divination['id']?>';
+var hexagramm = '';
+var linesBottom = 0;
+var auto = 0;
+$(document).ready(function(){
+	$('#drop-coins').mousedown(function(){
+		if($('#book_text').is(':visible')){
+			$('#book_text').hide();
+		}
+		if(currentTime < 6){
+			$('#drop-animation').show();
+			$('.coins1,.coins2,.coins3').hide();
+		}
+	}).mouseup(function(){
+		$('#drop-animation').hide();
+		$('.coins1,.coins2,.coins3').show();
+		if(currentTime < 6){
+			var coins = [];
+			for(var i = 0; i < 3;i++){
+				var coin = generateCoin();
+				if(coin == 'normal'){
+					$('.coins'+(i+1)).find('img').attr('src','/files/images/a.png');
+				}
+				if(coin == 'reverse'){
+					$('.coins'+(i+1)).find('img').attr('src','/files/images/b.png');
+				}
+				coins[i] = coin;
+			}
+			var normal = 0;
+			for(var i = 0; i < 3; i++){
+				if(coins[i] == 'normal'){
+					++normal;
+				}
+			}
+			var html = $('#result_content').html();
+			currentTime ++;
+			if(normal >= 2){
+				hexagramm = '1' +hexagramm;
+				html = '<div class="lines_item'+(7-currentTime)+'"><img src="/files/images/book_line1.png" alt="" /></div>' + html;
+			}else{
+				hexagramm = '0' +hexagramm;
+				html = '<div class="lines_item'+(7-currentTime)+'"><img src="/files/images/book_line2.png" alt="" /></div>' + html;
+			}
+			$('#result_content').html(html);
+			$('#current-time').text(6-currentTime);
+			if(currentTime == 6){
+				$('.intuit_header_book').html('Ваша гексаграмма');
+				$('#auto_book').hide();
+				getHexagrammDescription(divinationId,hexagramm);
+			}
+		}
+	});
+	$('#auto_book').click(function(){
+		var time = 1000;
+		if(currentTime < 6){
+			for(var i=0; i < 6;i++){
+				var t1 = setTimeout(function(){
+									$('#drop-coins').mousedown();
+								},time);
+				time += 2000;
+				var t2 = setTimeout(function(){
+					$('#drop-coins').mouseup();
+				},time);
+				time += 2000;
+			}
+		}
+	});
+	$('#again').click(function(){
+		currentTime = 0;
+		hexagramm = '';
+		$('#book_text').show();
+		$('#book_answer').hide();
+		$('#result_content').html('');
+		$('#again').hide();
+		$('#drop-coins').show();
+		$('.intuit_header_book').html('Подбросьте монеты <span id="current-time">6</span>');
+		$('#auto_book').show();
+		//$('#current-time').text('6');
+		
+	});
+});
+function getHexagrammDescription(divId,hex){
+	$.post(
+			'/divination/get-book-description',
+			{
+				'divination_id': divId,
+				'hexagramm': hex,
+			},
+			function(data){
+				$('#tolk').show();
+				$('#desc_wrapper_0').html(data);
+				//$('#explain_diagramm').text();
+				$('.red_circle').text($('#hex_order').text());
+				$('#book_answer').find('span').text($('#hex_name').text());
+				//$('#diagamm-text').html($('#explain_diagramm').text());
+				//console.log($('#explain_diagramm').text());
+				$('#book_answer').show();
+				 $('html, body').animate({
+				        scrollTop: $("#tolk").offset().top
+				    }, 3000,function(){
+				    	$('#drop-coins').hide();
+						$('#again').show();
+					});
+			}
+		);
+}
+function generateCoin(){
+	cardNumber = Math.floor(Math.random()*30);
+	if(cardNumber > 15){
+		return 'normal';
+	}
+	return 'reverse';
+}
+//-->
+</script>
+<div id="interactive_block_book" <?=(!empty($this->divination['background']))?'style="background:url(/files/divinations/'.$this->divination['background'].')"':'';?>>
+	<div id="inter_block1" >
+		<div id="book_text" class="book_text">
+			<div>
+				<span>§</span> Сосредоточьтесь над своим вопросом, ответ на который вы хотите получить из Книги Перемен.
+   			</div>
+   			Удерживайте кнопку “Подбросить монеты”, столько времени, 
+		    сколько вам подскажет интуиция. Выпавшая комбинация 
+		    монет показывает определенную линию гексаграммы.
+		    Для составления всей гексограммы, нужно подбросить монеты 
+		    6 раз, и Книга Перемен даст ответ на ваш вопрос.
+		</div>
+		<div id="book_answer" style="display:none;">
+			<div class="red_circle">50</div>
+			<span id="diagamm-text">“Дин”</span>
+		</div>
+		<div class="lines_net" id="result_content">
+			
+		</div>
+	</div>
+	<div id="inter_block2">
+		<div class="intuit_header_book">Подбросьте монеты <span id="current-time">6</span> раз</div>
+		<div class="intuit_content">
+			<div class="coins_net">
+				<div class="coins1"><img src="/files/images/coins_img2.png" alt="" /></div>
+				<div class="coins2"><img src="/files/images/coins_img1.png" alt="" /></div>
+				<div class="coins3"><img src="/files/images/coins_img3.png" alt="" /></div>
+				<img id="drop-animation" style="display:none;" src="/files/images/china_money_final.gif"/>
+			</div>
+			<img id="drop-coins" src="/files/images/book_go.png" class="book_go" alt="" />
+			<img id="again" src="/files/images/re_divi_button.png" class="book_go" alt="" style="display:none;"/>
+			<div id="auto_book">или <span>выполнить автоматически</span></div>
+		</div>
+	</div>
+</div>

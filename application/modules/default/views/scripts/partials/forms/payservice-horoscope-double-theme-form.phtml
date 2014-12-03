@@ -1,0 +1,110 @@
+<form id="full" class="payservice-form" action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		class="payservice-form"
+		enctype="<?=$this->element->getEncType(); ?>">
+	
+	<span class="payservice-label">Ваше полное имя<img src="/files/images/must.png" alt=""></span><br />
+	<?=$this->element->name1;?>
+	<div class="vipadalki" id="tuda_suda">
+		<span class="payservice-label">Ваша дата рождения<img src="/files/images/must.png" alt=""></span><br />
+		<div class="year_item">
+			<?=$this->element->year1?>
+		</div>
+		<div class="year_item2">
+			<?=$this->element->month1?>
+		</div>
+		<div class="year_item">
+			<?=$this->element->day1?>
+		</div>
+		<div class="clear"></div><br />
+	</div>
+	<span class="payservice-label">Ваш город рождения<img src="/files/images/must.png" alt=""></span><br />
+	<?=$this->element->city1;?>
+	<div class="year" style="width:340px;">
+		<span class="payservice-label">Ваше время рождения<img src="/files/images/must.png" alt=""></span><br />
+		<div class="year_item">
+			<?=$this->element->hour1?>
+		</div>
+		<div class="year_item2">
+			<?=$this->element->minute1?>
+		</div>
+		<div class="year_item3">
+			<?=$this->element->dontknow1?><div>Не знаю</div>
+		</div>
+		<div class="clear"></div><br />
+	</div>
+	<hr/>
+	<br />
+	<br />
+	
+	
+	<span class="payservice-label">Полное имя партнера<img src="/files/images/must.png" alt=""></span><br />
+	<?=$this->element->name2;?>
+	<div class="year" id="tuda_suda">
+		<span class="payservice-label">Дата рождения партнера<img src="/files/images/must.png" alt=""></span><br />
+		<div class="year_item">
+			<?=$this->element->year2?>
+		</div>
+		<div class="year_item2">
+			<?=$this->element->month2?>
+		</div>
+		<div class="year_item">
+			<?=$this->element->day2?>
+		</div>
+		<div class="clear"></div><br />
+	</div>
+	<span class="payservice-label">Город рождения партнера<img src="/files/images/must.png" alt=""></span><br />
+	<?=$this->element->city2;?>
+	<div class="year" style="width:340px;">
+		<span class="payservice-label">Время рождения партнера<img src="/files/images/must.png" alt=""></span><br />
+		<div class="year_item">
+			<?=$this->element->hour2?>
+		</div>
+		<div class="year_item2">
+			<?=$this->element->minute2?>
+		</div>
+		<div class="year_item3">
+			<?=$this->element->dontknow2?><div>Не знаю</div>
+		</div>
+		<div class="clear"></div><br />
+	</div>
+	<hr/>
+	<br />
+	<br />
+	
+	<span class="payservice-label">Электронная почта<img src="/files/images/must.png" alt=""></span><br />
+	<?=$this->element->email;?>
+	<br/>
+	<span class="after-field-text">На этот адрес мы отправим вам ответ</span>
+	<br>
+	<br>
+	<span class="payservice-label">Примечание к заказу<img src="/files/images/must.png" alt=""></span><br />
+	<?=$this->element->detail;?>
+	<br />
+	<br />
+	<hr class="orange-line"/>
+	<br />
+	<br />
+	<div class="nujtak">
+		<span class="payservice-label">Выберите способ оплаты<img src="/files/images/must.png" alt=""></span><br />
+		<?=$this->element->payment_type;?>
+		<br/>
+		<div style="margin:7px 0 0 0">
+			<span class="after-field-text">Реквизиты для оплаты будут отправлены вам на почту</span>
+		</div>
+	</div>
+	<br />
+	<span class="payservice-label">Сумма к оплате<img src="/files/images/must.png" alt=""></span><br />
+	<div class="summa"><?=$this->element->summ;?></div>
+	<?=$this->element->form_type;?>
+	<?=$this->element->partner;?>
+	<?=$this->element->alias;?>
+	<div class="check_left">
+		<label><?=$this->element->agree?><span>  Я принимаю <a href="/statyi/content/17-no-tag/23-usloviya-ispolzovaniya" target="_blank">Условия использования</a> сервиса Astro Tarot</span></label>
+	</div>
+	<div style="width:100%;text-align:center;margin: 45px 0 30px 0;">
+		<div style="display:inline-block;">
+			<input class="enter_send" id="submit" type="image" src="/files/images/dengi.png" />
+		</div>
+	</div>
+</form>

@@ -1,0 +1,41 @@
+<?php 
+	$this->headScript()->appendFile(
+            '/js/plugins/tree.jquery.js',
+            'text/javascript'
+        );
+ $this->headLink()->appendStylesheet(
+	'/css/jqtree.css');
+?>
+<script type="text/javascript">
+<!--
+	$(function() {
+	    $.post(
+		    '/admin/category/get-categories-json',
+		    {},
+		    function(data) {
+		        $('#tree1').tree({
+		            data: data,
+		            dragAndDrop: true,
+		      	  	autoOpen: 0
+		        });
+		    },
+		    'json'
+		);
+	});
+
+	function save(){
+		$.post(
+		    '/admin/category/save-categories-json',
+		    {'json':$('#tree1').tree('toJson')},
+		    function(data) {
+		       
+		    },
+		    'json'
+		);
+	}
+//-->
+</script>
+<h1>Управление категориями.</h1>
+<input type="button" onclick="save()" value="Сохранить"/>
+<div id="tree1" style="margin-left:20px;" >
+</div>

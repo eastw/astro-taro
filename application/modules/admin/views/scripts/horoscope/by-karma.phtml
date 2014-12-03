@@ -1,0 +1,66 @@
+<script type="text/javascript">
+<!--
+function confirmation(id,page){
+	if(confirm('Вы действительно хотите удалить этот период?')){
+		window.location.href="/admin/horoscope/remove-karma-period/id/" + id + '/page/' + page;
+	}
+}
+//-->
+</script>
+<h1>Управление кармическим гороскопом</h1>
+<table>
+	<tr>
+		<td>
+			<div style="text-align:left;"><a href="/admin/horoscope/by-karma-add">Добавить период.</a></div>
+		</td>
+		<td>
+			
+		</td>
+	</tr>
+</table>
+<table class="admin-table" id="article-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:20%">
+			Дата начала
+		</th>
+		<th style="width:20%">
+			Дата окончания
+		</th>
+		<th style="width:10%">
+			Ретр.
+		</th>
+		<th style="width:30%">
+			Сатурн в знаке
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->paginator)):?>
+	<?php foreach($this->paginator as $item):?>
+	<tr>
+		<td>
+			<?=$item['startdate']?>
+		</td>
+		<td>
+			<?=$item['enddate']?>
+		</td>
+		<td>
+			<?=($item['is_retrograd'] == 'y')?'Да':'Нет';?>
+		</td>
+		<td>
+			<?=$item['sign_ru']?>
+		</td>
+		<td>
+			<a href="/admin/horoscope/by-karma-edit/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Редактировать</a> /
+			<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a> 
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<tr>
+		<td colspan="5">
+			<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray, 'funcName' => 'changeAgentListPage')) ?>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>

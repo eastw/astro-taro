@@ -1,0 +1,54 @@
+<script type="text/javascript">
+<!--
+function confirmation(id,page){
+	if(confirm('Вы действительно хотите удалить этот день?')){
+		window.location.href="/admin/moon/remove-day/id/" + id + '/page/' + page;
+	}
+}
+//-->
+</script>
+<h1>Управление лунными днями</h1>
+<table>
+	<tr>
+		<td>
+			<div style="text-align:left;"><a href="/admin/moon/add-day">Добавить лунный день.</a></div>
+		</td>
+		<td>
+			
+		</td>
+	</tr>
+</table>
+<table class="admin-table" id="article-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:60%">
+			Изображение
+		</th>
+		<th style="width:20%">
+			Номер дня
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->paginator)):?>
+	<?php foreach($this->paginator as $item):?>
+	<tr>
+		<td>
+			<a href="/admin/moon/edit-day/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><img src="/files/moon-days/<?=$item['image'];?>"/></a>
+		</td>
+		<td>
+			<?=$item['day_number'];?>
+		</td>
+		<td>
+			<a href="/admin/moon/edit-day/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Редактировать</a> / 
+			<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<tr>
+		<td colspan="2">
+			<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray, 'funcName' => 'changeAgentListPage')) ?>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>

@@ -1,0 +1,52 @@
+<div id="opisanie">
+	<div class="item_header">Нумерология</div>
+	<div class="text">
+		Дает возможность получить интересующую информацию, которая скрывается
+		в дате рождения человека. Теперь можно предсказать судьбу, раскрыть
+		таланты человека, посмотреть на его характер, зная всего пару чисел.
+		Нумерология способна спрогнозировать развитие отношений, которые тем
+		или иным образом повлияют на дальнейшую жизнь.
+		<div class="more">
+			<a href="#">Статьи по нумерологии →</a>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="all_horo">
+	<?php foreach($this->fullTypes as $typekey => $type):?>
+		<div class="all_horo_item">
+			<img src="<?=$type['image']?>" alt="" title=""/>
+			<div class="all_horo_right">
+				<div class="item_header"><a href="/numerology/<?=$typekey?>"><?=$type['name']?></a></div>
+				<div class="free_horo"><?=$type['small_desc']?></div>
+				<?php if(count($type['children'])):?>
+					<?php $childrenCount = 0;?>
+					<?php $vis = array(); $invis = array();?>
+					<?php foreach ($type['children'] as $key => $value):?>
+						<?php if($childrenCount < 3):?>
+							<?php $vis[] = '<a href="/numerology/'.$typekey.'/'.$key.'">'.$value.'</a><br/>';?>
+						<?php else:?>
+							<?php $invis[] = '<a href="/numerology/'.$typekey.'/'.$key.'">'.$value.'</a><br/>';?>
+						<?php endif;?>
+					<?php $childrenCount++;?>
+					<?php endforeach;?>
+					<div class="links_vis">
+					<?php foreach ($vis as $item):?>
+						<?=$item?>
+					<?php endforeach;?>
+					</div>
+					<div class="links_unvis">
+					<?php foreach ($invis as $item):?>
+						<?=$item?>
+					<?php endforeach;?>
+					</div>
+				<?php endif;?>
+				<?php if(count($type['children']) > 3):?>
+				<div class="make_unvis_vis2"><span>все мои числа</span> ↓</div>
+				<?php endif;?>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	<?php endforeach;?>
+</div>

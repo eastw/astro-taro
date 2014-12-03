@@ -1,0 +1,257 @@
+<?php 
+	$this->headScript()->appendFile(
+            '/js/plugins/jstree/jquery.hotkeys.js',
+            'text/javascript'
+        )->appendFile(
+            '/js/plugins/jstree/jquery.jstree.js',
+            'text/javascript'
+        );
+ $this->headLink()->appendStylesheet(
+		'/css/jqtree.css')
+ 	->appendStylesheet(
+	'/css/jquery-ui.css	');
+?>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		jQuery('#tree')
+		.bind("loaded.jstree", function (event, data) {
+	       $.post(
+		       '/admin/category/get-categories-json',
+		       {},
+		       function(data){
+			       if(data){
+			    	   var jsTreeSettings = $("#tree").jstree("get_settings");
+			    	   jsTreeSettings.json_data.data = data;
+			    	   $.jstree._reference("tree")._set_settings(jsTreeSettings);
+			    	   // Refresh whole our tree (-1 means root of tree)
+			    	   //$.jstree._reference("tree").refresh(-1);
+			    	   $("#tree").jstree('refresh','-1');
+				    }
+		       },
+		       'json'
+	       );
+	    })
+	     .jstree({
+	    	"plugins": ["themes","json_data","ui","crrm","dnd","search","types","hotkeys","contextmenu"/*,"checkbox"*/ ],
+	    	"json_data" :{ 
+		    	"data" : []
+			},
+			"core": {
+				'strings': { loading : "Загружается ...", new_node : "Новая категория"}
+			}, 
+	    	"ui" : {
+	    	 	"select_limit" : 1
+	     	},
+	     	'contextmenu':{
+	     		'items' : function ($node) {
+	                return {
+	                    "Create": {
+	                        "label": "Создать",
+	                        "action": function (node,position,js,callback,skip_rename) {
+                        		var tree = this;
+	                        	$('#dialog').dialog({
+		                        	width:550,
+		                        	modal: true,
+		                        	buttons: {
+		                        		'Сохранить': function(){
+			                        		console.log($('#cat_type option:selected').val());
+	                        				tree.create(
+	    	                        					node,
+	    	                        					'inside',
+	    	                        					{'attr':{'id':'new'},
+		    	                        					'state':'open',
+		    	                        					'data': {'title':$('#cat-title').val()},
+		    	                        					'metadata': {'catdesc': $('#cat-desc').val(),'keywords' : $('#keywords').val(), 'description': $('#description').val(),'cat_type': $('#cat_type option:selected').val(),'minidesc': $('#minidesc').val() }},function(){},true);
+	                        				clear_dialog();
+	                        				$( this ).dialog( "close" );
+	                        				$('#saving').show();
+	                        				
+	                        			},
+	                        			'Отмена' : function(){
+		                        			clear_dialog();
+	                        				$( this ).dialog( "close" );
+		                        		}
+	                        		}
+		                        });
+	                        }
+	                    },
+	                    "Rename": {
+	                        "label": "Переименовать",
+	                        "action": function (obj) {
+	                            this.rename(obj);
+	                            $('#saving').show();
+	                        }
+	                    },
+	                    "Delete": {
+	                        "label": "Удалить",
+	                        "action": function (obj) {
+								if(confirm('Вы дейстивтельно хотите удалить категорию \'' + obj[0].textContent.trim() + '\'?')){
+                            		this.remove(obj);
+                            		$('#saving').show();
+								}
+	                        }
+	                    },
+	                    "Edit": {
+	                        "label": "Ред. описание",
+	                        "action": function (node) {
+	                        	$('#cat-title').val($(node).children('a:eq(0)').text().trim());
+								$('#cat-desc').val($(node).data('catdesc'));
+								$('#minidesc').val($(node).data('minidesc'));
+								$('#description').val($(node).data('description'));
+								$('#keywords').val($(node).data('keywords'));
+								if($(node).data('cat_type') != 0){
+									$('#cat_type option[value="'+$(node).data('cat_type')+'"]').attr('selected','selected');
+									//$('#card_order_select option[value="'+cards[i].alignment_position+'"]').attr('selected','selected');
+								}else{
+								}
+								var tree = this;
+		                    	$('#dialog').dialog({
+		                        	width:550,
+		                        	modal: true,
+		                        	buttons: {
+		                        		'Обновить': function(){
+		                    				$(node).children('a:eq(0)').html('<ins class="jstree-icon">&nbsp;</ins>'+$('#cat-title').val());
+		                    				$(node).data('catdesc',$('#cat-desc').val());// = $('#cat-desc').val();
+		                    				$(node).data('minidesc',$('#minidesc').val());
+		                    				$(node).data('description',$('#description').val());
+		                    				$(node).data('keywords',$('#keywords').val());
+		                    				$(node).data('cat_type',$('#cat_type option:selected').val());
+		                    				clear_dialog();
+		                    				$( this ).dialog( "close" );
+		                    				$('#saving').show();
+	                        			},
+	                        			'Отмена' : function(){
+	                        				clear_dialog();
+	                        				$( this ).dialog( "close" );
+		                        		}
+	                        		}
+		                        });
+	                        }
+	                    },
+	                    /*
+	                    'copy': {
+    						'label': 'РљРѕРїРёСЂРѕРІР°С‚СЊ',
+    						"separator_before"  : true,
+    						'action' : function(node){
+								this.copy(node);
+							}
+    					},
+    					*/
+    					'cut': {
+    						'label': 'Вырезать',
+    						'action' : function(node){
+								this.cut(node);
+								$('#saving').show();
+							}
+    					},
+    					'paste': {
+    						'label': 'Вставить',
+    						'action' : function(node){
+								this.paste(node);
+								$('#saving').show();
+							}
+    					}
+	                };
+	     		}
+	     	},
+			"themes" : {
+	            "theme" : "default",
+	            "dots" : true,
+	            "icons" : true,
+	            'icon' : 'folder'
+	        }
+		});
+	});
+
+	function save(){
+		var json = jQuery.jstree._reference('tree').get_json(-1);
+		var jsonString = JSON.stringify(json);
+		//console.log(jsonString);
+		
+		$.post(
+				'/admin/category/save-categories-json',
+				{'json': jsonString},
+				function(data){
+					$('#saving').hide();
+				}
+			);
+	}
+
+	function clear_dialog(){
+		$('#cat-title').val('');
+		$('#cat-desc').val('');
+		$('#description').val('');
+		$('#keywords').val('');
+		$('#minidesc').val('');
+		$('#cat_type option:selected').removeAttr('selected');
+	}
+	
+//-->
+</script>
+<h1>Управление категориями меню.</h1>
+<input type="button" onclick="save()" value="Сохранить"/>
+<input type="button" onclick="" value="Добавить"/>
+<input type="button" onclick="" value="Удалить"/>
+<div id="saving" class="warning" style="display:none;">
+	Внимание! Изменения вступят в силу только если вы нажмете кнопку "Сохранить"
+</div>
+<div id="tree" style="margin:30px 0 0 20px;" >
+</div>
+<div id="dialog" style="display:none;">
+	<table>
+		<tr>
+			<td>
+				Название
+			</td>
+			<td>
+				<input id="cat-title" type="text" style="width:322px;"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Миниописание
+			</td>
+			<td>
+				<input id="minidesc" type="text" style="width:322px;"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Описание
+			</td>
+			<td>
+				<textarea rows="5" id="cat-desc" cols="35"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Keywords
+			</td>
+			<td>
+				<input type="text" id="keywords" style="width:322px;"/>	
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Description
+			</td>
+			<td>
+				<input type="text" id="description" style="width:322px;"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Тип категории
+			</td>
+			<td>
+				<select id="cat_type">
+					<option value="">Выберите тип категории</option>
+					<?php foreach($this->types as $type):?>
+						<option value="<?=$type['id']?>"><?=$type['name']?></option>
+					<?php endforeach;?>
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>

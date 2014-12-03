@@ -1,0 +1,506 @@
+body,html {
+    margin: 0 5px;
+    font-family: Verdana,sans-serif;
+}
+h1 {
+    font-size: 1.4em;
+    color: #008000;
+}
+a {
+    color: #008000;
+}
+
+/* Table */
+th {
+    text-align: center;
+}
+td {
+    padding-right: 5px;
+}
+
+/* style form */
+form dt {
+    width: 100px;
+    display: block;
+    float: left;
+    clear: left;
+}
+form dd {
+    margin-left: 0;
+    float: left;
+    
+}
+form #submitbutton {
+    margin-left: 100px;
+}
+
+.main{
+	width:1250px;
+	min-height: 800px;
+	/*border: 1px solid black;*/
+}
+.header{
+	height: 150px;
+	border: 1px solid black;
+}
+.pre-header{
+	height:15px;
+	border: 1px solid black;
+}
+.main-header{
+	height:90px;
+	border: 1px solid black;
+}
+.menu{
+	height:41px;
+	border: 1px solid black;
+}
+.content{
+	min-height: 900px;
+	/*border: 1px solid black;*/
+}
+.left-column{
+	width: 250px;
+	min-height:900px;
+	float:left;
+	border: 1px solid black;
+}
+.request-box{
+	width:250px;
+	height:100px;
+	border: 1px solid black;
+}	
+.main-content{
+	width: 994px;
+	min-height:900px;
+	/*border: 1px solid black;*/
+	float:left;
+}
+.right-column{
+	width: 242px;
+	min-height:900px;
+	float:left;
+	border: 1px solid black;
+}
+.footer{
+	height:150px;
+	width:1248px;
+	/*border: 1px solid black;*/
+}
+.admin-table{
+	border: 1px solid black;
+	width:100%;
+	border-collapse: collapse;
+	margin: 10px 0 0 0;
+}
+.admin-table th{
+	background: none repeat scroll 0 0 #DFDFDF;
+	border: 1px solid black;
+	padding: 5px;
+}
+.admin-table td{
+	text-align:center;
+	padding: 5px;
+	border: 1px solid black;
+}
+.errors{
+	color: red;
+	font-size: 10px;
+}
+.admin-form input[type="text"] {
+	width: 300px;
+}
+.admin-form textarea {
+	width: 300px;
+	height: 100px;
+}
+.form-box label{
+	vertical-align:middle;
+}
+.warning{
+	border: 1px solid yellow;
+	width:800px;
+	font-size:14px;
+	padding: 5px;
+	margin:5px;
+}
+.admin-form table{
+	width: 430px;
+	border: 1px solid grey;
+	margin: 5px;
+}
+
+.article-form table{
+	/*width: 430px;*/
+	border: 1px solid grey;
+	margin: 5px;
+}
+.article-form table td:FIRST-CHILD{
+	width: 250px;
+}
+.article-form input[type="text"] {
+	width: 100%;
+}
+.article-form textarea {
+	width: 100%;
+	height: 100px;
+}
+.article-form label{
+	vertical-align:middle;
+}
+
+.cards-net{
+	border:1px solid grey;
+	/*width:100%;*/
+	border-collapse:collapse;
+}
+.cards-net td{
+	background-color:none;
+	border:1px solid grey;
+	height:154px;
+	margin:0;
+	padding:0px;
+	width: 108px;
+	cursor: pointer;
+}
+.cards-net td:hover{
+	background-color:grey;
+}
+
+
+/*------------menu-------------------------*/
+/* √лавное меню */
+UL#menuV LI.root-item {
+	/*white-space: nowrap;*/
+	float:left;
+}
+UL#menuV {
+	width: 180px;
+}
+/* —тиль под UL'ы */
+#menuV, #menuV UL{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+/* —тиль под LI'ы */
+UL#menuV LI{
+	list-style-image: none;
+	padding: 0px;
+	margin:0;
+	line-height: normal;
+}
+/* —тиль под ссылки */
+#menuV a{
+	display: block;
+	padding: 5px 10px;
+	text-decoration: none;
+}
+/*Sub-menu item box */
+#menuV li li {
+	/* border-bottom: 1px solid #D9E7FD; */
+	width:auto;
+}
+/* Child-items: hover */
+#menuV li:hover, #menuV li.jshover {
+	
+}
+/* Child-items selected */
+#menuV li.item-selected{
+	/*background:#D6D6D6;
+	color:#fff;*/
+}
+/* Sub-menu box */
+#menuV li ul {
+	position:absolute;
+	display:none;
+	z-index:500;
+	/*background: #F4F5F7;
+	border-top: 1px solid #AFCFFF;
+	border-left: 1px solid #AFCFFF;
+	border-right: 1px solid #AFCFFF;*/
+}
+#menuV li li{
+	/*border-bottom: 1px solid #AFCFFF;*/
+	_border-bottom: 1px solid transparent;
+	-border-bottom: 1px solid #FFFFFF;
+	_margin-bottom: -1px;
+}
+#menuV ul {
+	margin-top: -20px;
+	margin-left: 150px;
+	/*white-space: nowrap;*/
+	width: 180px;
+}
+#menuV li:hover ul ul,
+#menuV li.jshover ul ul,
+#menuV li:hover ul ul ul,
+#menuV li.jshover ul ul ul{
+	display:none;
+}
+#menuV li:hover ul,
+#menuV li.jshover ul,
+#menuV li li:hover ul,
+#menuV li li.jshover ul,
+#menuV li li li:hover ul,
+#menuV li li li.jshover ul,
+#menuV li li li li:hover ul,
+#menuV li li li li.jshover ul,
+#menuV li li li li li:hover ul,
+#menuV li li li li li.jshover ul/**/{
+	display:block;
+}
+
+#menuV LI A,
+#menuV .MenuTop,
+#menuV .MenuBottom { background: transparent url(/files/images/menuV.gif) no-repeat; }
+#menuV .MenuLeft, 
+#menuV .MenuRight { background: transparent url(/files/images/menuVbg.gif); }
+
+#menuV .MenuLink { width: 180px; }
+#menuV .MenuCenter { background-color: #dfdfdf; font-size: 11px; }
+
+#menuV LI {
+	text-align: left;
+	font-family:Verdana;
+	font-size: 9px;
+	font-weight: bold;
+	/* height: 35px; border-bottom: 1px dotted #FF0000; */
+	vertical-align: middle;
+	width:155px;
+}
+#menuV LI A {
+	background-position: -540px 0px;
+	display: block;/* table-cell */
+	width: 155px;
+	_width: 180px;
+	height: 35px;
+	vertical-align: middle;
+	padding: 0px 0px 0px 25px;
+	text-decoration: none;
+	color: #000000;
+	line-height: 35px;
+	font-size: 11px;
+	text-transform: uppercase;
+	border: none;
+}
+#menuV LI UL A { height: auto; line-height: 14px; text-transform: none; }
+
+#menuV .MenuCenter A {
+	background: #dfdfdf none repeat scroll 0% 0%;
+	/*display: inline;*/
+	width: auto;
+	height: auto;
+	vertical-align: auto;
+	padding-left: 0px;
+	_padding-top: 0px;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 11px;
+	/* line-height: 12px; */
+}
+
+#menuV .MenuTop {
+	height: 11px;
+	background-position: 0px 0px;
+}
+#menuV .MenuBottom {
+	height: 11px;
+	background-position: 0px -23px;
+}
+#menuV .MenuLeft {
+	width: 15px; 
+	background-position: -100px 0px;
+}
+#menuV .MenuRight {
+	width: 10px;
+	background-position: -140px 0px;
+}
+/*********************************************************************************/
+#menuV LI.jshover A, 
+#menuV LI:hover A {
+	background-position: -720px 0px;
+}
+#menuV LI.jshover, 
+#menuV LI:hover {
+	margin: 0px;
+	padding: 0px;
+	height: auto;
+	_border-bottom: 1px solid transparent;
+	-border-bottom: 1px solid #FFFFFF;
+	_margin-bottom: -1px;
+}
+
+/* любые LI ниже 0-го уровн€ */
+#menuV LI .MenuCenter { background: #dfdfdf none repeat scroll 0% 0%; }
+#menuV LI .MenuCenter A { background: #dfdfdf none repeat scroll 0% 0%; }
+#menuV LI .MenuTop { background-position: 0px 0px; }
+#menuV LI .MenuBottom { background-position: 0px -23px; }
+#menuV LI .MenuLeft { background-position: -100px 0px; }
+#menuV LI .MenuRight { background-position: -140px 0px; }
+/* 1-ый уровень при наведении курсора: */
+#menuV LI LI.jshover .MenuCenter, 
+#menuV LI LI:hover .MenuCenter { background: #FAFAFA none repeat scroll 0% 0%; }
+#menuV LI LI.jshover .MenuCenter A, 
+#menuV LI LI:hover .MenuCenter A { background: #FAFAFA none repeat scroll 0% 0%; }
+#menuV LI LI.jshover .MenuTop, 
+#menuV LI LI:hover .MenuTop { background-position: -180px 0px; }
+#menuV LI LI.jshover .MenuBottom, 
+#menuV LI LI:hover .MenuBottom { background-position: -180px -23px; }
+#menuV LI LI.jshover .MenuLeft, 
+#menuV LI LI:hover .MenuLeft { background-position: -50px 0px; }
+#menuV LI LI.jshover .MenuRight, 
+#menuV LI LI:hover .MenuRight { background-position: -90px 0px; }
+/* если у 1-го уровн€ есть 2-ой уровень, выкрашиваем его в светло-серый цвет */
+#menuV LI LI.jdm_active LI .MenuCenter { background: #dfdfdf none repeat scroll 0% 0%; }
+#menuV LI LI.jdm_active LI .MenuCenter A { background: #dfdfdf none repeat scroll 0% 0%; }
+#menuV LI LI.jdm_active LI .MenuTop { background-position: 0px 0px; }
+#menuV LI LI.jdm_active LI .MenuBottom { background-position: 0px -23px; }
+#menuV LI LI.jdm_active LI .MenuLeft { background-position: -100px 0px; }
+#menuV LI LI.jdm_active LI .MenuRight { background-position: -140px 0px; }
+/* 2-ой уровень при наведении курсора: */
+#menuV LI LI LI.jshover .MenuCenter, 
+#menuV LI LI LI:hover .MenuCenter { background: #FAFAFA none repeat scroll 0% 0%; }
+#menuV LI LI LI.jshover .MenuCenter A, 
+#menuV LI LI LI:hover .MenuCenter A { background: #FAFAFA none repeat scroll 0% 0%; }
+#menuV LI LI LI.jshover .MenuTop, 
+#menuV LI LI LI:hover .MenuTop { background-position: -180px 0px; }
+#menuV LI LI LI.jshover .MenuBottom, 
+#menuV LI LI LI:hover .MenuBottom { background-position: -180px -23px; }
+#menuV LI LI LI.jshover .MenuLeft, 
+#menuV LI LI LI:hover .MenuLeft { background-position: -50px 0px; }
+#menuV LI LI LI.jshover .MenuRight, 
+#menuV LI LI LI:hover .MenuRight { background-position: -90px 0px; }
+/* если у 2-го уровн€ есть 3-ий уровень, выкрашиваем его в светло-серый цвет */
+#menuV LI LI LI.jdm_active LI .MenuCenter { background: #dfdfdf none repeat scroll 0% 0%; }
+#menuV LI LI LI.jdm_active LI .MenuCenter A { background: #dfdfdf none repeat scroll 0% 0%; }
+#menuV LI LI LI.jdm_active LI .MenuTop { background-position: 0px 0px; }
+#menuV LI LI LI.jdm_active LI .MenuBottom { background-position: 0px -23px; }
+#menuV LI LI LI.jdm_active LI .MenuLeft { background-position: -100px 0px; }
+#menuV LI LI LI.jdm_active LI .MenuRight { background-position: -140px 0px; }
+/* 3-ий уровень при наведении курсора: */
+#menuV LI LI LI LI.jshover .MenuCenter, 
+#menuV LI LI LI LI:hover .MenuCenter { background: #FAFAFA none repeat scroll 0% 0%; }
+#menuV LI LI LI LI.jshover .MenuCenter A, 
+#menuV LI LI LI LI:hover .MenuCenter A { background: #FAFAFA none repeat scroll 0% 0%; }
+#menuV LI LI LI LI.jshover .MenuTop, 
+#menuV LI LI LI LI:hover .MenuTop { background-position: -180px 0px; }
+#menuV LI LI LI LI.jshover .MenuBottom, 
+#menuV LI LI LI LI:hover .MenuBottom { background-position: -180px -23px; }
+#menuV LI LI LI LI.jshover .MenuLeft, 
+#menuV LI LI LI LI:hover .MenuLeft { background-position: -50px 0px; }
+#menuV LI LI LI LI.jshover .MenuRight, 
+#menuV LI LI LI LI:hover .MenuRight { background-position: -90px 0px; }
+/*------------menu-------------------------*/
+
+/*----------------------pager--------------------------------------*/
+ul.pager {
+	list-style: none;	
+}
+
+ul.pager li {
+	float: left;
+	margin: 2px;
+}
+
+ul.pager li a {
+	padding: 3px;
+	color: #000;
+	border: 1px solid #404040;
+	background-color: #D3DEFD;
+	line-height: 24px;
+}
+
+ul.pager li a:hover, ul.pager li a.selected  {
+	background-color: #404040;
+	color: #fff;
+}
+.tag{
+	border: 1px solid grey;
+	float:left;
+	margin: 5px 5px 0 0;
+	padding: 0 5px;
+}
+.tag a{
+	cursor:pointer;
+	text-decoration: underline;
+}
+.tag img{
+	opacity: 0.5;
+	margin: 0 0 0 5px;
+}
+.tag img:hover{
+	opacity: 1;
+}
+
+/*------------------------[loading]------------------------------*/
+/* all this loading css is optional style sugar;
+   it'll work fine without it. just not look pretty. */
+.loading-text {
+    background: #FFC129;
+    color: black;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+}
+.loading-text .place-img-content {
+    margin: 0 3px 0 1px;
+}
+.loading.top {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-left-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+}
+.loading.left {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+}
+.loading.bottom {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+}
+.loading.right {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    -moz-border-radius-topright: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+}
+.loading-masked { overflow: hidden; }
+.loading-error {
+    color: #FFF;
+    background: red;
+}
+/*------------------------[end loading]------------------------------*/
+
+.card-container{
+	width:100%;
+	height: 100%;
+	/*border: 1px solid grey;*/
+}
+.card-container .item{
+	width:200px;
+	float:left;
+	border: 1px solid grey;
+	margin: 5px;
+	height: 150px;
+}
+
+.ui-button { margin-left: -1px; }
+.ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+.ui-autocomplete-input { margin: 12px 0px 0 0px; padding: 0.48em 0 0.47em 0.45em; width: 65% }

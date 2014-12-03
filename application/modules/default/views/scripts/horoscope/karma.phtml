@@ -1,0 +1,31 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/scripts/horoscope_karma.js',
+				'text/javascript');
+?>
+<div id="all_horo">
+	<div id="packs">
+		<div id="karma">
+			<div class="item_header">Кармический гороскоп</div>
+			<div class="text" style="font-style: italic;border-bottom: 2px dotted #D0D2D6;margin-bottom: 20px;padding-bottom: 20px;"><?=$this->minidesc?></div>
+			<div id="partner2">
+				<?=$this->form?>
+			</div>
+		</div>
+	</div>
+	<div class="comp_answer" style="display:none;">
+		<div id="description2" class="text" style="margin-top:20px;">
+			<div class="my_cab_item">
+				<img id="sign-image" src=""/>
+				<div class="item_header"></div>
+				<div id="data-text" class="data"></div>
+				<div class="clear"></div>
+			</div>
+			<div id="karma-desc" class="text"></div>
+			<a id="another" class="another" onclick="another_karma()" style="cursor:pointer">Проверить другую дату →</a>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<?=$this->partial('partials/also.phtml',array('type'=>$this->controllerName))?>
+	<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>
+</div>	

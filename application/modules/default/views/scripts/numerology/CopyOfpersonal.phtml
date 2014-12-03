@@ -1,0 +1,83 @@
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		//loadDay();
+		$('#byear,#bmonth').change(function(){
+			loadDay();
+		});
+		$('#submit').click(function(){
+			
+			var year = $('#byear option:selected').val();
+			var month = $('#bmonth option:selected').val();
+			var day = $('#bday option:selected').val();
+
+			var fname = $('#fname').val();
+			var mname = $('#mname').val();
+			var lname = $('#lname').val();
+			
+			var error = 'false';
+			if(year == '' ){
+				error = 'true';
+			}
+			if(month == '' ){
+				error = 'true';
+			}
+			if(day == '' ){
+				error = 'true';
+			}
+			if(fname == '' ){
+				error = 'true';
+			}
+			if(mname == '' ){
+				error = 'true';
+			}
+			if(lname == '' ){
+				error = 'true';
+			}
+			if(error == 'false'){
+				$.post('/numerology/get-description',
+					{
+						'byear'		: year,
+						'bmonth'	: month,
+						'bday'		: day,
+						'smalltype'	: '<?=$this->smalltype?>',
+						'fname'		: fname,
+						'mname'		: mname,
+						'lname'		: lname,
+					},
+					function(data){
+						//var html = data.description;
+						$('#description_wrapper').html(data);
+				});
+			}else{
+				alert('Не все данные заполнены');
+			}
+			return false;
+		});
+		
+		function loadDay(){
+			if($('#byear option:selected').val() != '' && $('#bmonth option:selected').val() != ''){
+				$.post(
+						'/user/days',
+						{
+							'year' : $('#byear option:selected').val(),
+						 	'month': $('#bmonth option:selected').val()
+						 },
+						 function(data){
+							var html = '';
+							for(var i in data){
+								html += '<option value="'+i+'">' + data[i] + '</option>';
+							}
+							$('#bday').html(html);
+						},
+						'json');
+			}
+		}
+	});
+//-->
+</script>
+<h1><?=$this->numerologyTitle?></h1>
+<?=$this->form?>
+<div id="description_wrapper">
+	
+</div>

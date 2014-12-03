@@ -1,0 +1,137 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/plugins/jquery.form.min.js',
+				'text/javascript')
+				->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+$this->headLink()
+		->appendStylesheet(
+			'/css/jquery-ui.css	');
+?>
+<script type="text/javascript">
+<!--
+	var deck = '<?=App_UtilsService::generateTranslit($this->divination['name'])?>';
+	var divinationId = <?=$this->divination['id']?>;
+	$(document).ready(function(){
+		var options = {
+				success: function(data)
+			    {
+					data = jQuery.parseJSON(data);
+					$('#' + data.order + '_errors').html('');
+					if(data.result == 'success'){
+						var html = '';
+						if(data.hasOwnProperty('file') && data.hasOwnProperty('order')){
+							html = '<img id="'+data.order+'_image" style="width:30%" src="/files/decks/'+deck+'/'+data.file+'"/>';
+						}
+						$('#'+data.order+'_wrapper').html(html);
+					}
+					if(data.result == 'fail'){
+						if(data.hasOwnProperty('errors')){
+							var html = '';
+							for(var i in data.errors){
+								html += '<li>' + data.errors[i] + '</li>'; 
+							}
+							$('#' + data.order + '_errors').html(html);
+						}
+					}
+			    },
+			    error: function()
+			    {
+			        //console.log('error');
+			    }
+			};
+		$('form').ajaxForm(options);
+	});
+	function showDialog(order){
+		var dialog = $('#description-table').dialog({
+			'modal': true,
+			'width' : 800,
+			'autoOpen': true,
+			'open': function(){
+				$.post(
+						'/admin/divination/get-book-description',
+						{
+							'divination_id': divinationId,
+							'order': order
+							},
+							function(data){
+								if(!CKEDITOR.instances.hasOwnProperty('description')){
+									CKEDITOR.replace( 'description',{
+										filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+										filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+										filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+										filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+										filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+										filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+									} );
+								}
+								CKEDITOR.instances.description.setData(data.description);
+							},
+						'json'
+						);
+				
+			},
+			 buttons: {
+				 "Сохранить": function() {
+					 //var text = CKEDITOR.instances.description.getData();
+					 $.post(
+						'/admin/divination/save-book-description-text',
+						{
+							'divination_id': divinationId,
+							'order': order,
+							'text': CKEDITOR.instances.description.getData()
+							},
+						function(data){
+							if (CKEDITOR.instances.description) CKEDITOR.instances.description.destroy();
+							dialog.dialog( "close" );
+						},'json'
+					);
+				 },
+				 'Отмена': function() {
+					if (CKEDITOR.instances.description) CKEDITOR.instances.description.destroy(); 
+					dialog.dialog( "close" );
+				 }
+			}
+		});
+		return false;
+	}
+//-->
+</script>
+<h1>Редактирование гексаграмм И-цзин</h1>
+<table style="width:100%">
+	<tr>
+		<td>
+			<div style="text-align:right;"><a href="/admin/divination/taro">Назад к гаданиям</a></div>
+		</td>
+	</tr>
+</table>
+<div style="width:100%;">
+	<?php foreach($this->bookDescriptions as $index =>$item):?>
+		<div style="width:180px;border:1px solid grey;height:100px;float:left;">
+			<b>Описание №<?=$index+1?></b>
+			<form action="/admin/divination/save-book-description-image" method="POST" enctype="multipart/form-data">
+				<a style="cursor:pointer" onclick="showDialog('<?=($index+1)?>')">Редактировать описание</a><br>
+				<input name="divination_id" type="hidden" value="<?=$this->divination['id']?>"/>
+				<input name="order" type="hidden" value="<?=($index+1)?>"/>
+			</form>
+		</div>
+	<?php endforeach;?>
+</div>
+<div id="description_container" style="display:none;">
+	<table id="description-table">
+		<tr>
+			<td>
+				Описание 
+			</td>
+			<td>
+				<textarea name="description" rows="5" cols="50"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="hidden" id="order" value=""/>
+			</td>
+		</tr>
+	</table>
+</div>

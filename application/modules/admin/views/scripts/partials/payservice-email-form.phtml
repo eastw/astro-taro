@@ -1,0 +1,13 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>"
+		class="article-form">
+	<table>
+		<?=$this->element->email;?>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+			</td>
+		</tr>
+	</table>
+</form>

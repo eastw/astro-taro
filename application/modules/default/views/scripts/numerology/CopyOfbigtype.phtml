@@ -1,0 +1,35 @@
+<h1>Нумерология</h1>
+<div>
+	Описание для нумерологии
+</div>
+<table>
+	<tr>
+		<td style="vertical-align: top;">
+			<img src="<?=$this->fullTypes[$this->curType]['image']?>"/>
+		</td>
+		<td>
+		<table>
+			<tr>
+				<td>
+					<h2><a href="/numerology/<?=$this->curType?>"><?=$this->fullTypes[$this->curType]['name']?></a></h2>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<?=$this->fullTypes[$this->curType]['small_desc']?>
+					<hr>
+				</td>
+			</tr>
+			<?php if(count($this->fullTypes[$this->curType]['children'])):?>
+			<?php foreach ($this->fullTypes[$this->curType]['children'] as $key => $value):?>
+				<tr>
+					<td>
+						<a href="/numerology/<?=$this->curType?>/<?=$key?>"><?=$value?></a>
+					</td>
+				</tr>
+			<?php endforeach;?>
+			<?php endif;?>
+		</table>
+	</td>
+	</tr>
+</table>

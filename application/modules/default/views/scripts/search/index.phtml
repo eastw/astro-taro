@@ -1,0 +1,54 @@
+<div id="result">
+	<div class="res_count">Результатов поиска: <?=$this->data['total']?></div>
+	<?php if(count($this->data['items'])):?>
+		<?php foreach($this->data['items'] as $item):?>
+		<div class="result_item">
+				<div class="theme">
+					<?php if($item['source_id'] == App_SearchService::DIVINATION_TYPE):?>
+						<?php if($item['type'] == 'taro'):?>
+							Гадания Таро
+						<?php endif;?>
+						<?php if($item['type'] == 'classic'):?>
+							Классические карты
+						<?php endif;?>
+						<?php if($item['type'] == 'rune'):?>
+							Руны
+						<?php endif;?>
+						<?php if($item['type'] == 'book'):?>
+							Книга перемен И-Цзин
+						<?php endif;?>
+						<?php if($item['type'] == 'other'):?>
+							Другие гадания 
+						<?php endif;?>
+					<?php else:?>
+						<?php if($item['type'] == 'm'):?>
+							Магия
+						<?php endif;?>
+						<?php if($item['type'] == 'a'):?>
+							Статьи
+						<?php endif;?>
+						<?php if($item['type'] == 'n'):?>
+							Новости
+						<?php endif;?>	
+					<?php endif;?>
+					
+				</div>
+				<div class="item_header">
+					<?php if($item['source_id'] != App_SearchService::DIVINATION_TYPE):?>
+						<a href="/<?=$item['startlink']?>/content/<?=$item['tag_data']['alias']?>/<?=$item['alias']?>">
+							<?=$item['title']?>
+						</a>
+					<?php else:?>
+						<a href="/gadaniya/<?=$item['type']?>/<?=$item['category_alias']?>/<?=$item['alias']?>">
+							<?=$item['name']?>
+						</a>
+					<?php endif;?>
+				</div>
+				<div class="text">
+					<?=($item['source_id'] != App_SearchService::DIVINATION_TYPE)?$item['anonse']:$item['description']?>
+				</div>
+		</div>
+		<?php endforeach;?>
+		<?=$this->partial('search/pagination.phtml',array('curPage' => $this->curPage, 'pagination' => $this->pagination,'searchQuery' => $this->searchQuery));?>
+	<?php endif;?>
+</div>

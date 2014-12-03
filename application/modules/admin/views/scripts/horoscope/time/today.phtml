@@ -1,0 +1,16 @@
+<h3>Текущий месяц <?=$this->curMonth?></h3>
+<?php if(!$this->isNext):?>
+	<div><a style="cursor:pointer" onclick="nextMonth()">Следующий месяц</a></div>
+<?php else:?>
+	<div><a style="cursor:pointer" onclick="prevMonth()">Предыдущий месяц</a></div>	
+<?php endif;?>
+<div id="month-wrapper" style="width:700px;">
+	<?php for($i = 0;$i < $this->monthDays;$i++):?>
+		<div style="width:80px;height:80px;border:1px solid black;float:left;" class="<?=($this->todayDay == ($i+1))?('today'):('day')?>">
+			<div>
+				<?=($i+1)?> число 
+			</div>
+			<a style="cursor:pointer" onclick="showDialog('<?=$this->year?>-<?=$this->curMonthNumber?>-<?=(($i+1) < 10)?('0'.($i+1)):($i+1)?>','<?=$this->year?>-<?=$this->curMonthNumber?>-<?=(($i+1) < 10)?('0'.($i+1)):($i+1)?>')">Описание</a>
+		</div>
+	<?php endfor;?>
+</div> 

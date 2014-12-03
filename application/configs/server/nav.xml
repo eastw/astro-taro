@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configdata>
+	<nav>
+		<home>
+			<label>Главная</label>
+			<uri>/</uri>
+			<pages>
+				<user-no-auth>
+					<label>Идентификация пользователя</label>
+					<id>user-no-auth</id>
+					<uri>/user/no-auth</uri>
+				</user-no-auth>
+				<horoskop>
+					<label>Гороскопы</label>
+					<id>horoscope-list</id>
+					<uri>/horoscope</uri>
+					<pages>
+						<horoscope-aries-today>
+							<label>Гороскопы для Овна</label>
+							<id>horoscope-aries-today</id>
+							<uri>/horoscope/aries/today</uri>
+							<pages>
+								<horoscope-aries-business-compability>
+									<label>Партнерский гороскоп совместимости для Овна</label>
+									<id>horoscope-aries-business-compability</id>
+									<uri>/horoscope/aries/business-compability</uri>
+								</horoscope-aries-business-compability>
+								<horoscope-aries-love-compability>
+									<label>Любовный гороскоп совместимости для Овна</label>
+									<id>horoscope-aries-love-compability</id>
+									<uri>/horoscope/aries/love-compability</uri>
+								</horoscope-aries-love-compability>
+								<horoscope-aries-simple>
+									<label>Характеристика знака Овна</label>
+									<id>horoscope-aries-simple</id>
+									<uri>/horoscope/aries/simple</uri>
+								</horoscope-aries-simple>
+								<horoscope-aries-profession>
+									<label>Гороскоп профессии для Овна</label>
+									<id>horoscope-aries-profession</id>
+									<uri>/horoscope/aries/profession</uri>
+								</horoscope-aries-profession>
+								<horoscope-aries-karma>
+									<label>Кармический гороскоп для Овна</label>
+									<id>horoscope-aries-karma</id>
+									<uri>/horoscope/aries/karma</uri>
+								</horoscope-aries-karma>
+								<horoscope-aries-health>
+									<label>Гороскоп здоровья для Овна</label>
+									<id>horoscope-aries-health</id>
+									<uri>/horoscope/aries/health</uri>
+								</horoscope-aries-health>
+								<horoscope-aries-child>
+									<label>Гороскоп ребенка для Овна</label>
+									<id>horoscope-aries-child</id>
+									<uri>/horoscope/aries/child</uri>
+								</horoscope-aries-child>
+								<horoscope-aries-business>
+									<label>Бизнес гороскоп для Овна</label>
+									<id>horoscope-aries-business</id>
+									<uri>/horoscope/aries/business</uri>
+								</horoscope-aries-business>
+								<horoscope-aries-week>
+									<label>Гороскоп на неделю для Овна</label>
+									<id>horoscope-aries-week</id>
+									<uri>/horoscope/aries/week</uri>
+								</horoscope-aries-week>
+								<horoscope-aries-month>
+									<label>Гороскоп на месяц для Овна</label>
+									<id>horoscope-aries-month</id>
+									<uri>/horoscope/aries/month</uri>
+								</horoscope-aries-month>
+								<horoscope-aries-year>
+									<label>Гороскоп на год для Овна</label>
+									<id>horoscope-aries-year</id>
+									<uri>/horoscope/aries/year</uri>
+								</horoscope-aries-year>
+							</pages>
+						</horoscope-aries-today>
+						<horoscope-taurus-today>
+							<label>Гороскопы для Тельца</label>
+							<id>horoscope-taurus-today</id>
+							<uri>/horoscope/taurus/today</uri>
+							<pages>
+								<horoscope-taurus-business-compability>
+									<label>Партнерский гороскоп совместимости для Тельца</label>
+									<id>horoscope-taurus-business-compability</id>
+									<uri>/horoscope/taurus/business-compability</uri>
+								</horoscope-taurus-business-compability>
+								<horoscope-taurus-love-compability>
+									<label>Любовный гороскоп совместимости для Тельца</label>
+									<id>horoscope-taurus-love-compability</id>
+									<uri>/horoscope/taurus/love-compability</uri>
+								</horoscope-taurus-love-compability>
+								<horoscope-taurus-simple>
+									<label>характеристика знака Телец</label>
+									<id>horoscope-taurus-simple</id>
+									<uri>/horoscope/taurus/simple</uri>
+								</horoscope-taurus-simple>
+								<horoscope-taurus-profession>
+									<label>Гороскоп профессии для Тельца</label>
+									<id>horoscope-taurus-profession</id>
+									<uri>/horoscope/taurus/profession</uri>
+								</horoscope-taurus-profession>
+								<horoscope-taurus-karma>
+									<label>Кармический гороскоп для Тельца</label>
+									<id>horoscope-taurus-karma</id>
+									<uri>/horoscope/taurus/karma</uri>
+								</horoscope-taurus-karma>
+								<horoscope-taurus-health>
+									<label>Гороскоп здоровья для Тельца</label>
+									<id>horoscope-taurus-health</id>
+									<uri>/horoscope/taurus/health</uri>
+								</horoscope-taurus-health>
+								<horoscope-taurus-child>
+									<label>Гороскоп ребенка для Тельца</label>
+									<id>horoscope-taurus-child</id>
+									<uri>/horoscope/taurus/child</uri>
+								</horoscope-taurus-child>
+								<horoscope-taurus-business>
+									<label>Бизнес гороскоп для Тельца</label>
+									<id>horoscope-taurus-business</id>
+									<uri>/horoscope/taurus/business</uri>
+								</horoscope-taurus-business>
+								<horoscope-taurus-week>
+									<label>Гороскоп на неделю для Тельца</label>
+									<id>horoscope-taurus-week</id>
+									<uri>/horoscope/taurus/week</uri>
+								</horoscope-taurus-week>
+								<horoscope-taurus-month>
+									<label>Гороскоп на месяц для Тельца</label>
+									<id>horoscope-taurus-month</id>
+									<uri>/horoscope/taurus/month</uri>
+								</horoscope-taurus-month>
+								<horoscope-taurus-year>
+									<label>Гороскоп на год для Тельца</label>
+									<id>horoscope-taurus-year</id>
+									<uri>/horoscope/taurus/year</uri>
+								</horoscope-taurus-year>
+							</pages>
+						</horoscope-taurus-today>
+						<horoscope-gemini-today>
+							<label>Гороскопы для Близнецов</label>
+							<id>horoscope-gemini-today</id>
+							<uri>/horoscope/gemini/today</uri>
+							<pages>
+								<horoscope-gemini-business-compability>
+									<label>Партнерский гороскоп совместимости для Близнецов</label>
+									<id>horoscope-gemini-business-compability</id>
+									<uri>/horoscope/gemini/business-compability</uri>
+								</horoscope-gemini-business-compability>
+								<horoscope-gemini-love-compability>
+									<label>Любовный гороскоп совместимости для Близнецов</label>
+									<id>horoscope-gemini-love-compability</id>
+									<uri>/horoscope/gemini/love-compability</uri>
+								</horoscope-gemini-love-compability>
+								<horoscope-gemini-simple>
+									<label>Характеристика знака Близнецы</label>
+									<id>horoscope-gemini-simple</id>
+									<uri>/horoscope/gemini/simple</uri>
+								</horoscope-gemini-simple>
+								<horoscope-gemini-profession>
+									<label>Гороскоп профессии для Близнецов</label>
+									<id>horoscope-gemini-profession</id>
+									<uri>/horoscope/gemini/profession</uri>
+								</horoscope-gemini-profession>
+								<horoscope-gemini-karma>
+									<label>Кармический гороскоп для Близнецов</label>
+									<id>horoscope-gemini-karma</id>
+									<uri>/horoscope/gemini/karma</uri>
+								</horoscope-gemini-karma>
+								<horoscope-gemini-health>
+									<label>Гороскоп здоровья для Близнецов</label>
+									<id>horoscope-gemini-health</id>
+									<uri>/horoscope/gemini/health</uri>
+								</horoscope-gemini-health>
+								<horoscope-gemini-child>
+									<label>Гороскоп ребенка для Близнецов</label>
+									<id>horoscope-gemini-child</id>
+									<uri>/horoscope/gemini/child</uri>
+								</horoscope-gemini-child>
+								<horoscope-gemini-business>
+									<label>Бизнес гороскоп для Близнецов</label>
+									<id>horoscope-gemini-business</id>
+									<uri>/horoscope/gemini/business</uri>
+								</horoscope-gemini-business>
+								<horoscope-gemini-week>
+									<label>Гороскоп на неделю для Близнецов</label>
+									<id>horoscope-gemini-week</id>
+									<uri>/horoscope/gemini/week</uri>
+								</horoscope-gemini-week>
+								<horoscope-gemini-month>
+									<label>Гороскоп на месяц для Близнецов</label>
+									<id>horoscope-gemini-month</id>
+									<uri>/horoscope/gemini/month</uri>
+								</horoscope-gemini-month>
+								<horoscope-gemini-year>
+									<label>Гороскоп на год для Близнецов</label>
+									<id>horoscope-gemini-year</id>
+									<uri>/horoscope/gemini/year</uri>
+								</horoscope-gemini-year>
+							</pages>
+						</horoscope-gemini-today>
+						<horoscope-cancer-today>
+							<label>Гороскопы для Рака</label>
+							<id>horoscope-cancer-today</id>
+							<uri>/horoscope/cancer/today</uri>
+							<pages>
+								<horoscope-cancer-business-compability>
+									<label>Партнерский гороскоп совместимости для Рака</label>
+									<id>horoscope-cancer-business-compability</id>
+									<uri>/horoscope/cancer/business-compability</uri>
+								</horoscope-cancer-business-compability>
+								<horoscope-cancer-love-compability>
+									<label>Любовный гороскоп совместимости для Рака</label>
+									<id>horoscope-cancer-love-compability</id>
+									<uri>/horoscope/cancer/love-compability</uri>
+								</horoscope-cancer-love-compability>
+								<horoscope-cancer-simple>
+									<label>Характеристика знака Рак</label>
+									<id>horoscope-cancer-simple</id>
+									<uri>/horoscope/cancer/simple</uri>
+								</horoscope-cancer-simple>
+								<horoscope-cancer-profession>
+									<label>Гороскоп профессии для Рака</label>
+									<id>horoscope-cancer-profession</id>
+									<uri>/horoscope/cancer/profession</uri>
+								</horoscope-cancer-profession>
+								<horoscope-cancer-karma>
+									<label>Кармический гороскоп для Рака</label>
+									<id>horoscope-cancer-karma</id>
+									<uri>/horoscope/cancer/karma</uri>
+								</horoscope-cancer-karma>
+								<horoscope-cancer-health>
+									<label>Гороскоп здоровья для Рака</label>
+									<id>horoscope-cancer-health</id>
+									<uri>/horoscope/cancer/health</uri>
+								</horoscope-cancer-health>
+								<horoscope-cancer-child>
+									<label>Гороскоп ребенка для Рака</label>
+									<id>horoscope-cancer-child</id>
+									<uri>/horoscope/cancer/child</uri>
+								</horoscope-cancer-child>
+								<horoscope-cancer-business>
+									<label>Бизнес гороскоп для Рака</label>
+									<id>horoscope-cancer-business</id>
+									<uri>/horoscope/cancer/business</uri>
+								</horoscope-cancer-business>
+								<horoscope-cancer-week>
+									<label>Гороскоп на неделю для Рака</label>
+									<id>horoscope-cancer-week</id>
+									<uri>/horoscope/cancer/week</uri>
+								</horoscope-cancer-week>
+								<horoscope-cancer-month>
+									<label>Гороскоп на месяц для Рака</label>
+									<id>horoscope-cancer-month</id>
+									<uri>/horoscope/cancer/month</uri>
+								</horoscope-cancer-month>
+								<horoscope-cancer-year>
+									<label>Гороскоп на год для Рака</label>
+									<id>horoscope-cancer-year</id>
+									<uri>/horoscope/cancer/year</uri>
+								</horoscope-cancer-year>
+							</pages>
+						</horoscope-cancer-today>
+						<horoscope-leo-today>
+							<label>Гороскопы для Льва</label>
+							<id>horoscope-leo-today</id>
+							<uri>/horoscope/leo/today</uri>
+							<pages>
+								<horoscope-leo-business-compability>
+									<label>Партнерский гороскоп совместимости для Льва</label>
+									<id>horoscope-leo-business-compability</id>
+									<uri>/horoscope/leo/business-compability</uri>
+								</horoscope-leo-business-compability>
+								<horoscope-leo-love-compability>
+									<label>Любовный гороскоп совместимости для Льва</label>
+									<id>horoscope-leo-love-compability</id>
+									<uri>/horoscope/leo/love-compability</uri>
+								</horoscope-leo-love-compability>
+								<horoscope-leo-simple>
+									<label>Характеристика знака Лев</label>
+									<id>horoscope-leo-simple</id>
+									<uri>/horoscope/leo/simple</uri>
+								</horoscope-leo-simple>
+								<horoscope-leo-profession>
+									<label>Гороскоп профессии для Льва</label>
+									<id>horoscope-leo-profession</id>
+									<uri>/horoscope/leo/profession</uri>
+								</horoscope-leo-profession>
+								<horoscope-leo-karma>
+									<label>Кармический гороскоп для Льва</label>
+									<id>horoscope-leo-karma</id>
+									<uri>/horoscope/leo/karma</uri>
+								</horoscope-leo-karma>
+								<horoscope-leo-health>
+									<label>Гороскоп здоровья для Льва</label>
+									<id>horoscope-leo-health</id>
+									<uri>/horoscope/leo/health</uri>
+								</horoscope-leo-health>
+								<horoscope-leo-child>
+									<label>Гороскоп ребенка для Льва</label>
+									<id>horoscope-leo-child</id>
+									<uri>/horoscope/leo/child</uri>
+								</horoscope-leo-child>
+								<horoscope-leo-business>
+									<label>Бизнес гороскоп для Льва</label>
+									<id>horoscope-leo-business</id>
+									<uri>/horoscope/leo/business</uri>
+								</horoscope-leo-business>
+								<horoscope-leo-week>
+									<label>Гороскоп на неделю для Льва</label>
+									<id>horoscope-leo-week</id>
+									<uri>/horoscope/leo/week</uri>
+								</horoscope-leo-week>
+								<horoscope-leo-month>
+									<label>Гороскоп на месяц для Льва</label>
+									<id>horoscope-leo-month</id>
+									<uri>/horoscope/leo/month</uri>
+								</horoscope-leo-month>
+								<horoscope-leo-year>
+									<label>Гороскоп на год для Льва</label>
+									<id>horoscope-leo-year</id>
+									<uri>/horoscope/leo/year</uri>
+								</horoscope-leo-year>
+							</pages>
+						</horoscope-leo-today>
+						<horoscope-virgo-today>
+							<label>Гороскопы для Девы</label>
+							<id>horoscope-virgo-today</id>
+							<uri>/horoscope/virgo/today</uri>
+							<pages>
+								<horoscope-virgo-business-compability>
+									<label>Партнерский гороскоп совместимости для Девы</label>
+									<id>horoscope-virgo-business-compability</id>
+									<uri>/horoscope/virgo/business-compability</uri>
+								</horoscope-virgo-business-compability>
+								<horoscope-virgo-love-compability>
+									<label>Любовный гороскоп совместимости для Девы</label>
+									<id>horoscope-virgo-love-compability</id>
+									<uri>/horoscope/virgo/love-compability</uri>
+								</horoscope-virgo-love-compability>
+								<horoscope-virgo-simple>
+									<label>Характеристика знака Дева</label>
+									<id>horoscope-virgo-simple</id>
+									<uri>/horoscope/virgo/simple</uri>
+								</horoscope-virgo-simple>
+								<horoscope-virgo-profession>
+									<label>Гороскоп профессии для Девы</label>
+									<id>horoscope-virgo-profession</id>
+									<uri>/horoscope/virgo/profession</uri>
+								</horoscope-virgo-profession>
+								<horoscope-virgo-karma>
+									<label>Кармический гороскоп для Девы</label>
+									<id>horoscope-virgo-karma</id>
+									<uri>/horoscope/virgo/karma</uri>
+								</horoscope-virgo-karma>
+								<horoscope-virgo-health>
+									<label>Гороскоп здоровья для Девы</label>
+									<id>horoscope-virgo-health</id>
+									<uri>/horoscope/virgo/health</uri>
+								</horoscope-virgo-health>
+								<horoscope-virgo-child>
+									<label>Гороскоп ребенка для Девы</label>
+									<id>horoscope-virgo-child</id>
+									<uri>/horoscope/virgo/child</uri>
+								</horoscope-virgo-child>
+								<horoscope-virgo-business>
+									<label>Бизнес гороскоп для Девы</label>
+									<id>horoscope-virgo-business</id>
+									<uri>/horoscope/virgo/business</uri>
+								</horoscope-virgo-business>
+								<horoscope-virgo-week>
+									<label>Гороскоп на неделю для Девы</label>
+									<id>horoscope-virgo-week</id>
+									<uri>/horoscope/virgo/week</uri>
+								</horoscope-virgo-week>
+								<horoscope-virgo-month>
+									<label>Гороскоп на месяц для Девы</label>
+									<id>horoscope-virgo-month</id>
+									<uri>/horoscope/virgo/month</uri>
+								</horoscope-virgo-month>
+								<horoscope-virgo-year>
+									<label>Гороскоп на год для Девы</label>
+									<id>horoscope-virgo-year</id>
+									<uri>/horoscope/virgo/year</uri>
+								</horoscope-virgo-year>
+							</pages>
+						</horoscope-virgo-today>
+						<horoscope-libra-today>
+							<label>Гороскопы для Весов</label>
+							<id>horoscope-libra-today</id>
+							<uri>/horoscope/libra/today</uri>
+							<pages>
+								<horoscope-libra-business-compability>
+									<label>Партнерский гороскоп совместимости для Весов</label>
+									<id>horoscope-libra-business-compability</id>
+									<uri>/horoscope/libra/business-compability</uri>
+								</horoscope-libra-business-compability>
+								<horoscope-libra-love-compability>
+									<label>Любовный гороскоп совместимости для Весов</label>
+									<id>horoscope-libra-love-compability</id>
+									<uri>/horoscope/libra/love-compability</uri>
+								</horoscope-libra-love-compability>
+								<horoscope-libra-simple>
+									<label>Характеристика знака Весы</label>
+									<id>horoscope-libra-simple</id>
+									<uri>/horoscope/libra/simple</uri>
+								</horoscope-libra-simple>
+								<horoscope-libra-profession>
+									<label>Гороскоп профессии для Весов</label>
+									<id>horoscope-libra-profession</id>
+									<uri>/horoscope/libra/profession</uri>
+								</horoscope-libra-profession>
+								<horoscope-libra-karma>
+									<label>Кармический гороскоп для Весов</label>
+									<id>horoscope-libra-karma</id>
+									<uri>/horoscope/libra/karma</uri>
+								</horoscope-libra-karma>
+								<horoscope-libra-health>
+									<label>Гороскоп здоровья для Весов</label>
+									<id>horoscope-libra-health</id>
+									<uri>/horoscope/libra/health</uri>
+								</horoscope-libra-health>
+								<horoscope-libra-child>
+									<label>Гороскоп ребенка для Весов</label>
+									<id>horoscope-libra-child</id>
+									<uri>/horoscope/libra/child</uri>
+								</horoscope-libra-child>
+								<horoscope-libra-business>
+									<label>Бизнес гороскоп для Весов</label>
+									<id>horoscope-libra-business</id>
+									<uri>/horoscope/libra/business</uri>
+								</horoscope-libra-business>
+								<horoscope-libra-week>
+									<label>Гороскоп на неделю для Весов</label>
+									<id>horoscope-libra-week</id>
+									<uri>/horoscope/libra/week</uri>
+								</horoscope-libra-week>
+								<horoscope-libra-month>
+									<label>Гороскоп на месяц для Весов</label>
+									<id>horoscope-libra-month</id>
+									<uri>/horoscope/libra/month</uri>
+								</horoscope-libra-month>
+								<horoscope-libra-year>
+									<label>Гороскоп на год для Весов</label>
+									<id>horoscope-libra-year</id>
+									<uri>/horoscope/libra/year</uri>
+								</horoscope-libra-year>
+							</pages>
+						</horoscope-libra-today>
+						<horoscope-scorpio-today>
+							<label>Гороскопы для Скорпиона</label>
+							<id>horoscope-scorpio-today</id>
+							<uri>/horoscope/scorpio/today</uri>
+							<pages>
+								<horoscope-scorpio-business-compability>
+									<label>Партнерский гороскоп совместимости для Скорпиона</label>
+									<id>horoscope-scorpio-business-compability</id>
+									<uri>/horoscope/scorpio/business-compability</uri>
+								</horoscope-scorpio-business-compability>
+								<horoscope-scorpio-love-compability>
+									<label>Любовный гороскоп совместимости для Скорпиона</label>
+									<id>horoscope-scorpio-love-compability</id>
+									<uri>/horoscope/scorpio/love-compability</uri>
+								</horoscope-scorpio-love-compability>
+								<horoscope-scorpio-simple>
+									<label>Характеристика знака Скорпион</label>
+									<id>horoscope-scorpio-simple</id>
+									<uri>/horoscope/scorpio/simple</uri>
+								</horoscope-scorpio-simple>
+								<horoscope-scorpio-profession>
+									<label>Гороскоп профессии для Скорпиона</label>
+									<id>horoscope-scorpio-profession</id>
+									<uri>/horoscope/scorpio/profession</uri>
+								</horoscope-scorpio-profession>
+								<horoscope-scorpio-karma>
+									<label>Кармический гороскоп для Скорпиона</label>
+									<id>horoscope-scorpio-karma</id>
+									<uri>/horoscope/scorpio/karma</uri>
+								</horoscope-scorpio-karma>
+								<horoscope-scorpio-health>
+									<label>Гороскоп здоровья</label>
+									<id>horoscope-scorpio-health</id>
+									<uri>/horoscope/scorpio/health</uri>
+								</horoscope-scorpio-health>
+								<horoscope-scorpio-child>
+									<label>Гороскоп ребенка для Скорпиона</label>
+									<id>horoscope-scorpio-child</id>
+									<uri>/horoscope/scorpio/child</uri>
+								</horoscope-scorpio-child>
+								<horoscope-scorpio-business>
+									<label>Бизнес гороскоп для Скорпиона</label>
+									<id>horoscope-scorpio-business</id>
+									<uri>/horoscope/scorpio/business</uri>
+								</horoscope-scorpio-business>
+								<horoscope-scorpio-week>
+									<label>Гороскоп на неделю для для Скорпиона</label>
+									<id>horoscope-scorpio-week</id>
+									<uri>/horoscope/scorpio/week</uri>
+								</horoscope-scorpio-week>
+								<horoscope-scorpio-month>
+									<label>Гороскоп на месяц для Скорпиона</label>
+									<id>horoscope-scorpio-month</id>
+									<uri>/horoscope/scorpio/month</uri>
+								</horoscope-scorpio-month>
+								<horoscope-scorpio-year>
+									<label>Гороскоп на год для Скорпиона</label>
+									<id>horoscope-scorpio-year</id>
+									<uri>/horoscope/scorpio/year</uri>
+								</horoscope-scorpio-year>
+							</pages>
+						</horoscope-scorpio-today>
+						<horoscope-sagittarius-today>
+							<label>Гороскопы для Стрельца</label>
+							<id>horoscope-sagittarius-today</id>
+							<uri>/horoscope/sagittarius/today</uri>
+							<pages>
+								<horoscope-sagittarius-business-compability>
+									<label>Партнерский гороскоп совместимости для Стрельца</label>
+									<id>horoscope-sagittarius-business-compability</id>
+									<uri>/horoscope/sagittarius/business-compability</uri>
+								</horoscope-sagittarius-business-compability>
+								<horoscope-sagittarius-love-compability>
+									<label>Любовный гороскоп совместимости для Стрельца</label>
+									<id>horoscope-sagittarius-love-compability</id>
+									<uri>/horoscope/sagittarius/love-compability</uri>
+								</horoscope-sagittarius-love-compability>
+								<horoscope-sagittarius-simple>
+									<label>Характеристика знака Стрелец</label>
+									<id>horoscope-sagittarius-simple</id>
+									<uri>/horoscope/sagittarius/simple</uri>
+								</horoscope-sagittarius-simple>
+								<horoscope-sagittarius-profession>
+									<label>Гороскоп профессии для Стрельца</label>
+									<id>horoscope-sagittarius-profession</id>
+									<uri>/horoscope/sagittarius/profession</uri>
+								</horoscope-sagittarius-profession>
+								<horoscope-sagittarius-karma>
+									<label>Кармический гороскоп для Стрельца</label>
+									<id>horoscope-sagittarius-karma</id>
+									<uri>/horoscope/sagittarius/karma</uri>
+								</horoscope-sagittarius-karma>
+								<horoscope-sagittarius-health>
+									<label>Гороскоп здоровья для Стрельца</label>
+									<id>horoscope-sagittarius-health</id>
+									<uri>/horoscope/sagittarius/health</uri>
+								</horoscope-sagittarius-health>
+								<horoscope-sagittarius-child>
+									<label>Гороскоп ребенка для Стрельца</label>
+									<id>horoscope-sagittarius-child</id>
+									<uri>/horoscope/sagittarius/child</uri>
+								</horoscope-sagittarius-child>
+								<horoscope-sagittarius-business>
+									<label>Бизнес гороскоп для Стрельца</label>
+									<id>horoscope-sagittarius-business</id>
+									<uri>/horoscope/sagittarius/business</uri>
+								</horoscope-sagittarius-business>
+								<horoscope-sagittarius-week>
+									<label>Гороскоп на неделю для Стрельца</label>
+									<id>horoscope-sagittarius-week</id>
+									<uri>/horoscope/sagittarius/week</uri>
+								</horoscope-sagittarius-week>
+								<horoscope-sagittarius-month>
+									<label>Гороскоп на месяц для Стрельца</label>
+									<id>horoscope-sagittarius-month</id>
+									<uri>/horoscope/sagittarius/month</uri>
+								</horoscope-sagittarius-month>
+								<horoscope-sagittarius-year>
+									<label>Гороскоп на год для Стрельца</label>
+									<id>horoscope-sagittarius-year</id>
+									<uri>/horoscope/sagittarius/year</uri>
+								</horoscope-sagittarius-year>
+							</pages>
+						</horoscope-sagittarius-today>
+						<horoscope-capricorn-today>
+							<label>Гороскопы для Козерога</label>
+							<id>horoscope-capricorn-today</id>
+							<uri>/horoscope/capricorn/today</uri>
+							<pages>
+								<horoscope-capricorn-business-compability>
+									<label>Партнерский гороскоп совместимости для Козерога</label>
+									<id>horoscope-capricorn-business-compability</id>
+									<uri>/horoscope/capricorn/business-compability</uri>
+								</horoscope-capricorn-business-compability>
+								<horoscope-capricorn-love-compability>
+									<label>Любовный гороскоп совместимости для Козерога</label>
+									<id>horoscope-capricorn-love-compability</id>
+									<uri>/horoscope/capricorn/love-compability</uri>
+								</horoscope-capricorn-love-compability>
+								<horoscope-capricorn-simple>
+									<label>Характеристика знака Козерог</label>
+									<id>horoscope-capricorn-simple</id>
+									<uri>/horoscope/capricorn/simple</uri>
+								</horoscope-capricorn-simple>
+								<horoscope-capricorn-profession>
+									<label>Гороскоп профессии для Козерога</label>
+									<id>horoscope-capricorn-profession</id>
+									<uri>/horoscope/capricorn/profession</uri>
+								</horoscope-capricorn-profession>
+								<horoscope-capricorn-karma>
+									<label>Кармический гороскоп для Козерога</label>
+									<id>horoscope-capricorn-karma</id>
+									<uri>/horoscope/capricorn/karma</uri>
+								</horoscope-capricorn-karma>
+								<horoscope-capricorn-health>
+									<label>Гороскоп здоровья для Козерога</label>
+									<id>horoscope-capricorn-health</id>
+									<uri>/horoscope/capricorn/health</uri>
+								</horoscope-capricorn-health>
+								<horoscope-capricorn-child>
+									<label>Гороскоп ребенка для Козерога</label>
+									<id>horoscope-capricorn-child</id>
+									<uri>/horoscope/capricorn/child</uri>
+								</horoscope-capricorn-child>
+								<horoscope-capricorn-business>
+									<label>Бизнес гороскоп для Козерога</label>
+									<id>horoscope-capricorn-business</id>
+									<uri>/horoscope/capricorn/business</uri>
+								</horoscope-capricorn-business>
+								<horoscope-capricorn-week>
+									<label>Гороскоп на неделю для Козерога</label>
+									<id>horoscope-capricorn-week</id>
+									<uri>/horoscope/capricorn/week</uri>
+								</horoscope-capricorn-week>
+								<horoscope-capricorn-month>
+									<label>Гороскоп на месяц для Козерога</label>
+									<id>horoscope-capricorn-month</id>
+									<uri>/horoscope/capricorn/month</uri>
+								</horoscope-capricorn-month>
+								<horoscope-capricorn-year>
+									<label>Гороскоп на год для Козерога</label>
+									<id>horoscope-capricorn-year</id>
+									<uri>/horoscope/capricorn/year</uri>
+								</horoscope-capricorn-year>
+							</pages>
+						</horoscope-capricorn-today>
+						<horoscope-aquarius-today>
+							<label>Гороскопы для Водолея</label>
+							<id>horoscope-aquarius-today</id>
+							<uri>/horoscope/aquarius/today</uri>
+							<pages>
+								<horoscope-aquarius-business-compability>
+									<label> Партнерский гороскоп совместимости для Водолея</label>
+									<id>horoscope-aquarius-business-compability</id>
+									<uri>/horoscope/aquarius/business-compability</uri>
+								</horoscope-aquarius-business-compability>
+								<horoscope-aquarius-love-compability>
+									<label>Любовный гороскоп совместимости для Водолея</label>
+									<id>horoscope-aquarius-love-compability</id>
+									<uri>/horoscope/aquarius/love-compability</uri>
+								</horoscope-aquarius-love-compability>
+								<horoscope-aquarius-simple>
+									<label>Характеристика знака Водолей</label>
+									<id>horoscope-aquarius-simple</id>
+									<uri>/horoscope/aquarius/simple</uri>
+								</horoscope-aquarius-simple>
+								<horoscope-aquarius-profession>
+									<label>Гороскоп профессии для Водолея</label>
+									<id>horoscope-aquarius-profession</id>
+									<uri>/horoscope/aquarius/profession</uri>
+								</horoscope-aquarius-profession>
+								<horoscope-aquarius-karma>
+									<label>Кармический гороскоп для Водолея</label>
+									<id>horoscope-aquarius-karma</id>
+									<uri>/horoscope/aquarius/karma</uri>
+								</horoscope-aquarius-karma>
+								<horoscope-aquarius-health>
+									<label>Гороскоп здоровья для Водолея</label>
+									<id>horoscope-aquarius-health</id>
+									<uri>/horoscope/aquarius/health</uri>
+								</horoscope-aquarius-health>
+								<horoscope-aquarius-child>
+									<label>Гороскоп ребенка для Водолея</label>
+									<id>horoscope-aquarius-child</id>
+									<uri>/horoscope/aquarius/child</uri>
+								</horoscope-aquarius-child>
+								<horoscope-aquarius-business>
+									<label>Бизнес гороскоп для Водолея</label>
+									<id>horoscope-aquarius-business</id>
+									<uri>/horoscope/aquarius/business</uri>
+								</horoscope-aquarius-business>
+								<horoscope-aquarius-week>
+									<label>Гороскоп на неделю для Водолея</label>
+									<id>horoscope-aquarius-week</id>
+									<uri>/horoscope/aquarius/week</uri>
+								</horoscope-aquarius-week>
+								<horoscope-aquarius-month>
+									<label>Гороскоп на месяц для Водолея</label>
+									<id>horoscope-aquarius-month</id>
+									<uri>/horoscope/aquarius/month</uri>
+								</horoscope-aquarius-month>
+								<horoscope-aquarius-year>
+									<label>Гороскоп на год для Водолея</label>
+									<id>horoscope-aquarius-year</id>
+									<uri>/horoscope/aquarius/year</uri>
+								</horoscope-aquarius-year>
+							</pages>
+						</horoscope-aquarius-today>
+						<horoscope-pisces-today>
+							<label>Гороскопы для Рыб</label>
+							<id>horoscope-pisces-today</id>
+							<uri>/horoscope/pisces/today</uri>
+							<pages>
+								<horoscope-pisces-business-compability>
+									<label>Партнерский гороскоп совместимости для Рыб</label>
+									<id>horoscope-pisces-business-compability</id>
+									<uri>/horoscope/pisces/business-compability</uri>
+								</horoscope-pisces-business-compability>
+								<horoscope-pisces-love-compability>
+									<label>Любовный гороскоп совместимости для Рыб</label>
+									<id>horoscope-pisces-love-compability</id>
+									<uri>/horoscope/pisces/love-compability</uri>
+								</horoscope-pisces-love-compability>
+								<horoscope-pisces-simple>
+									<label>Характеристика знака Рыбы</label>
+									<id>horoscope-pisces-simple</id>
+									<uri>/horoscope/pisces/simple</uri>
+								</horoscope-pisces-simple>
+								<horoscope-pisces-profession>
+									<label>Гороскоп профессии для Рыб</label>
+									<id>horoscope-pisces-profession</id>
+									<uri>/horoscope/pisces/profession</uri>
+								</horoscope-pisces-profession>
+								<horoscope-pisces-karma>
+									<label>Кармический гороскоп для Рыб</label>
+									<id>horoscope-pisces-karma</id>
+									<uri>/horoscope/pisces/karma</uri>
+								</horoscope-pisces-karma>
+								<horoscope-pisces-health>
+									<label>Гороскоп здоровья для Рыб</label>
+									<id>horoscope-pisces-health</id>
+									<uri>/horoscope/pisces/health</uri>
+								</horoscope-pisces-health>
+								<horoscope-pisces-child>
+									<label>Гороскоп ребенка для Рыб</label>
+									<id>horoscope-pisces-child</id>
+									<uri>/horoscope/pisces/child</uri>
+								</horoscope-pisces-child>
+								<horoscope-pisces-business>
+									<label>Бизнес гороскоп для Рыб</label>
+									<id>horoscope-pisces-business</id>
+									<uri>/horoscope/pisces/business</uri>
+								</horoscope-pisces-business>
+								<horoscope-pisces-week>
+									<label>Гороскоп на неделю для Рыб</label>
+									<id>horoscope-pisces-week</id>
+									<uri>/horoscope/pisces/week</uri>
+								</horoscope-pisces-week>
+								<horoscope-pisces-month>
+									<label>Гороскоп на месяц для Рыб</label>
+									<id>horoscope-pisces-month</id>
+									<uri>/horoscope/pisces/month</uri>
+								</horoscope-pisces-month>
+								<horoscope-pisces-year>
+									<label>Гороскоп на год для Рыб</label>
+									<id>horoscope-pisces-year</id>
+									<uri>/horoscope/pisces/year</uri>
+								</horoscope-pisces-year>
+							</pages>
+						</horoscope-pisces-today>
+					</pages>
+				</horoskop>
+				<gadaniya-taro>
+					<label>Гадания на картах таро</label>
+					<id>taro-list</id>
+					<uri>/gadaniya/taro</uri>
+					<pages>
+						<taro-day>
+							<label>Таро карта дня</label>
+							<id>taro-day</id>
+							<uri>/gadaniya/day-description/taro</uri>
+						</taro-day>
+					</pages>
+				</gadaniya-taro>
+				<gadaniya-classic>
+					<label>Гадания на классических картах</label>
+					<id>classic-list</id>
+					<uri>/gadaniya/classic</uri>
+					
+				</gadaniya-classic>
+				<gadaniya-rune>
+					<label>Гадания на рунах</label>
+					<id>rune-list</id>
+					<uri>/gadaniya/rune</uri>
+					
+				</gadaniya-rune>
+				<gadaniya-book>
+					<label>Книга перемен</label>
+					<id>book-list</id>
+					<uri>/gadaniya/book</uri>
+					<pages>
+						<hexagramm-day>
+							<label>Гексаграмма дня</label>
+							<id>hexagramm-day</id>
+							<uri>/gadaniya/day-description/hexagramm</uri>
+						</hexagramm-day>
+					</pages>
+				</gadaniya-book>
+				<gadaniya-other>
+					<label>Другие гадания</label>
+					<id>other-list</id>
+					<uri>/gadaniya/other</uri>
+					
+				</gadaniya-other>
+				<numerologiya>
+					<label>Нумерология</label>
+					<uri>/numerology</uri>
+					<id>numerology-list</id>
+					<pages>
+						<numerology-personal>
+							<label>Мои числа</label>
+							<id>numerology-personal</id>
+							<uri>/numerology/personal</uri>
+							<pages>
+								<numerology-personal-lifepath>
+									<label>Число жизненного пути</label>
+									<id>numerology-personal-lifepath</id>
+									<uri>/numerology/personal/lifepath</uri>
+								</numerology-personal-lifepath>
+								<numerology-personal-self-expression>
+									<label>Число самовыражения</label>
+									<id>numerology-personal-self-expression</id>
+									<uri>/numerology/personal/self-expression</uri>
+								</numerology-personal-self-expression>
+								<numerology-personal-identity>
+									<label>Число личности</label>
+									<id>numerology-personal-identity</id>
+									<uri>/numerology/personal/identity</uri>
+								</numerology-personal-identity>
+								<numerology-personal-soul>
+									<label>Число души</label>
+									<id>numerology-personal-soul</id>
+									<uri>/numerology/personal/soul</uri>
+								</numerology-personal-soul>
+								<numerology-personal-achievement>
+									<label>Важные годы жизни</label>
+									<id>numerology-personal-achievement</id>
+									<uri>/numerology/personal/achievement</uri>
+								</numerology-personal-achievement>
+								<numerology-personal-karma>
+									<label>Кармическая задача</label>
+									<id>numerology-personal-karma</id>
+									<uri>/numerology/personal/karma</uri>
+								</numerology-personal-karma>
+							</pages>
+						</numerology-personal>
+						<numerology-forecast>
+							<label>Мои прогнозы</label>
+							<id>numerology-forecast</id>
+							<uri>/numerology/forecast</uri>
+							<pages>
+								<numerology-forecast-day>
+									<label>Персональный день</label>
+									<id>numerology-forecast-day</id>
+									<uri>/numerology/forecast/day</uri>
+								</numerology-forecast-day>
+								<numerology-forecast-month>
+									<label>Персональный месяц</label>
+									<id>numerology-forecast-month</id>
+									<uri>/numerology/forecast/month</uri>
+								</numerology-forecast-month>
+								<numerology-forecast-year>
+									<label>Персональный год</label>
+									<id>numerology-forecast-year</id>
+									<uri>/numerology/forecast/year</uri>
+								</numerology-forecast-year>
+							</pages>
+						</numerology-forecast>
+						<numerology-compability>
+							<label>Совместимость</label>
+							<id>numerology-compability</id>
+							<uri>/numerology/compability</uri>
+							<pages>
+								<numerology-compability-love>
+									<label>Любовная совместимость</label>
+									<id>numerology-compability-love</id>
+									<uri>/numerology/compability/love</uri>
+								</numerology-compability-love>
+								<numerology-compability-partner>
+									<label>Партнерская совместимость</label>
+									<id>numerology-compability-partner</id>
+									<uri>/numerology/compability/partner</uri>
+								</numerology-compability-partner>
+							</pages>
+						</numerology-compability>
+						<numerology-personal-day>
+							<label>Ваше персональное число дня</label>
+							<id>numerology-personal-day</id>
+							<uri>/numerology/day-description</uri>
+						</numerology-personal-day>
+					</pages>
+				</numerologiya>
+				<magic>
+					<label>Магия</label>
+					<action>list</action>
+					<controller>magic</controller>
+					<route>showMagicWithPage</route>
+					<id>magic</id>
+					<pages>
+						
+					<tag-24-testovyiy-magicheskiy-teg><label>Тестовый магический тег</label><action>tag</action><controller>magic</controller><route>showMagicByTagWithPage</route><id>24-testovyiy-magicheskiy-teg</id><params><page>id</page><tag>tag</tag></params><pages><magic-22-magicheskaya-statya-pro-dengi><label>Магическая статья про деньги</label><action>content</action><controller>magic</controller><route>showMagicPage</route><id>22-magicheskaya-statya-pro-dengi</id><params><tag>tag</tag><alias>alias</alias></params></magic-22-magicheskaya-statya-pro-dengi><magic-17-esche-odna-magicheskaya-statya><label>Еще одна магическая статья</label><action>content</action><controller>magic</controller><route>showMagicPage</route><id>17-esche-odna-magicheskaya-statya</id><params><tag>tag</tag><alias>alias</alias></params></magic-17-esche-odna-magicheskaya-statya><magic-16-vtoraya-testovaya-statya-magii><label>Вторая тестовая статья магии</label><action>content</action><controller>magic</controller><route>showMagicPage</route><id>16-vtoraya-testovaya-statya-magii</id><params><tag>tag</tag><alias>alias</alias></params></magic-16-vtoraya-testovaya-statya-magii></pages></tag-24-testovyiy-magicheskiy-teg><tag-25-teg-magii><label>Тег магии</label><action>tag</action><controller>magic</controller><route>showMagicByTagWithPage</route><id>25-teg-magii</id><params><page>id</page><tag>tag</tag></params><pages><magic-25-magicheskaya-statya-dlya-testa-dobavleniya1><label>Магическая статья для теста добавления1</label><action>content</action><controller>magic</controller><route>showMagicPage</route><id>25-magicheskaya-statya-dlya-testa-dobavleniya1</id><params><tag>tag</tag><alias>alias</alias></params></magic-25-magicheskaya-statya-dlya-testa-dobavleniya1></pages></tag-25-teg-magii></pages>
+				</magic>
+				<moon>
+					<label>Лунный календарь</label>
+					<uri>/moon</uri>
+					<id>moon-small</id>
+					<pages>
+						<moon-today-full>
+							<label>Лунный календарь на сегодня, описание лунного дня</label>
+							<uri>/moon/today</uri>
+							<id>moon-full</id>
+						</moon-today-full>
+						<moon-day-full>
+							<label>Описание лунного дня</label>
+							<uri>/moon/day</uri>
+							<id>moon-day</id>
+						</moon-day-full>
+					</pages>
+				</moon>
+				<register>
+					<label>Регистрация</label>
+					<id>registration</id>
+					<uri>/user/registration</uri>
+				</register>
+				<recover>
+					<label>Восстановление пароля</label>
+					<id>recover</id>
+					<uri>/user/recover</uri>
+				</recover>
+				<profile>
+					<label>Мой Astro Taro</label>
+					<id>profile</id>
+					<uri>/profile</uri>
+					<pages>
+						<profile-edit>
+							<label>Редактирование профиля</label>
+							<id>profile-edit</id>
+							<uri>/profile/edit</uri>
+						</profile-edit>
+						<profile-taro-today>
+							<label>Карта Таро дня</label>
+							<id>profile-taro-today</id>
+							<uri>/profile/day-description/taro</uri>
+						</profile-taro-today>
+						<profile-rune-today>
+							<label>Руна дня</label>
+							<id>profile-rune-today</id>
+							<uri>/profile/day-description/rune</uri>
+						</profile-rune-today>
+						<profile-hexagramm-today>
+							<label>Гексаграмма дня</label>
+							<id>profile-hexagramm-today</id>
+							<uri>/profile/day-description/hexagramm</uri>
+						</profile-hexagramm-today>
+						<profile-number-today>
+							<label>Число дня</label>
+							<id>profile-number-today</id>
+							<uri>/profile/day-description/number</uri>
+						</profile-number-today>
+						<profile-desc-sun>
+							<label>Мой солнечный знак</label>
+							<id>sun-description</id>
+							<uri>/profile/opisaniye/sun</uri>
+						</profile-desc-sun>
+						<profile-desc-taro>
+							<label>Мое Taro личности</label>
+							<id>taro-description</id>
+							<uri>/profile/opisaniye/taro</uri>
+						</profile-desc-taro>
+						<profile-desc-kelt>
+							<label>Мой кельтcкий знак</label>
+							<id>kelt-description</id>
+							<uri>/profile/opisaniye/kelt</uri>
+						</profile-desc-kelt>
+						<profile-desc-china>
+							<label>Мой восточный гороскоп</label>
+							<id>china-description</id>
+							<uri>/profile/opisaniye/china</uri>
+						</profile-desc-china>
+						<profile-desc-karma>
+							<label>Мой кармический гороскоп</label>
+							<id>karma-description</id>
+							<uri>/profile/opisaniye/karma</uri>
+						</profile-desc-karma>
+						<profile-desc-number>
+							<label>Число жизненного пути</label>
+							<id>number-description</id>
+							<uri>/profile/opisaniye/number</uri>
+						</profile-desc-number>
+						
+					</pages>
+				</profile>
+				<news>
+					<label>Новости</label>
+					<action>newslist</action>
+					<controller>article</controller>
+					<route>showNewsWithPage</route>
+					<id>news</id>
+					<pages>
+						
+					<tag-19-vtoroy-novostnoy-teg><label>Второй новостной тег</label><action>tag</action><controller>article</controller><route>showNewsByTagWithPage</route><id>19-vtoroy-novostnoy-teg</id><params><page>id</page><tag>tag</tag></params><pages><news-18-testovaya-novost-dlya-testa><label>Тестовая новость для теста</label><action>content</action><controller>article</controller><route>showPage</route><id>18-testovaya-novost-dlya-testa</id><params><tag>tag</tag><alias>alias</alias></params></news-18-testovaya-novost-dlya-testa><news-13-bla-bla-novost><label>Бла бла новость</label><action>content</action><controller>article</controller><route>showPage</route><id>13-bla-bla-novost</id><params><tag>tag</tag><alias>alias</alias></params></news-13-bla-bla-novost><news-12-vtoraya-novost><label>Вторая новость</label><action>content</action><controller>article</controller><route>showPage</route><id>12-vtoraya-novost</id><params><tag>tag</tag><alias>alias</alias></params></news-12-vtoraya-novost></pages></tag-19-vtoroy-novostnoy-teg><tag-20-chisto-novostnoy-teg><label>Чисто новостной тег</label><action>tag</action><controller>article</controller><route>showNewsByTagWithPage</route><id>20-chisto-novostnoy-teg</id><params><page>id</page><tag>tag</tag></params><pages><news-13-bla-bla-novost><label>Бла бла новость</label><action>content</action><controller>article</controller><route>showPage</route><id>13-bla-bla-novost</id><params><tag>tag</tag><alias>alias</alias></params></news-13-bla-bla-novost></pages></tag-20-chisto-novostnoy-teg><tag-21-novovvedeniya><label>Нововведения</label><action>tag</action><controller>article</controller><route>showNewsByTagWithPage</route><id>21-novovvedeniya</id><params><page>id</page><tag>tag</tag></params><pages><news-14-na-sayte-provoditsya-planovaya-chistka-spamerov><label>На сайте проводится плановая чистка спамеров</label><action>content</action><controller>article</controller><route>showPage</route><id>14-na-sayte-provoditsya-planovaya-chistka-spamerov</id><params><tag>tag</tag><alias>alias</alias></params></news-14-na-sayte-provoditsya-planovaya-chistka-spamerov></pages></tag-21-novovvedeniya><tag-22-izmeneniya-na-sayte><label>Изменения на сайте</label><action>tag</action><controller>article</controller><route>showNewsByTagWithPage</route><id>22-izmeneniya-na-sayte</id><params><page>id</page><tag>tag</tag></params></tag-22-izmeneniya-na-sayte><tag-23-chistka-spamerov><label>Чистка спамеров</label><action>tag</action><controller>article</controller><route>showNewsByTagWithPage</route><id>23-chistka-spamerov</id><params><page>id</page><tag>tag</tag></params><pages><news-14-na-sayte-provoditsya-planovaya-chistka-spamerov><label>На сайте проводится плановая чистка спамеров</label><action>content</action><controller>article</controller><route>showPage</route><id>14-na-sayte-provoditsya-planovaya-chistka-spamerov</id><params><tag>tag</tag><alias>alias</alias></params></news-14-na-sayte-provoditsya-planovaya-chistka-spamerov></pages></tag-23-chistka-spamerov></pages>
+				</news>
+				<articles>
+					<label>Статьи</label>
+					<action>list</action>
+					<controller>article</controller>
+					<route>showArticlesWithPage</route>
+					<id>statyi</id>
+					<pages>
+						
+					<tag-7-magiya><label>Магия</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>7-magiya</id><params><page>id</page><tag>tag</tag></params><pages><article-9-statya-s-testom-navigatsii><label>Статья с тестом навигации</label><action>content</action><controller>article</controller><route>showPage</route><id>9-statya-s-testom-navigatsii</id><params><tag>tag</tag><alias>alias</alias></params></article-9-statya-s-testom-navigatsii><article-8-proverka-pustyih-tegov><label>Проверка пустых тегов</label><action>content</action><controller>article</controller><route>showPage</route><id>8-proverka-pustyih-tegov</id><params><tag>tag</tag><alias>alias</alias></params></article-8-proverka-pustyih-tegov></pages></tag-7-magiya><tag-8-mir><label>Мир</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>8-mir</id><params><page>id</page><tag>tag</tag></params><pages><article-26-prognoz-dlya-dnepropetrovska-na-2014-g><label>Прогноз для Днепропетровска на 2014 г.</label><action>content</action><controller>article</controller><route>showPage</route><id>26-prognoz-dlya-dnepropetrovska-na-2014-g</id><params><tag>tag</tag><alias>alias</alias></params></article-26-prognoz-dlya-dnepropetrovska-na-2014-g><article-21-sekretnaya-testovaya-statya-dlya-testa-avtomaticheskoy-indeksatsii><label>Секретная тестовая статья для теста автоматической индексации</label><action>content</action><controller>article</controller><route>showPage</route><id>21-sekretnaya-testovaya-statya-dlya-testa-avtomaticheskoy-indeksatsii</id><params><tag>tag</tag><alias>alias</alias></params></article-21-sekretnaya-testovaya-statya-dlya-testa-avtomaticheskoy-indeksatsii><article-10-esche-odna-statya><label>Еще одна статья</label><action>content</action><controller>article</controller><route>showPage</route><id>10-esche-odna-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-10-esche-odna-statya><article-9-statya-s-testom-navigatsii><label>Статья с тестом навигации</label><action>content</action><controller>article</controller><route>showPage</route><id>9-statya-s-testom-navigatsii</id><params><tag>tag</tag><alias>alias</alias></params></article-9-statya-s-testom-navigatsii></pages></tag-8-mir><tag-10-mir-vnutri-nas><label>Мир внутри нас</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>10-mir-vnutri-nas</id><params><page>id</page><tag>tag</tag></params><pages><article-7-novaya-statya-s-novyimi-tegami><label>Новая статья с новыми тегами</label><action>content</action><controller>article</controller><route>showPage</route><id>7-novaya-statya-s-novyimi-tegami</id><params><tag>tag</tag><alias>alias</alias></params></article-7-novaya-statya-s-novyimi-tegami><article-5-esche-odna-ocherednaya-testovaya-statya><label>Еще одна очередная тестовая статья</label><action>content</action><controller>article</controller><route>showPage</route><id>5-esche-odna-ocherednaya-testovaya-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-5-esche-odna-ocherednaya-testovaya-statya></pages></tag-10-mir-vnutri-nas><tag-12-astrologiya><label>Астрология</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>12-astrologiya</id><params><page>id</page><tag>tag</tag></params><pages><article-19-dobavlenie-stati-jlya-testa-indeksatsii><label>Добавление статьи жля теста индексации</label><action>content</action><controller>article</controller><route>showPage</route><id>19-dobavlenie-stati-jlya-testa-indeksatsii</id><params><tag>tag</tag><alias>alias</alias></params></article-19-dobavlenie-stati-jlya-testa-indeksatsii><article-9-statya-s-testom-navigatsii><label>Статья с тестом навигации</label><action>content</action><controller>article</controller><route>showPage</route><id>9-statya-s-testom-navigatsii</id><params><tag>tag</tag><alias>alias</alias></params></article-9-statya-s-testom-navigatsii><article-4-ocherednaya-testovaya-statya><label>Очередная тестовая статья</label><action>content</action><controller>article</controller><route>showPage</route><id>4-ocherednaya-testovaya-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-4-ocherednaya-testovaya-statya></pages></tag-12-astrologiya><tag-13-numerologiya><label>Нумерология</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>13-numerologiya</id><params><page>id</page><tag>tag</tag></params><pages><article-10-esche-odna-statya><label>Еще одна статья</label><action>content</action><controller>article</controller><route>showPage</route><id>10-esche-odna-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-10-esche-odna-statya><article-4-ocherednaya-testovaya-statya><label>Очередная тестовая статья</label><action>content</action><controller>article</controller><route>showPage</route><id>4-ocherednaya-testovaya-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-4-ocherednaya-testovaya-statya></pages></tag-13-numerologiya><tag-14-kosmos-testovoe-izmenenie><label>Космос тестовое изменение</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>14-kosmos-testovoe-izmenenie</id><params><page>id</page><tag>tag</tag></params><pages><article-7-novaya-statya-s-novyimi-tegami><label>Новая статья с новыми тегами</label><action>content</action><controller>article</controller><route>showPage</route><id>7-novaya-statya-s-novyimi-tegami</id><params><tag>tag</tag><alias>alias</alias></params></article-7-novaya-statya-s-novyimi-tegami></pages></tag-14-kosmos-testovoe-izmenenie><tag-15-goroskop><label>Гороскоп</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>15-goroskop</id><params><page>id</page><tag>tag</tag></params><pages><article-7-novaya-statya-s-novyimi-tegami><label>Новая статья с новыми тегами</label><action>content</action><controller>article</controller><route>showPage</route><id>7-novaya-statya-s-novyimi-tegami</id><params><tag>tag</tag><alias>alias</alias></params></article-7-novaya-statya-s-novyimi-tegami><article-5-esche-odna-ocherednaya-testovaya-statya><label>Еще одна очередная тестовая статья</label><action>content</action><controller>article</controller><route>showPage</route><id>5-esche-odna-ocherednaya-testovaya-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-5-esche-odna-ocherednaya-testovaya-statya></pages></tag-15-goroskop><tag-16-novyiy-teg><label>Новый тег</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>16-novyiy-teg</id><params><page>id</page><tag>tag</tag></params><pages><article-9-statya-s-testom-navigatsii><label>Статья с тестом навигации</label><action>content</action><controller>article</controller><route>showPage</route><id>9-statya-s-testom-navigatsii</id><params><tag>tag</tag><alias>alias</alias></params></article-9-statya-s-testom-navigatsii><article-5-esche-odna-ocherednaya-testovaya-statya><label>Еще одна очередная тестовая статья</label><action>content</action><controller>article</controller><route>showPage</route><id>5-esche-odna-ocherednaya-testovaya-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-5-esche-odna-ocherednaya-testovaya-statya><article-4-ocherednaya-testovaya-statya><label>Очередная тестовая статья</label><action>content</action><controller>article</controller><route>showPage</route><id>4-ocherednaya-testovaya-statya</id><params><tag>tag</tag><alias>alias</alias></params></article-4-ocherednaya-testovaya-statya></pages></tag-16-novyiy-teg><tag-17-no-tag><label>No tag</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>17-no-tag</id><params><page>id</page><tag>tag</tag></params><pages><article-24-politika-konfidentsialnosti><label>Политика конфиденциальности</label><action>content</action><controller>article</controller><route>showPage</route><id>24-politika-konfidentsialnosti</id><params><tag>tag</tag><alias>alias</alias></params></article-24-politika-konfidentsialnosti><article-23-usloviya-ispolzovaniya><label>Условия использования</label><action>content</action><controller>article</controller><route>showPage</route><id>23-usloviya-ispolzovaniya</id><params><tag>tag</tag><alias>alias</alias></params></article-23-usloviya-ispolzovaniya></pages></tag-17-no-tag><tag-26-gadaniya><label>Гадания</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>26-gadaniya</id><params><page>id</page><tag>tag</tag></params></tag-26-gadaniya><tag-27-prognozyi-i-predskazaniya><label>Прогнозы и предсказания</label><action>tag</action><controller>article</controller><route>showArticlesByTagWithPage</route><id>27-prognozyi-i-predskazaniya</id><params><page>id</page><tag>tag</tag></params><pages><article-26-prognoz-dlya-dnepropetrovska-na-2014-g><label>Прогноз для Днепропетровска на 2014 г.</label><action>content</action><controller>article</controller><route>showPage</route><id>26-prognoz-dlya-dnepropetrovska-na-2014-g</id><params><tag>tag</tag><alias>alias</alias></params></article-26-prognoz-dlya-dnepropetrovska-na-2014-g></pages></tag-27-prognozyi-i-predskazaniya></pages>
+				</articles>
+				<search>
+					<label>
+						Поиск
+					</label>
+					<id>search</id>
+					<uri>/search</uri>
+					<route>search</route>
+				</search>
+			</pages>
+		</home>
+	</nav>
+</configdata>

@@ -1,0 +1,23 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>"
+		class="article-form">
+	<table>
+		<?=$this->element->img_note;?>
+		<?=$this->element->image;?>
+		<?=$this->element->type;?>
+		<?=$this->element->theme;?>
+		<?=$this->element->double_form;?>
+		<?=$this->element->cost;?>
+		<?=$this->element->description;?>
+		<?=$this->element->seotitle;?>
+		<?=$this->element->seokeywords;?>
+		<?=$this->element->seodescription;?>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+				<?=$this->element->cancel;?>
+			</td>
+		</tr>
+	</table>
+</form>

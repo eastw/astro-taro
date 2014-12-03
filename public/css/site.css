@@ -1,0 +1,271 @@
+body,html {
+    margin: 0 5px;
+    font-family: Verdana,sans-serif;
+}
+h1 {
+    font-size: 1.4em;
+    color: #008000;
+}
+a {
+    color: #008000;
+}
+
+/* Table */
+th {
+    text-align: center;
+}
+td {
+    padding-right: 5px;
+}
+
+/* style form */
+form dt {
+    width: 100px;
+    display: block;
+    float: left;
+    clear: left;
+}
+form dd {
+    margin-left: 0;
+    float: left;
+    
+}
+form #submitbutton {
+    margin-left: 100px;
+}
+
+.main{
+	width:1250px;
+	min-height: 800px;
+	/*border: 1px solid black;*/
+}
+.header{
+	/*height: 150px;*/
+	border: 1px solid black;
+}
+.pre-header{
+	height:15px;
+	border: 1px solid black;
+}
+.main-header{
+	height:90px;
+	/*border: 1px solid black;*/
+}
+.menu{
+	height:41px;
+	border: 1px solid black;
+}
+.breadcrumbs{
+	height:41px;
+	border: 1px solid black;
+}
+.page-header{
+	height:41px;
+	border: 1px solid black;
+}
+.content{
+	min-height: 900px;
+	/*border: 1px solid black;*/
+}
+.left-column{
+	width: 250px;
+	min-height:900px;
+	float:left;
+	/*border: 1px solid black;*/
+}
+.request-box{
+	width:250px;
+	height:100px;
+	border: 1px solid black;
+}	
+.main-content{
+	width: 750px;
+	min-height:900px;
+	/*border: 1px solid black;*/
+	float:left;
+}
+.right-column{
+	width: 242px;
+	min-height:900px;
+	float:left;
+	/*border: 1px solid black;*/
+}
+.footer{
+	height:150px;
+	width:1248px;
+	/*border: 1px solid black;*/
+}
+.ui-widget{
+	font-size: 10px !important;
+}
+.menu-left{
+	float: left;
+    font-size: 90%;
+    padding-left: 15px;
+    padding-top: 6px;
+    white-space: nowrap;
+    width: 400px;
+    word-spacing: 12px;
+}
+
+.menu-right{
+    float: right;
+    font-size: 80%;
+    padding-right: 13px;
+    padding-top: 7px;
+    text-align: right;
+    white-space: nowrap;
+    width: 280px;
+    word-spacing: 6px;
+}
+.box{
+	margin-bottom: 20px;
+    padding: 10px;
+}
+.innerBox{
+	background: none repeat scroll 0 0 white;
+    padding-bottom: 20px;
+}
+.innerBox h3{
+    background-color: #FF7600;
+    text-align: center;
+    color: #FFFFFF;
+    width: 200px;
+    height:
+}
+.innerBox menu{
+	margin: 0;
+    padding: 20px 10px 0;
+}
+.menu-right {
+    color: #888888;
+    float: right;
+    font-size: 80%;
+    padding-right: 13px;
+    padding-top: 7px;
+    text-align: right;
+    white-space: nowrap;
+    width: 280px;
+    word-spacing: 6px;
+}
+.innerBox menu li {
+    height: 30px;
+    margin: 0;
+    padding-left: 10px;
+    list-style: none outside none;
+}
+.tag{
+	border: 1px solid grey;
+	float:left;
+	margin: 5px 5px 0 0;
+	padding: 0 5px;
+}
+.tag a{
+	cursor:pointer;
+	text-decoration: underline;
+}
+ul.pager {
+	list-style: none;	
+}
+ul.pager li {
+	float: left;
+	margin: 2px;
+}
+ul.pager li a {
+	padding: 3px;
+	color: #000;
+	border: 1px solid #404040;
+	background-color: #D3DEFD;
+	line-height: 24px;
+}
+ul.pager li a:hover, ul.pager li a.selected  {
+	background-color: #404040;
+	color: #fff;
+}
+
+.errors{
+	color:red;
+}
+
+.card-item{
+	width:100px;
+	height:150px;
+	position:absolute;
+}
+.back-card-item{
+	width:100px;
+	height:150px;
+	position:absolute;
+}
+/*------------------------[loading]------------------------------*/
+/* all this loading css is optional style sugar;
+   it'll work fine without it. just not look pretty. */
+.loading-text {
+    background: #FFC129;
+    color: black;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+}
+.loading-text .place-img-content {
+    margin: 0 3px 0 1px;
+}
+.loading.top {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-left-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+}
+.loading.left {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-top-left-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+}
+.loading.bottom {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+}
+.loading.right {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    -moz-border-radius-topright: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+}
+.loading-masked { overflow: hidden; }
+.loading-error {
+    color: #FFF;
+    background: red;
+}
+/*------------------------[end loading]------------------------------*/
+.divination-description{
+	width: 100%;
+	/*border: 1px solid grey;*/
+}
+.divination-description td{
+	/*border: 1px solid grey;*/
+}
+.divination-other-item{
+	background: none;
+	width:65px;
+	height: 50px;
+	border: 1px solid grey;
+	float:left;
+}
+.divination-other-item:hover{
+	background: #808080;
+}

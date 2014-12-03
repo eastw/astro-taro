@@ -1,0 +1,112 @@
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	$('#seacrh-button').click(function(){
+		$.post('/admin/divination/search-taro',
+				{'query':$('#query').val()},
+				function(data){
+					$('#taro-table').html(data);
+				}
+			);
+	});
+});
+function confirmation(id,page){
+	if(confirm('Вы действительно хотите удалить это гадание?')){
+		window.location.href="/admin/divination/remove-taro/id/" + id + '/page/' + page;
+	}
+}
+function changeActivity(id){
+	$.post(
+			'/admin/divination/change-taro-activity',
+			{
+				'id':id
+			},
+			function(data){
+				if(data.errors.length != 0){
+					var html = '<ul>';
+					for(var i in data.errors){
+						html += '<li>' + data.errors[i]+'</li>'; 
+					}
+					html = '</ul>';
+					alert(html);
+				}else{
+					if($('#activity_' + id).text() == 'Акт'){
+						$('#activity_' + id).text('Неакт');
+					}else{
+						$('#activity_' + id).text('Акт');
+					}
+					
+				}
+			},	
+	'json');
+	//console.log('!!! '+id);
+	return false;
+}
+//-->
+</script>
+<h1>Управление гаданиями Таро</h1>
+<table>
+	<tr>
+		<td>
+			<div style="text-align:left;"><a href="/admin/divination/add-taro">Добавить гадание.</a></div>
+		</td>
+		<td>
+			<input id="query" type="text"/><input id="seacrh-button" type="button" value="Найти гадание"/>
+			<input type="button" id="clear-search" value="Очистить поиск" onclick='window.location.href="/admin/divination/taro"'/>
+		</td>
+	</tr>
+</table>
+<table class="admin-table" id="taro-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:50%">
+			Заголовок
+		</th>
+		<th style="width:5%">
+			Тип
+		</th>
+		<th style="width:20%">
+			Категория
+		</th>
+		<th style="width:5%">
+			Акт.
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->paginator)):?>
+	<?php foreach($this->paginator as $item):?>
+	<tr>
+		<td>
+			<a href="/admin/divination/edit-taro/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><?=$item['name'];?></a>
+		</td>
+		<td>
+			<?=$item['type_name']?>
+		</td>
+		<td>
+			<?=$item['cat_name']?>
+		</td>
+		<td>
+			<a id="activity_<?=$item['id']?>" style="cursor:pointer" onclick="changeActivity('<?=$item['id']?>')"><?=($item['activity'] == 'y')?'Акт':'Неакт';?></a>
+		</td>
+		<td>
+			<?php if($item['type'] == 'taro' || $item['type'] == 'classic' || $item['type'] == 'rune'):?>
+			<a href="/admin/divination/data-taro/id/<?=$item['id']?>">Описание</a>
+			<a href="/admin/divination/net-taro/id/<?=$item['id']?>">Сетка</a>
+			<?php elseif($item['type'] == 'book'):?>
+				<a href="/admin/divination/book-descriptions/id/<?=$item['id']?>">Описания</a>
+			<?php elseif($item['type'] == 'other'):?>
+				<a href="/admin/divination/other-descriptions/id/<?=$item['id']?>">Описания</a>	
+			<?php endif;?>
+			<a href="/admin/divination/edit-taro/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Ред.</a> / 
+			<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<tr>
+		<td colspan="5">
+			<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray)) ?>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>

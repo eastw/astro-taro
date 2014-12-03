@@ -1,0 +1,17 @@
+<div id="opisanie">
+	<div class="item_header"><?=$this->data['minidesc']?></div>
+	<div class="text">
+		<?=$this->data['description']?>
+		<div class="more">
+			<a href="/gadaniya/taro">Все разделы гадания на Таро →</a>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="all_divi">
+	<?php if($this->data['children']):?>
+		<?php foreach ($this->data['children'] as $item):?>
+			<?=$this->partial('partials/divination/taro-category-item.phtml',array('parentAlias' => $this->data['alias'],'item' => $item))?>
+		<?php endforeach;?>
+	<?php endif;?>
+</div>

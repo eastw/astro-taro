@@ -1,0 +1,33 @@
+<div>
+	Вы искали: <?=$this->searchQuery?>
+</div>
+<div>
+	Результатов поиска: <?=$this->data['total']?>
+</div>
+<?php if(count($this->data['items'])):?>
+	<?php foreach($this->data['items'] as $item):?>
+		<div style="width:500px;">
+			<?php if($item['source_id'] != App_SearchService::DIVINATION_TYPE):?>
+				<h3>
+					<a href="/<?=$item['startlink']?>/content/<?=$item['tag_data']['alias']?>/<?=$item['alias']?>">
+						<?=$item['title']?>
+					</a>
+				</h3>
+				<div>
+					<?=$item['anonse']?>
+				</div>
+			<?php else:?>
+				<h3>
+					<a href="/gadaniya/<?=$item['type']?>/<?=$item['category_alias']?>/<?=$item['alias']?>">
+						<?=$item['name']?>
+					</a>
+				</h3>
+				<div>
+					<?=$item['description']?>
+				</div>
+			<?php endif;?>
+		</div>
+		<hr>
+	<?php endforeach;?>
+	<?=$this->partial('search/pagination.phtml',array('curPage' => $this->curPage, 'pagination' => $this->pagination,'searchQuery' => $this->searchQuery));?>
+<?php endif;?>

@@ -1,0 +1,74 @@
+<div id="cabinet_menu">
+	<?php if($this->active == 'index'):?>
+		<div class="cabinet_menu_item" id="cabinet_this" >
+			Мой кабинет
+		</div>
+	<?php else:?>
+		<div class="cabinet_menu_item">
+			<a href="/profile">Мой кабинет</a>
+		</div>
+	<?php endif;?>
+	<?php if($this->active == 'edit'):?>
+		<div class="cabinet_menu_item" id="cabinet_this">
+			Настроить профиль
+		</div>
+	<?php else:?>
+		<div class="cabinet_menu_item">
+			<a href="/profile/edit">Настроить профиль</a>
+		</div>
+	<?php endif;?>
+	<?php if($this->active == 'favorite'):?>
+		<div class="cabinet_menu_item cabinet_line" id="cabinet_this_full">
+			Мое избранное
+		</div>
+	<?php else:?>
+		<div class="cabinet_menu_item cabinet_line">
+			<a href="/profile/favorite-list">Мое избранное</a>
+		</div>
+	<?php endif;?>
+	
+	<div class="cabinet_menu_item">
+		<?php if(isset($this->userdata->birthday)):?>
+			<a id="horoscope_today_link" href="/horoscope/<?=$this->userdata->sun_sign_alias?>/today">Гороскоп на сегодня</a>
+		<?php else:?>
+			<a id="horoscope_today_link" href="/profile/need-personal-data">Гороскоп на сегодня</a>
+		<?php endif;?>
+		
+	</div>
+	<?php if($this->active == 'taro'):?>
+		<div class="cabinet_menu_item" id="cabinet_this">
+			Карта Таро дня
+		</div>
+	<?php else:?>
+		<div class="cabinet_menu_item">
+			<a href="/profile/day-description/taro">Карта Таро дня</a>
+		</div>
+	<?php endif;?>
+	<?php if($this->active == 'rune'):?>
+		<div class="cabinet_menu_item" id="cabinet_this">
+			Руна дня
+		</div>
+	<?php else:?>
+		<div class="cabinet_menu_item">
+			<a href="/profile/day-description/rune">Руна дня</a>
+		</div>
+	<?php endif;?>
+	<?php if($this->active == 'hexagramm'):?>
+		<div class="cabinet_menu_item" id="cabinet_this">
+			Гексаграмма дня
+		</div>
+	<?php else:?>
+		<div class="cabinet_menu_item">
+			<a href="/profile/day-description/hexagramm">Гексаграмма дня</a>
+		</div>
+	<?php endif;?>
+	<?php if($this->active == 'number'):?>
+		<div class="cabinet_menu_item" id="cabinet_this">
+			Число дня
+		</div>
+	<?php else:?>
+		<div class="cabinet_menu_item">
+			<a href="/profile/day-description/number">Число дня</a>
+		</div>
+	<?php endif;?>
+</div>

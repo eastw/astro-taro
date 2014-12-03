@@ -1,0 +1,50 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>"
+		class="article-form">
+	<table>
+		<?=$this->element->type;?>
+		<?=$this->element->image_note;?>
+		<?=$this->element->image;?>
+		<?=$this->element->link;?>
+		<?=$this->element->startdate;?>
+		<?=$this->element->enddate;?>
+		<?=$this->element->code;?>
+		<?=$this->element->banner;?>
+		<tr>
+			<td >
+				Отображать баннер на:
+			</td>
+			<td >
+				<table>
+				<?php if(isset($this->positions) && count($this->positions)):?>
+					<?php foreach($this->positions as $position):?>
+						<tr>
+							<td>
+								<?=$position['label']?>
+							</td>
+							<td>
+								<input name="position[]" value="<?=$position['value']?>" type="checkbox"
+									<?=(!empty($position['checked']))?'checked="checked"':'';?>
+								/>
+							</td>
+						</tr>
+					<?php endforeach;?>
+				<?php endif;?>
+				</table>
+			</td>
+		</tr>
+		<?=$this->element->through;?>
+		<tr>
+			<td colspan="2">
+				<?=$this->element->page;?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+				<?=$this->element->cancel;?>
+			</td>
+		</tr>
+	</table>
+</form>

@@ -1,0 +1,442 @@
+ <div id="popup">
+    	<div id="popup_content">
+        	<div id="popup_pult">
+            	<div class="popup_pult_item_active">Форма заказа</div>
+                <div class="popup_pult_item">Отзывы</div>
+                <div class="popup_pult_item2"><span>Я передумал</span></div>
+            </div>
+            <div id="popup_nav">
+            	<div class="popup_nav_item_active">
+                	<div class="popup_nav_number">1</div>
+                    <span>Выбор услуги</span>
+                </div>
+                <div class="popup_nav_item">
+                	<div class="popup_nav_number">2</div>
+                    <span>Персональные данные</span>
+                </div>
+                <div class="popup_nav_item">
+                	<div class="popup_nav_number">3</div>
+                    <span>Способ оплаты</span>
+                </div>
+            </div>
+            <div id="popup_orange_line"></div>
+            <div id="popup_info">
+            	<div id="list1">
+                    <div class="popup_header">Выберите услугу</div>
+                    <div class="popup_vip">
+                        <span>Раздел<img src="/files/images/must.png" alt=""></span><br />
+                        <select id="order-type" name="order-type">
+                            <option value="Персональный гороскоп">Персональный гороскоп</option>
+                            <option value="Персональный расклад на Таро">Персональный расклад на Таро</option>
+                        </select>
+                    </div>
+                    <div class="popup_vip2">
+                        <span>Тема<img src="/files/images/must.png" alt=""></span><br />
+                        <div class="popup_theme">
+	                        <select id="horoscope-type" name="horoscope-type">
+	                        	<?php if(isset($this->paythemes) && count($this->paythemes)):?>
+	                        		<?php foreach($this->paythemes as $theme):?>
+	                        			<?php if($theme['theme_type'] == App_PayserviceService::HOROSCOPE_TYPE):?>
+	                        				<option value="<?=$theme['theme_name']?>"><?=$theme['theme_name']?></option>
+	                        			<?php endif;?>
+	                        		<?php endforeach;?>
+	                        	<?php endif;?>
+	                        </select>
+                        </div>
+                        <div class="popup_theme2">
+	                        <select id="divination-type" name="divination-type">
+	                            <?php if(isset($this->paythemes) && count($this->paythemes)):?>
+	                        		<?php foreach($this->paythemes as $theme):?>
+	                        			<?php if($theme['theme_type'] == App_PayserviceService::DIVINATION_TYPE):?>
+	                        				<option value="<?=$theme['theme_name']?>"><?=$theme['theme_name']?></option>
+	                        			<?php endif;?>
+	                        		<?php endforeach;?>
+	                        	<?php endif;?>
+	                        </select>
+                        </div>
+                    </div>
+                    <span class="span_check"><img src="/files/images/must.png" alt="">Проверьте свой выбор</span>
+                    <div class="faraway">
+                        <div><img src="/files/images/papka.png" alt="" /><a href="/files/astrotarot_primer.doc">Пример персонального гороскопа</a></div>
+                        <img class="popup_enter" src="/files/images/popup_enter.png" alt="" />
+                    </div>
+                </div>
+                <div id="list2">
+                	<div class="popup_header">Для составления гороскопа заполните анкету</div>
+                    <div class="block1">
+                    	<div class="left_block">
+                        	<span>Ваше полное имя<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="list2-name" class="" type="text" value="<?=( isset($this->userdata->fullname) && !empty($this->userdata->fullname))?str_replace(':',' ',$this->userdata->fullname):''?>"/>
+                            <div class="year">
+                                <span>Ваша дата рождения<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item">
+                                <select id="me-year1">
+                                	<?php for($i = date('Y'),$n=1930; $i> $n;$i--):?>
+                                		<option value="<?=$i?>"
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('Y',strtotime($this->userdata->birthday)) == $i)?'selected="selected"':''?>
+                                		><?=$i?></option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item2">
+                                <select id="me-month1">
+                                	<?php foreach(App_UtilsService::$monthes as $index => $month):?>
+                                		<option value="<?=$index?>" 
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('m',strtotime($this->userdata->birthday)) == $index)?'selected="selected"':''?>
+                                		><?=$month?></option>
+                                	<?php endforeach;?>
+                                </select>
+                                </div>
+                                <div class="year_item">
+                                <select id="me-day1">
+                                	<?php for($i=1,$n=32; $i < $n;$i++):?>
+                                		<option value="<?=$i?>"
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('d',strtotime($this->userdata->birthday)) == $i)?'selected="selected"':''?>
+                                		><?=$i?></option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right_block">
+                        	<span>Ваш город рождения<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="list2-city" type="text" />
+                            <div class="year">
+                                <span>Ваше время рождения<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item">
+                                <select id="me-hour1">
+                                	<?php for($i=0,$n=24; $i < $n;$i++):?>
+                                		<option value="<?=($i < 10)?'0':'';?><?=$i?>">
+                                			<?=($i < 10)?'0':'';?><?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item2">
+                                <select id="me-minute1">
+                                	<?php for($i=0,$n=60; $i < $n;$i++):?>
+                                		<option value="<?=($i < 10)?'0':'';?><?=$i?>">
+                                			<?=($i < 10)?'0':'';?><?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item3"><input id="me-dontknow1" class="idk" type="checkbox" /><div>Не знаю</div></div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="faraway">
+                        <div><img src="/files/images/papka.png" alt="" /><a href="/files/astrotarot_primer.doc">Пример персонального гороскопа</a></div>
+                        <img class="popup_enter2" src="/files/images/popup_enter.png" alt="" />
+                        <img class="popup_exit2" src="/files/images/popup_exit.png" alt="" />
+                    </div>
+                </div>
+                <div id="list3">
+                	<div class="popup_header">Для составления гороскопа заполните анкету</div>
+                    <div class="block1">
+                    	<div class="left_block">
+                        	<span>Ваше полное имя<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="list3-name1" type="text" value="<?=( isset($this->userdata->fullname) && !empty($this->userdata->fullname))?$this->userdata->fullname:''?>"/>
+                            <div class="year">
+                                <span>Ваша дата рождения<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item">
+                                <select id="me-year2">
+                                    <?php for($i = date('Y'),$n=1930; $i> $n;$i--):?>
+                                		<option value="<?=$i?>"
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('Y',strtotime($this->userdata->birthday)) == $i)?'selected="selected"':''?>
+                                			><?=$i?></option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item2">
+                                <select id="me-month2">
+                                    <?php foreach(App_UtilsService::$monthes as $index => $month):?>
+                                		<option value="<?=$index?>" 
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('m',strtotime($this->userdata->birthday)) == $index)?'selected="selected"':''?>
+                                		><?=$month?></option>
+                                	<?php endforeach;?>
+                                </select>
+                                </div>
+                                <div class="year_item">
+                                <select id="me-day2">
+                                    <?php for($i=1,$n=32; $i < $n;$i++):?>
+                                		<option value="<?=$i?>"
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('d',strtotime($this->userdata->birthday)) == $i)?'selected="selected"':''?>
+                                		>
+                                			<?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                            </div>
+                            <br /><br /><br />
+                            <span>Ваш город рождения<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="list3-city1" type="text" />
+                            <div class="year">
+                                <span>Ваше время рождения<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item">
+                                <select id="me-hour2">
+                                	<?php for($i=0,$n=24; $i < $n;$i++):?>
+                                		<option value="<?=($i < 10)?'0':'';?><?=$i?>">
+                                			<?=($i < 10)?'0':'';?><?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item2">
+                                <select id="me-minute2">
+                                	<?php for($i=0,$n=60; $i < $n;$i++):?>
+                                		<option value="<?=($i < 10)?'0':'';?><?=$i?>">
+                                			<?=($i < 10)?'0':'';?><?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item3"><input id="me-dontknow2" class="idk" type="checkbox" /><div>Не знаю</div></div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div class="right_block">
+                        	<span>Полное имя партнера<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="list3-name2" type="text" />
+                            <div class="year">
+                                <span>Дата рождения партнера<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item">
+                                <select id="partner-year">
+                                    <?php for($i = date('Y'),$n=1930; $i> $n;$i--):?>
+                                		<option value="<?=$i?>"><?=$i?></option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item2">
+                                <select id="partner-month">
+                                    <option value="01">Январь</option>
+                                    <option value="02">Февраль</option>
+                                    <option value="03">Март</option>
+                                    <option value="04">Апрель</option>
+                                    <option value="05">Май</option>
+                                    <option value="06">Июнь</option>
+                                    <option value="07">Июль</option>
+                                    <option value="08">Август</option>
+                                    <option value="09">Сентябрь</option>
+                                    <option value="10">Октябрь</option>
+                                    <option value="11">Ноябрь</option>
+                                    <option value="12">Декабрь</option>
+                                </select>
+                                </div>
+                                <div class="year_item">
+                                <select id="partner-day">
+                                   <?php for($i=1,$n=32; $i < $n;$i++):?>
+                                		<option value="<?=$i?>">
+                                			<?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                            </div>
+                            <br /><br /><br />
+                            <span>Ваш город рождения<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="list3-city2" type="text" />
+                            <div class="year">
+                                <span>Ваше время рождения<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item">
+                                <select id="partner-hour">
+                                	<?php for($i=0,$n=24; $i < $n;$i++):?>
+                                		<option value="<?=($i < 10)?'0':'';?><?=$i?>">
+                                			<?=($i < 10)?'0':'';?><?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item2">
+                                <select id="partner-minute">
+                                	<?php for($i=0,$n=60; $i < $n;$i++):?>
+                                		<option value="<?=($i < 10)?'0':'';?><?=$i?>">
+                                			<?=($i < 10)?'0':'';?><?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item3"><input id="partner-dontknow" class="idk" type="checkbox" /><div>Не знаю</div></div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="faraway">
+                        <div><img src="/files/images/papka.png" alt="" /><a href="/files/astrotarot_primer.doc">Пример персонального гороскопа</a></div>
+                        <img class="popup_enter3" src="/files/images/popup_enter.png" alt="" />
+                        <img class="popup_exit3" src="/files/images/popup_exit.png" alt="" />
+                    </div>
+                </div>
+                <div id="list4">
+                	<div class="popup_header">Для составления расклада заполните анкету</div>
+                    <div class="block1">
+                    	<div class="left_block">
+                        	<span>Ваше полное имя<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="list4-name" type="text" value="<?=( isset($this->userdata->fullname) && !empty($this->userdata->fullname))?$this->userdata->fullname:''?>"/>
+                            <div class="year">
+                                <span>Ваша дата рождения<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item">
+                                <select id="me-year3">
+                                    <?php for($i = date('Y'),$n=1930; $i> $n;$i--):?>
+                                		<option value="<?=$i?>"
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('Y',strtotime($this->userdata->birthday)) == $i)?'selected="selected"':''?>
+                                			><?=$i?></option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                                <div class="year_item2">
+                                <select id="me-month3">
+                                    <?php foreach(App_UtilsService::$monthes as $index => $month):?>
+                                		<option value="<?=$index?>" 
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('m',strtotime($this->userdata->birthday)) == $index)?'selected="selected"':''?>
+                                		><?=$month?></option>
+                                	<?php endforeach;?>
+                                </select>
+                                </div>
+                                <div class="year_item">
+                                <select id="me-day3">
+                                    <?php for($i=1,$n=32; $i < $n;$i++):?>
+                                		<option value="<?=$i?>"
+                                			<?=(isset($this->userdata->birthday)
+                                				&&!empty($this->userdata->birthday)
+                                				&& date('d',strtotime($this->userdata->birthday)) == $i)?'selected="selected"':''?>
+                                		>
+                                			<?=$i?>
+                                		</option>
+                                	<?php endfor;?>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right_block">
+                        	<span>Ваш вопрос<img src="/files/images/must.png" alt=""></span><br />
+            				<textarea id="question" class="primechanie"></textarea>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="faraway">
+                        <div><img src="/files/images/papka.png" alt="" /><a href="/files/astrotarot_primer.doc">Пример персонального гороскопа</a></div>
+                        <img class="popup_enter4" src="/files/images/popup_enter.png" alt="" />
+                        <img class="popup_exit4" src="/files/images/popup_exit.png" alt="" />
+                    </div>
+                </div>
+                <div id="list5">
+                	<div class="popup_header">Способ оплаты</div>
+                	<div class="block1">
+                    	<div class="left_block">
+                            <div class="year">
+                                <span>Выберите способ оплаты<img src="/files/images/must.png" alt=""></span><br />
+                                <div class="year_item_visa">
+                                <select id="payment-type">
+                                	<?php if(isset($this->paygates) && count($this->paygates)):?>
+                                		<?php foreach ($this->paygates as $gate):?>
+                                			<option value="<?=$gate['gate']?>"><?=$gate['gate']?></option>
+                                    	<?php endforeach;?>
+                                    <?php endif;?>
+                                </select>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="text">Реквизиты для оплаты выбранным способом будут отправлены вам на почту.</div>
+                        </div>
+                        <div class="right_block">
+                        	<span>Сумма к оплате:</span><br />
+            				<div class="summa">0</div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="block2">
+                    	<div class="left_block">
+                        	<span>Электронная почта<img src="/files/images/must.png" alt=""></span><br />
+            				<input id="pay-email" type="text" value="<?=( isset($this->userdata->email) && !empty($this->userdata->email))?$this->userdata->email:''?>" />
+                            <span>На этот адрес мы отправим вам ответ и  реквизиты для оплаты</span><br /><br /><br />
+                            <span class="span_check"><img src="/files/images/must.png" alt="">Поле должно быть заполненно</span>
+                        </div>
+                        <div class="right_block">
+                        	<span>Примечание к заказу</span><br />
+            				<textarea id="order-comments" class="primechanie"></textarea>
+                            <div class="year_item4">
+                            	<input id="agree-check" class="idk" type="checkbox" />
+                            	<div>Я принимаю <a target="_blank" href="/statyi/content/17-no-tag/23-usloviya-ispolzovaniya">Условия использования</a> сервиса Astro Taro</div></div>
+                            	<div id="agree-error" style="color:red;display:none;">Необходимо принять условия использования</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="faraway">
+                        <div><img src="/files/images/papka.png" alt="" /><a href="/files/astrotarot_primer.doc">Пример персонального гороскопа</a></div>
+                        <img class="popup_enter5" src="/files/images/order.png" alt="" />
+                        <img class="popup_exit5" src="/files/images/popup_exit.png" alt="" />
+                    </div>
+                </div>
+            </div>
+            <div id="popup_otzivi">
+            	<div class="popup_header">Отзывы</div>
+                <?php if(isset($this->userdata)):?>
+					<div id="do_comment">
+						<?php if(empty($this->userdata->avatar)):?>
+							<img src="/files/images/comment_profile.png" alt="" />
+						<?php else:?>
+							<img src="/files/avatar/<?=$this->userdata->avatar?>" style="width:41px" alt="" />
+						<?php endif;?>
+						<div class="comment_form">
+							<form>
+								<textarea id="payservice_comment_field" class="comment_field">Ваш отзыв</textarea>
+								<br />
+								<div class="ruls_comment">
+									<a href="/statyi/content/17-no-tag/48-pravila-dobavleniya-kommentariev" target="_blank">правила добавления комментариев</a>
+								</div>
+								<input id="payservice_comment_type" type="hidden" value="payservice"/>
+								<input id="payservice_comment_subtype" type="hidden" value=""/>
+								<input id="payservice_comment_sign" type="hidden" value=""/>
+								<input id="payservice_comment_resource_id" type="hidden" value=""/>
+								<input onclick="addPayServiceComment()" class="comment_send" type="button" value="" />
+							</form>
+						</div>
+						<div class="clear"></div>
+					</div>
+				<?php else:?>
+					<div class="the_same_comment" >
+						<div class="the_same_header">Для добавления комментария:</div>
+						<div class="the_same_header">Необходимо <a id="ident-enter" href="#" onclick="closePayservicePopupAndAutorize()">авторизоваться</a> или <a href="/user/registration">зарегистрироваться</a></div>
+					</div>
+				<?php endif;?>
+                <div id="ring_do">
+                    
+                </div>
+                <div class="faraway">
+                    <div><img src="/files/images/papka.png" alt="" /><a href="/files/astrotarot_primer.doc">Пример персонального гороскопа</a></div>
+                    <img class="popup_enter_back_order" src="/files/images/back_to_order.png" alt="" />
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div id="popup_final">
+        	<div class="popup_header">Ваш заказ принят в обработку</div>
+            <div class="text">Мы отправили вам свои реквизиты на указанный адрес электронной почты. Ответ будет составлен и отправлен на почту в течении суток с момента поступления средств на счет.<br /><br />С уважением администрация сайта.</div>
+            <div class="faraway">
+                <img class="close" src="/files/images/close.png" alt="" />
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>

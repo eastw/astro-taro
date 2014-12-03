@@ -1,0 +1,69 @@
+<style>
+<!--
+.article_full_item div.text p{
+	 margin-bottom: 0;
+}
+-->
+</style>
+<div id="article_full">
+	<div class="article_full_item" style="padding:0;">
+		<div id="zak_content" style="padding:0;">
+			<div class="zak_item">
+				<div class="left_block">
+					<?php if($this->dayType == 'taro'):?>
+						<div class="card_back">
+							<img src="<?=$this->taroDayData['taroDayImage']?>" style="height: 220px;width: 122px;">
+						</div>
+					<?php endif;?>
+					<?php if($this->dayType == 'rune'):?>
+						<img src="<?=$this->runeDayData['runeDayImage']?>" style="margin-left: 35px;margin-top: 15px;width: 83px;">
+					<?php endif;?>
+					<?php if($this->dayType == 'hexagramm'):?>
+						<img src="<?=$this->hexagrammDayData['hexagrammDayImage']?>" style="margin-left: 30px;margin-top: 10px;">
+					<?php endif;?>
+				</div>
+				<div class="right_block" style="width:300px;">
+					<div class="zak_header"><?=$this->smallPageTitle?></div>
+					<?php if($this->dayType == 'taro'):?>
+					<div class="zak_item_header_main"><?=$this->taroDayData['taroTitle']?></div>
+					<?php endif;?>
+					<?php if($this->dayType == 'rune'):?>
+					<div class="zak_item_header_main"><?=$this->runeDayData['runeTitle']?></div>
+					<?php endif;?>
+					<?php if($this->dayType == 'hexagramm'):?>
+					<div class="zak_item_header_main">Гекс. <?=$this->hexagrammDayData['order']?> <?=$this->hexagrammDayData['hexagrammTitle']?></div>
+					<?php endif;?>
+					<?php if($this->dayType == 'taro'):?>
+						<?php if($this->taroDayData['state'] == 1):?>
+							<div class="text"><?=$this->taroDayData['description']?></div>
+						<?php elseif($this->taroDayData['state'] == 0):?>
+							<div class="text"><?=$this->taroDayData['description_reverse']?></div>	
+						<?php endif;?>
+					<?php endif;?>
+					<?php if($this->dayType == 'rune'):?>
+						<?php if($this->runeDayData['state'] == 1):?>
+							<div class="text"><?=$this->runeDayData['description']?></div>
+						<?php elseif($this->runeDayData['state'] == 0):?>
+							<div class="text"><?=$this->runeDayData['description_reverse']?></div>	
+						<?php endif;?>
+					<?php endif;?>
+					<?php if($this->dayType == 'hexagramm'):?>
+					<div class="text"><?=$this->hexagrammDayData['description']?></div>
+					<?php endif;?>
+					<div style="text-align:right">
+						<?php if($this->dayType == 'taro'):?>
+							<a href="/gadaniya/taro">Все гадания на картах Таро →</a>
+						<?php endif;?>
+						<?php if($this->dayType == 'rune'):?>
+							<a href="/gadaniya/rune">Все гадания на Рунах →</a>
+						<?php endif;?>
+						<?php if($this->dayType == 'hexagramm'):?>
+							<a href="/gadaniya/book">Все гадания по книге перемен И-Цзин →</a>
+						<?php endif;?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,38 @@
+<div id="also">
+	<div class="item_header">Прогнозы и гадания на сегодня</div>
+	<div class="also_item">
+		<span>Таро</span><br />
+		<a href="/gadaniya/taro/obschie-gadaniya/30-rasklad--karta-dnya">Расклад — Карта Дня</a>
+	</div>
+	<div class="also_item">
+		<span>Классические карты</span><br />
+		<a href="/gadaniya/classic/buduschee-i-sudba/120-rasklad-na-den">Расклад — На день</a>
+	</div>
+	<?php if($this->type != 'horoscope'):?>
+		<div class="also_item">
+			<span>Гороскопы</span><br />
+			<a href="/horoscope">Гороскопы для знаков зодиака</a>
+		</div>
+	<?php endif;?>
+	<?php if($this->type != 'numerology'):?>
+		<div class="also_item">
+			<span>Нумерология</span><br />
+			<a href="/numerology/forecast/day">Прогноз — Персональный день</a>
+		</div>
+	<?php endif;?>
+	<?php if($this->type != 'moon'):?>
+	<div class="also_item">
+		<span>Лунный календарь</span><br />
+		<a href="/moon/today">Луна сегодня</a>
+	</div>
+	<?php endif;?>
+	<div class="also_item">
+		<span>Руны</span><br />
+		<a href="/gadaniya/rune/traditsionnyie-raskladyi/31-rasklad--runa-dnya">Расклад — Руна дня</a>
+	</div>
+	<div class="also_item">
+		<span>Книга перемен</span><br />
+		<a href="/gadaniya/book/kniga-peremen/26-kniga-peremen">Книга перемен</a>
+	</div>
+	<?=$this->partial('partials/social.phtml',array())?>
+</div>

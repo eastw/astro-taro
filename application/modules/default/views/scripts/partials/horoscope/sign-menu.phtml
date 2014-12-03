@@ -1,0 +1,21 @@
+<div id="orange_sign">
+	<?php foreach($this->signs as $index => $sign):?>
+		<div class="orange_sign_item<?php
+			if(in_array($index,array(1,2,7,8,9,10))){
+				echo '2';
+			}
+			if($index == 11){
+				echo ' orange_sign_last'; 
+			}
+		?>"
+		<?=(null!== $this->curSign && $this->curSign == $sign['sign'])?'id="you_here"':''?>
+		>
+			<?php if(null!== $this->curSign && $this->curSign == $sign['sign']):?>
+				<?=$sign['sign_ru']?>
+			<?php else:?>
+				<a href="/horoscope/<?=$sign['sign'];?>/today"><?=$sign['sign_ru']?></a>
+			<?php endif;?>
+		</div>
+	<?php endforeach;?>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,10 @@
+<div id="month-wrapper" style="width:700px;">
+	<?php foreach($this->months as $month):?>
+		<div style="width:120px;height:80px;border:1px solid black;float:left;" class="">
+			<div>
+				<?=$month['startdate']?>- <?=$month['enddate']?> 
+			</div>
+			<a style="cursor:pointer" onclick="showDialog('<?=$month['startdate']?>','<?=$month['enddate']?>')">Описание</a>
+		</div>
+	<?php endforeach;?>
+</div>

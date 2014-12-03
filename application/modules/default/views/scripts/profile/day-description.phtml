@@ -1,0 +1,119 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/plugins/jquery.form.min.js',
+				'text/javascript')
+			->appendFile(
+				'/js/scripts/profile.js',
+				'text/javascript');
+?>
+<div id="column1">
+	<?=$this->partial('partials/profile/leftmenu.phtml',array('active' => $this->dayType,'userdata' => $this->userdata))?>
+</div>
+<div id="column2">
+	<div id="cabinet_content">
+		<div class="zak_item">
+			<?php if(isset($this->data)):?>
+			<div class="left_block">
+				<?php if($this->dayType == 'taro'):?>
+					<div class="card_back">
+						<img src="<?=$this->data['image']?>" style="height: 220px;width: 122px;">
+					</div>
+				<?php endif;?>
+				<?php if($this->dayType == 'rune'):?>
+					<img src="<?=$this->data['image']?>" style="margin-left: 35px;margin-top: 15px;width: 83px;">
+				<?php endif;?>
+				<?php if($this->dayType == 'hexagramm'):?>
+					<img src="<?=$this->data['image']?>" style="margin-left: 30px;margin-top: 10px;">
+				<?php endif;?>
+				<?php if($this->dayType == 'number'):?>
+					<img src="<?=$this->data['image']?>" style="margin-left: 30px;margin-top: 10px;">
+				<?php endif;?>
+			</div>
+			<div class="right_block" style="width:300px;">
+				<div class="zak_header"><?=$this->pageTitle?></div>
+				<?php if($this->dayType == 'taro'):?>
+					<div class="zak_item_header_main"><?=$this->data['title']?></div>
+				<?php endif;?>
+				<?php if($this->dayType == 'rune'):?>
+					<div class="zak_item_header_main"><?=$this->data['title']?></div>
+				<?php endif;?>
+				<?php if($this->dayType == 'hexagramm'):?>
+					<div class="zak_item_header_main">Гекс. <?=$this->data['order']?> <?=$this->data['title']?></div>
+				<?php endif;?>
+				<?php if($this->dayType == 'number'):?>
+					<div class="zak_item_header_main"><?=$this->data['title']?></div>
+				<?php endif;?>
+				<div class="text"><?=$this->data['description']?></div>
+				<div style="text-align:right;margin: 0 0 70px 0">
+					<?php if($this->dayType == 'taro'):?>
+						<a href="/gadaniya/taro">Все гадания на картах Таро →</a>
+					<?php endif;?>
+					<?php if($this->dayType == 'rune'):?>
+						<a href="/gadaniya/rune">Все гадания на Рунах →</a>
+					<?php endif;?>
+					<?php if($this->dayType == 'hexagramm'):?>
+						<a href="/gadaniya/book">Все гадания по книге перемен И-Цзин →</a>
+					<?php endif;?>
+					<?php if($this->dayType == 'number'):?>
+						<a href="/numerology">Вся нумерология →</a>
+					<?php endif;?>
+				</div>
+			</div>
+			<?php else:?>
+				<div class="left_block">
+				<img src="/files/images/astro-quest.png" alt="" title=""/>
+				</div>
+				<div class="right_block" style="width:300px;">
+					<div class="zak_header">Персональное число дня</div>
+					<div class="text">Для отображения информации необходимо <a href="/profile/edit">заполнить свой профиль →</a></div>
+				</div>
+			<?php endif;?>
+		</div>
+	</div>
+</div>
+<div id="column3">
+	<div id="cabinet_profile">
+		<div id="cabinet_profile_top"></div>
+		<div id="cabinet_profile_content">
+			<img src="/files/avatar/<?=(isset($this->userdata->avatar) && !empty($this->userdata->avatar) )?$this->userdata->avatar:'cabinet_profile.png' ?>" />
+			<div class="cabinet_name"><?=(!empty($this->userdata->fullname))?str_replace(':',' ',$this->userdata->fullname):''?></div>
+			<div class="data">
+				<?php if(!empty($this->userdata->birthday)):?>
+					<?php $date = new Zend_Date($this->userdata->birthday);
+						echo $date->toString(Zend_Date::DATE_LONG);?>
+				<?php endif;?>
+			</div>
+			<div class="change">
+				<a href="/profile/edit">изменить профиль</a>
+			</div>
+		</div>
+		<div id="cabinet_profile_bottom"></div>
+	</div>
+	<div id="exit">
+		<a href="/user/logout"><img src="/files/images/exit.png" alt="" /></a>
+	</div>
+	<div id="activity">
+		<div class="item_header">Активность</div>
+		<span class="activity_header">Регистрация</span><br/>
+		<span>
+			<?php $date = new Zend_Date($this->userdata->register_date);echo $date->toString(Zend_Date::DATE_LONG); ?>
+		</span><br /><br />
+		<span class="activity_header">Последний вход</span><br /> 
+		<span>
+			<?php
+				if(date('Y-m-d') == date('Y-m-d',strtotime($this->userdata->last_login))){
+					echo 'Сегодня&nbsp;'.date('H:i',strtotime($this->userdata->last_login));
+				}else{
+					echo $date->toString(Zend_Date::DATE_LONG).'&nbsp;'.date('H:i',strtotime($this->userdata->last_login));
+				}
+			?>
+		</span><br />
+		<br/> <a id="remove-profile" style="cursor:pointer">Удалить мою учетную запись</a>
+	</div>
+	<?=$this->partial('partials/banner-right1.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	<?=$this->partial('partials/banner-right3.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	<?=$this->partial('partials/banner-right2.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	
+</div>
+<div class="clear"></div>
+<?=$this->partial('partials/bottom-text-and-banner.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>

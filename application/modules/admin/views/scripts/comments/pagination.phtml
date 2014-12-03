@@ -1,0 +1,54 @@
+<?php if (($this->pageCount) > 1){?>
+<form action="" method="get">
+
+	<?php if (is_array($this->requestQueryArray)&&count($this->requestQueryArray)) : ?>
+	<?php foreach ($this->requestQueryArray as $name => $val) :?>
+	<?php if ($name != 'items_per_page'):?>
+	<input type="hidden" name="<?=$name?>" value="<?=$val?>" />
+	<?php endif;?>
+	<?php endforeach;?>
+	<?php endif; ?>
+	</form>
+	<div style="float: right;">
+		<ul class="pager">
+	<!-- First page link -->
+	<?php if (isset($this->previous)): ?>
+		<?php $this->requestParams['page']= $this->first;?>
+	  <li><a href="<?= $this->url($this->requestParams, null, false); ?>">&lt;&lt;</a></li>
+	<?php else: ?>
+	  <li><a href="#">&lt;&lt;</a></li>
+	<?php endif; ?>
+	<!-- Previous page link -->
+	<?php if (isset($this->previous)): ?>
+		<?php $this->requestParams['page']= $this->previous;?>
+	  <li><a href="<?= $this->url($this->requestParams, null, false); ?>">&lt;</a></li>
+	<?php else: ?>
+	  <li><a href="#">&lt;</a></li>
+	<?php endif; ?>
+	<!-- Numbered page links -->
+	<?php foreach ($this->pagesInRange as $page): ?>
+	  <?php if ($page != $this->current): ?>
+	  	<?php $this->requestParams['page']= $page;?>
+		 <li><a href="<?= $this->url($this->requestParams, null, false); ?>"><?= $page; ?></a></li>
+	  <?php else: ?>
+	     <li><a href="#" class="selected"><?= $page; ?></a></li>
+	  <?php endif; ?>
+	<?php endforeach; ?>
+	<!-- Next page link -->
+	<?php if (isset($this->next)): ?>
+		<?php $this->requestParams['page']= $this->next;?>
+	  <li><a href="<?= $this->url($this->requestParams, null, false); ?>">&gt;</a></li>
+	<?php else: ?>
+	  <li><a href="#">&gt;</a></li>
+	<?php endif; ?>
+	<!-- Last page link -->
+	<?php if (isset($this->next)): ?>
+		<?php $this->requestParams['page']= $this->last;?>
+	  <li><a href="<?= $this->url($this->requestParams, null, false); ?>">&gt;&gt;</a></li>
+	<?php else: ?>
+	  <li><a href="#">&gt;&gt;</a></li>
+	<?php endif; ?>
+		</ul>
+	</div>
+	<div style="clear: both;"></div>
+<?php } ?>

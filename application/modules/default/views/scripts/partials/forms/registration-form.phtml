@@ -1,0 +1,23 @@
+<form id="simple" action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>">
+		<span>Адрес эл. почты<img src="/files/images/must.png" alt=""></span><br />
+		<?=$this->element->email;?>
+		<span>Придумайте пароль<img src="/files/images/must.png" alt=""></span><br />
+		<?=$this->element->pass;?>
+		<span>Подтвердите пароль<img src="/files/images/must.png" alt=""></span><br />
+		<?=$this->element->pass_confirm;?>
+		<div class="captcha">
+			<span>Докажите, что вы не робот<img src="/files/images/must.png" alt=""></span><br />
+			<div class="captcha_content">
+				<?=$this->element->captcha?>
+			</div>
+		</div>
+		<div class="check_left">
+			<label><?=$this->element->agree?><span>Я принимаю <a href="/statyi/content/17-no-tag/23-usloviya-ispolzovaniya" target="_blank">Условия использования</a> и соглашаюсь с <a href="/statyi/content/17-no-tag/24-politika-konfidentsialnosti" target="_blank">политикой конфиденциальности</a> Astro Tarot</span></label>
+		</div>
+		<input class="enter_send" id="simple-submit" type="image" src="/files/images/reg_send.png" />
+		<?=$this->element->formtype;?>
+		<div class="clear"></div>
+</form>
+

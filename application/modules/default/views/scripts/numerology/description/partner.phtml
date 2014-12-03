@@ -1,0 +1,84 @@
+<div id="total-description">
+	<div id="opisanie">
+		<div class="item_header">Результат партнерской совместимости - <?=$this->data['percent']?>%</div>
+		<div class="text"><?=$this->data['percent_description']?></div>
+		<div class="clear"></div>
+	</div>
+	<div id="num_content">
+		<div class="res_block">
+			<div class="item_header">Числа жизненного пути <?=$this->data['lifepath']['number_text1']?> и <?=$this->data['lifepath']['number_text2']?></div>
+			<div class="res_block_img">
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['lifepath']['number1']?>.png" alt="" /><br />
+					<span>Вы</span>
+				</div>
+				<div class="img_item">
+					<img src="/files/images/rings<?=($this->smalltype == 'partner'?'2':'')?>.png" alt="" />
+				</div>
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['lifepath']['number2']?>.png" alt="" /><br />
+					<span>Партнер</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="text"><?=$this->data['lifepath']['description']?></div>
+		</div>
+		<div class="res_block">
+			<div class="item_header">Числа самовыражения <?=$this->data['selfexpression']['number_text1']?> и <?=$this->data['selfexpression']['number_text2']?></div>
+			<div class="res_block_img">
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['selfexpression']['number1']?>.png" alt="" /><br />
+					<span>Вы</span>
+				</div>
+				<div class="img_item">
+					<img src="/files/images/rings<?=($this->smalltype == 'partner'?'2':'')?>.png" alt="" />
+				</div>
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['selfexpression']['number2']?>.png" alt="" /><br />
+					<span>Партнер</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="text"><?=$this->data['selfexpression']['description']?></div>
+		</div>
+		<div class="res_block">
+			<div class="item_header">Числа души <?=$this->data['soul']['number_text1']?> и <?=$this->data['soul']['number_text2']?></div>
+			<div class="res_block_img">
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['soul']['number1']?>.png" alt="" /><br />
+					<span>Вы</span>
+				</div>
+				<div class="img_item">
+					<img src="/files/images/rings<?=($this->smalltype == 'partner'?'2':'')?>.png" alt="" />
+				</div>
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['soul']['number2']?>.png" alt="" /><br />
+					<span>Партнер</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="text"><?=$this->data['soul']['description']?></div>
+		</div>
+		<div class="res_block">
+			<div class="item_header">Числа личности <?=$this->data['identity']['number_text1']?> и <?=$this->data['identity']['number_text2']?></div>
+			<div class="res_block_img">
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['identity']['number1']?>.png" alt="" /><br />
+					<span>Вы</span>
+				</div>
+				<div class="img_item">
+					<img src="/files/images/rings<?=($this->smalltype == 'partner'?'2':'')?>.png" alt="" />
+				</div>
+				<div class="img_item">
+					<img style="width:60px" src="/files/images/profile/number/<?=$this->data['identity']['number2']?>.png" alt="" /><br />
+					<span>Партнер</span>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="text"><?=$this->data['identity']['description']?></div>
+			<div class="num_more"><a onclick="showForm()" style="cursor:pointer">Произвести другой нумерологический рассчет →</a></div>
+			<div class="clear"></div>
+			<div class="special_block"></div>
+		</div>
+	</div>
+</div>

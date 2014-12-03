@@ -1,0 +1,39 @@
+<?php if (($this->pageCount) > 1){?>
+	<div style="float: right;">
+		<ul class="pager">
+			<!-- First page link -->
+			<?php if (isset($this->previous)): ?>
+			  <li><a href="<?='/statyi/'.$this->first.'/'.$this->type?>">&lt;&lt;</a></li>
+			<?php else: ?>
+			  <li><a href="#">&lt;&lt;</a></li>
+			<?php endif; ?>
+			<!-- Previous page link -->
+			<?php if (isset($this->previous)): ?>
+			  <li><a href="<?= '/statyi/'.$this->previous.'/'.$this->type ?>">&lt;</a></li>
+			<?php else: ?>
+			  <li><a href="#">&lt;</a></li>
+			<?php endif; ?>
+			<!-- Numbered page links -->
+			<?php foreach ($this->pagesInRange as $page): ?>
+			  <?php if ($page != $this->current): ?>
+				 <li><a href="<?='/statyi/'.$page.'/'.$this->type; ?>"><?= $page; ?></a></li>
+			  <?php else: ?>
+			     <li><a href="#" class="selected"><?= $page; ?></a></li>
+			  <?php endif; ?>
+			<?php endforeach; ?>
+			<!-- Next page link -->
+			<?php if (isset($this->next)): ?>
+			  <li><a href="<?= '/statyi/'.$this->next.'/'.$this->type; ?>">&gt;</a></li>
+			<?php else: ?>
+			  <li><a href="#">&gt;</a></li>
+			<?php endif; ?>
+			<!-- Last page link -->
+			<?php if (isset($this->next)): ?>
+			  <li><a href="<?= '/statyi/'. $this->last.'/'.$this->type; ?>">&gt;&gt;</a></li>
+			<?php else: ?>
+			  <li><a href="#">&gt;&gt;</a></li>
+			<?php endif; ?>
+		</ul>
+	</div>
+	<div style="clear: both;"></div>
+<?php } ?>

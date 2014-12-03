@@ -1,0 +1,27 @@
+<div id="pagination">
+	<?php $prevPage = 0;?>
+	<?php if($this->curPage && $this->curPage > 1):?>
+		<?php if($this->curPage != 1){ $prevPage = $this->curPage - 1;} else {$prevPage = $this->curPage;} ?>
+		<div class="page_item_big" onclick="document.location.href='/search/query/<?=$this->searchQuery?>/page/<?=$prevPage?>'">
+			<a href="/search/query/<?=$this->searchQuery?>/page/<?=$prevPage?>">← Предыдущая</a>
+		</div>
+	<?php endif;?>
+	<?php foreach($this->pagination as $item):?>
+		<?php if($item != '...' && $item != $this->curPage):?>
+			 <div class="page_item" onclick="document.location.href='/search/query/<?=$this->searchQuery?>/page/<?=$item?>'">
+			 	<a href="/search/query/<?=$this->searchQuery?>/page/<?=$item?>"><?= $item; ?></a>
+			 </div>
+			<?php endif;?> 
+			<?php if($item == $this->curPage):?>
+				<div class="page_item" style="background-color:#ff6a00; color:#fff;"><?= $item; ?></div>
+			<?php endif;?>
+			<?php if($item == '...'){?>
+				<div class="page_item"><?php echo $item;?></div>
+			<?php }?>
+	<?php endforeach;?>
+	<?php if(count($this->pagination) > 1 && $this->curPage < $this->pagination[count($this->pagination)-1] ):?>
+		<?php $nextPage = 0;?>
+		<?php if($this->curPage != $this->pagination[count($this->pagination)-1]){ $nextPage = $this->curPage + 1;} else {$nextPage = $this->curPage;} ?>
+		<div class="page_item_big" onclick="document.location.href='/search/query/<?=$this->searchQuery?>/page/<?=$nextPage?>'"><a href="/search/query/<?=$this->searchQuery?>/page/<?=$nextPage?>">Следующая →</a></div>
+	<?php endif;?>
+</div>

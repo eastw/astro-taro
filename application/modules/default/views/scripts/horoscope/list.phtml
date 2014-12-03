@@ -1,0 +1,34 @@
+<div id="opisanie">
+	<div class="item_header">Астрология</div>
+	<div class="text">
+		<?=$this->minidesc?>
+		<div class="more"><a href="/statyi/tag/12-astrologiya">Статьи об астрологии →</a></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="all_horo">
+	<?php foreach($this->signs as $index => $sign):?>
+	<div class="all_horo_item">
+		<img src="/files/images/sign_small<?=($index+1)?>.png" alt="" title=""/>
+		<div class="all_horo_right">
+			<div class="item_header"><a href="/horoscope/<?=$sign['sign']?>/today"><?=$sign['sign_ru']?></a> - <?=$sign['text_date_range']?></div>
+			<div class="free_horo">Бесплатные астрологические прогнозы для знака <?=$sign['sign_ru']?></div>
+			<div class="links_vis">
+				<?php foreach($this->horoscopeListTypes['vis'] as $type => $text):?>
+					<a href="/horoscope/<?=$sign['sign']?>/<?=$type?>"><?=$text?></a><br />
+				<?php endforeach;?>
+			</div>
+			<div class="links_unvis">
+				<?php foreach($this->horoscopeListTypes['unvis'] as $type => $text):?>
+					<?php if($type != 'week'):?>
+					<a href="/horoscope/<?=$sign['sign']?>/<?=$type?>"><?=$text?></a><br />
+					<?php endif;?>
+				<?php endforeach;?>
+			</div>
+			<div class="make_unvis_vis"><span>все гороскопы</span> ↓</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<?php endforeach;?>
+</div>

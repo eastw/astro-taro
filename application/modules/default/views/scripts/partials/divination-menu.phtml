@@ -1,0 +1,39 @@
+<table>
+	<tr>
+	    <td>
+	    	<?php if($this->divType == 'taro'):?>
+				Таро
+			<?php else:?>
+				<a href="/gadaniya/taro">Таро</a>
+			<?php endif;?>
+		</td>
+	    <td>
+	    	<?php if($this->divType == 'classic'):?>
+				Карты
+			<?php else:?>
+				<a href="/gadaniya/classic">Карты</a>
+			<?php endif;?>
+		</td>
+	  	<td>
+	    	<?php if($this->divType == 'rune'):?>
+				Руны
+			<?php else:?>
+				<a href="/gadaniya/rune">Руны</a>
+			<?php endif;?>
+		</td>
+		<td>
+	    	<?php if($this->divType == 'book'):?>
+				Книга перемен
+			<?php else:?>
+				<a href="/gadaniya/book">Книга перемен</a>
+			<?php endif;?>
+		</td>
+		<td>
+	    	<?php if($this->divType == 'other'):?>
+				Другие гадания
+			<?php else:?>
+				<a href="/gadaniya/other">Другие гадания</a>
+			<?php endif;?>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,15 @@
+<div id="vklad">
+	<div class="actual_header"><?=($this->serviceType == 'horoscope')?'Все гороскопы':'Все гадания'?></div>
+	<div id="vklad_content">
+		<?php foreach($this->payServices as $service):?>
+			<div class="vklad_item<?=($this->curServiceAlias == $service['theme_smalltype'])?'_active':''?>">
+				<img src="/files/images/horo_corner.png" alt="" />
+				<?php if($this->curServiceAlias == $service['theme_smalltype'] ):?>
+					<?=$service['theme_name']?>
+				<?php else:?>
+					<a href="/service/<?=$this->serviceType?>/<?=$service['theme_smalltype']?>"><?=$service['theme_name']?></a>	
+				<?php endif;?>
+			</div>
+		<?php endforeach;?>
+	</div>
+</div>

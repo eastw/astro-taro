@@ -1,0 +1,40 @@
+<table class="admin-table" id="article-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:30%">
+			ФИО
+		</th>
+		<th style="width:30%">
+			Почта
+		</th>
+		<th style="width:20%">
+			Дата рег-ции
+		</th>
+		<th style="width:20%">
+			Посл.вход
+		</th>
+		<th style="width:5%">
+			Акт.
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+		<?php foreach($this->data as $item):?>
+		<tr>
+			<td>
+				<?=$item['fullname']?>
+			</td>
+			<td>
+				<?=$item['email']?>
+			</td>
+			<td>
+				<?=$item['register_date']?>
+			</td>
+			<td>
+				<?=$item['last_login']?>
+			</td>
+			<td>
+				<a id="activity_<?=$item['id']?>" style="cursor:pointer" onclick="changeActivity('<?=$item['id']?>')"><?=($item['activity'] == 'y')?'Акт':'Неакт';?></a>
+			</td>
+		</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+</table>

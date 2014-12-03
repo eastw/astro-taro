@@ -1,0 +1,17 @@
+<div id="orange_sign">
+	<div class="orange_sign_item3" <?=($this->serviceType == 'horoscope')?'id="you_here"':''?> style="width:250px;">
+		<?php if($this->serviceType == 'horoscope'):?>
+			Индивидуальный гороскоп
+		<?php else:?>
+			<a href="/service/horoscope">Индивидуальный гороскоп</a>
+		<?php endif;?>
+	</div>
+	<div class="orange_sign_item3" <?=($this->serviceType == 'divination')?'id="you_here"':''?> style="width:250px;">
+		<?php if($this->serviceType == 'divination'):?>
+			Индивидуальное гадание
+		<?php else:?>
+			<a href="/service/divination">Индивидуальное гадание</a>
+		<?php endif;?>
+	</div>
+	<div class="clear"></div>
+</div>	

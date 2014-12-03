@@ -1,0 +1,21 @@
+<div id="vklad">
+	<div class="actual_header">В этом разделе</div>
+	<div id="vklad_content">
+		<div class="vklad_item<?=($this->smalltype == 'love')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'love'):?>
+				Любовная совместимость
+			<?php else:?>
+				<a href="/numerology/compability/love">Любовная совместимость</a>	
+			<?php endif;?>
+		</div>
+		<div class="vklad_item<?=($this->smalltype == 'partner')?'_active':''?>">
+			<img src="/files/images/horo_corner.png" alt="" />
+			<?php if($this->smalltype == 'partner'):?>
+				Партнерская совместимость
+			<?php else:?>
+				<a href="/numerology/compability/partner">Партнерская совместимость</a>	
+			<?php endif;?>
+		</div>
+	</div>
+</div>

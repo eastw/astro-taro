@@ -1,0 +1,20 @@
+<div class="my_cab_item">
+	<img src="<?=isset($this->part['image'])?$this->part['image']:'/files/images/astro-quest.png'?>" alt="" title=""/>
+	<div class="item_header">
+		<?=$this->part['name']?><br />
+		<a href="/profile/opisaniye/<?=$this->part['type']?>"><?=isset($this->part['value'])?$this->part['value']:'';?></a>
+	</div>
+	<div class="data">
+		<?php if(isset($this->part['empty'])):?>
+			необходимо <a href="/profile/edit">настроить профиль</a> 
+		<?php else:?>
+			<?=$this->part['desc'];?>
+		<?php endif;?>
+	</div>
+	<div class="opisanie">
+		<?php if(!isset($this->part['empty'])):?>
+			<a href="/profile/opisaniye/<?=$this->part['type']?>">Описание →</a>
+		<?php endif;?>
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,32 @@
+<?php
+$this->headScript()->appendFile(
+		'/js/plugins/jquery.ui.datepicker-ru.js',
+		'text/javascript');
+$this->headLink()
+	->appendStylesheet(
+		'/css/jquery-ui.css	');
+?>
+<script>
+	$(document).ready(function(){
+		$('#code').parent().parent().hide();
+		checkBannerType();
+		$('#type').change(function(){
+			checkBannerType();
+		});
+		$('#startdate,#enddate').datepicker();
+	});
+	function checkBannerType(){
+		if($('#type').val() == 'partner'){
+			$('#image').parent().parent().hide();
+			$('#link').parent().parent().hide();
+			$('#code').parent().parent().show();
+			$('#startdate,#enddate').parent().parent().hide();
+		}else{
+			$('#image').parent().parent().show();
+			$('#link').parent().parent().show();
+			$('#code').parent().parent().hide();
+			$('#startdate,#enddate').parent().parent().show();
+		}
+	}
+</script>
+<?=$this->form?>

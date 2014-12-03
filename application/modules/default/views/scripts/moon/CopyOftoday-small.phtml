@@ -1,0 +1,90 @@
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		$('#month-year').change(function(){
+			var monthYear = $('#month-year option:selected').val();
+			if(monthYear != ''){
+				$.post(
+					'/moon/get-days',
+					{
+						'month-year' : monthYear  
+					},
+					function(data){
+						$('#month-data').html(data);
+					});
+			}
+		});
+	});
+//-->
+</script>
+<h1>Лунный календарь</h1>
+<div >
+	Описание бла бла бла, один из самых древних календарей и прочее 
+</div>
+<?php $date = new Zend_Date(date('Y-m-d')); ?>
+<div>
+	<h2>Сегодня <?=$date->toString(Zend_Date::DATE_LONG);?></h2>
+</div>
+<div>
+	<?php if(isset($this->data['moonDays']) && count($this->data['moonDays'])):?>
+	<?php foreach($this->data['moonDays'] as $index => $day):?>
+		<?php if($index > 0):?>
+			c <?=$day['day_start']?> <?=$day['day_detail']['day_number']?> лунный день 
+		<?php else:?>
+			<?=$day['day_detail']['day_number']?> лунный день |
+		<?php endif;?>
+	<?php endforeach;?>
+	<?php endif;?>
+</div>
+<div>
+	<?php if(isset($this->data['in_signs']) && count($this->data['in_signs'])):?>
+	<?php foreach($this->data['in_signs'] as $index => $sign):?>
+		<?php if($index > 0):?>
+			c <?=$sign['signstart']?> Луна в знаке <?=$sign['sign_ru']?> 
+		<?php else:?>
+			Луна в знаке <?=$sign['sign_ru']?> |
+		<?php endif;?>
+	<?php endforeach;?>
+	<?php endif;?>
+</div>
+<?php if(isset($this->data['moonDays']) && count($this->data['moonDays'])):?>
+	<?php foreach($this->data['moonDays'] as $day):?>
+		<div style="width:400px;">
+			<b><?=$day['day_detail']['day_number']?> лунный день</b>
+			<?php foreach($day['attributes'] as $attribute):?>
+			<div>
+				<table>
+					<tr>
+						<td>
+							<?=$attribute['name']?><br>
+							rating - <?=$attribute['rating']?>
+						</td>
+						<td>
+							<?=$attribute['description']?>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<?php endforeach;?>
+			<div style="margin:5px">
+				<b>Фаза:</b> <?=$day['day_detail']['phase']?><br>
+				<?=$day['day_detail']['phase_desc']?>
+			</div>
+		</div>
+	<?php endforeach;?>
+<?php endif;?>
+<div style="text-align:right;">
+	<a href="/moon/today">Полное описание сегодняшнего дня</a>
+</div>
+<div>
+	Лунный календарь на 
+	<select id="month-year">
+		<option value=""></option>
+		<?php foreach($this->monthArray as $item):?>
+			<option value="<?=$item['month'].'-'.$item['year']?>"><?=App_UtilsService::getMonthByNumber($item['month']).' '.$item['year'].' года'?></option>
+		<?php endforeach;?>
+	</select>
+	<div id="month-data">
+		
+	</div>
+</div>

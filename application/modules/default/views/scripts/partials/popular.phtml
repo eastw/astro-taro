@@ -1,0 +1,23 @@
+<div id="popular">
+	<?php if(isset($this->ratingList) && count($this->ratingList)):?>
+	<div class="popular_header">Популярное на сайте</div>
+	<?php foreach($this->ratingList as $index => $item):?>
+	<div class="popular_item">
+		<div class="popular_count"><?=($index + 1)?></div>
+		<div class="popular_text">
+			<span><?=App_UtilsService::ratingTypesToRu($item['type'])?></span><br />
+			<?php if($item['type'] == 'article' || $item['type'] == 'magic'):?>
+				<a href="/<?=($item['type'] == 'article')?'statyi':'magic'?>/content/<?=$item['tag-alias']?>/<?=$item['alias']?>">
+					<?=$item['title']?>
+				</a>
+			<?php else:?>
+				<a href="/gadaniya/<?=$item['type']?>/<?=$item['quicktag']?>/<?=$item['alias']?>">
+					<?=$item['title']?>
+				</a>	
+			<?php endif;?>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<?php endforeach;?>
+	<?php endif;?>
+</div>

@@ -1,0 +1,25 @@
+<h1>Астрология</h1>
+<p>Бла бла описание</p>
+<a href="/statyi/tag/12-astrologiya">Статьи об астрологии</a>
+<?php foreach($this->signs as $sign):?>
+	<div style="width:740px;">
+		<div style="float:left;border:1px solid grey;">
+			<img src="/files/images/astro-quest.jpg"/>
+		</div>
+		<div style="float:left;">
+			<div style="float:none;">
+				<?=$sign['sign_ru']?>(<?=$sign['text_date_range']?>)
+			</div>
+			<div>
+				<ul>
+				<?php foreach($this->horoscopeTypes as $type => $text):?>
+					<li>
+						<a href="/horoscope/<?=$sign['sign']?>/<?=$type?>"><?=$text?></a>
+					</li>
+				<?php endforeach;?>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div style="clear:both"></div>
+<?php endforeach;?>

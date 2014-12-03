@@ -1,0 +1,61 @@
+<?php
+$this->headScript()->appendFile(
+			'/js/plugins/jquery.form.min.js',
+			'text/javascript');
+?>
+<script>
+	$(document).ready(function(){
+		$('form').ajaxForm({
+			'beforeSubmit'	: validate,
+			'success'		: showResponse
+		});
+		$('#category').change(function(){
+			var category = $('#category option:selected').val();
+			if(category != ''){
+				$.post(
+					'/admin/category/show-category-image',
+					{
+						'category' : category
+					},function(data){
+						$('#category-image').attr('src','/files/divinations/' + data.image);
+					},'json');
+			}
+		});
+		function validate(){
+			if($('#category option:selected').val() == ''){
+				alert('Нужно выбрать категорию!');
+				return false;
+			}
+			return true;
+		}
+		function showResponse(responseText, statusText, xhr, $form){
+			var data = jQuery.parseJSON(responseText);
+			//console.log(data);
+			$('#category-image').attr('src','/files/divinations/' + data.image);
+		}
+	});
+</script>
+<h1>Привязать картинку к категории гадания</h1>
+<form action="/admin/category/save-image" method="post" enctype="multipart/form-data">
+	<div>
+		Категия
+		<select id="category" name="category">
+			<option value=""></option>
+			<?php foreach($this->categories as $category):?>
+				<option value="<?=$category['attr']['id']?>" disabled="disabled"><?=$category['data']?></option>
+				<?php if(isset($category['children']) && count($category['children'])):?>
+					<?php foreach($category['children'] as $child):?>
+						<option value="<?=$child['attr']['id']?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$child['data']?></option>
+					<?php endforeach;?>
+				<?php endif;?>
+			<?php endforeach;?>
+		</select>
+		<img id="category-image" style="margin: 0 0 -18px 50px" src=""/>
+	</div>
+	<div>
+		Выберите изображение <input type="file" name="image"/>
+	</div>
+	<div>
+		<input type="submit" value="Загрузить"/>
+	</div>
+</form>

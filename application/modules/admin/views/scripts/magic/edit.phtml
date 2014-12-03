@@ -1,0 +1,50 @@
+<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		$('#addtag').click(function(){
+			if($('#tagslist option:selected').is('[disabled]')){
+				alert('Тег уже выбран');
+			}else{
+				if($('#tagslist option:selected').val() != ''){
+					var tag_id = $('#tagslist option:selected').val();
+
+					$.post(
+							'/admin/magic/addtag',
+							{'tag_id':tag_id, 'tagname': $('#tagslist option:selected').text()},
+							function(){
+								$('#tagslist option:selected').attr('disabled','1');
+								var tags = $('#tagsplace').html();
+								tags += '<div class="tag" id="tagplace_'+tag_id+'"><a>'+$('#tagslist option:selected').text()+'</a><img onclick="delete_tag(\''+tag_id+'\')" src="/files/images/input_clear.gif"/></div>';
+								$('#tagsplace').html(tags);
+							});
+				}
+			}
+		});
+	});
+	function delete_tag(id){
+		$.loading(true, {img: '/files/images/progress.gif', align:'center'});
+		$.post(
+				'/admin/magic/removetag',
+				{'tag_id':id},
+				function(){
+					$('#tagplace_' + id).remove();
+					$('#tagslist option[value="'+id+'"]').removeAttr('disabled');
+					$.loading(false, {img: '/files/images/progress.gif', align:'center'});
+				});
+	}	
+//-->
+</script>
+<?=$this->form;?>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'content',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

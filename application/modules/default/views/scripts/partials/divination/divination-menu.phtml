@@ -1,0 +1,38 @@
+<div id="orange_sign">
+	<div class="orange_sign_item3" <?=($this->divType == 'taro')?'id="you_here"':''?>>
+		<?php if($this->divType == 'taro'):?>
+			Таро
+		<?php else:?>
+			<a href="/gadaniya/taro">Таро</a>
+		<?php endif;?>
+	</div>
+	<div class="orange_sign_item3" <?=($this->divType == 'classic')?'id="you_here"':''?>>
+		<?php if($this->divType == 'classic'):?>
+			Карты
+		<?php else:?>
+			<a href="/gadaniya/classic">Карты</a>
+		<?php endif;?>
+	</div>
+	<div class="orange_sign_item3" <?=($this->divType == 'rune')?'id="you_here"':''?>>
+		<?php if($this->divType == 'rune'):?>
+			Руны
+		<?php else:?>
+			<a href="/gadaniya/rune">Руны</a>
+		<?php endif;?>
+	</div>
+	<div class="orange_sign_item4" <?=($this->divType == 'book')?'id="you_here"':''?>>
+		<?php if($this->divType == 'book'):?>
+			Книга Перемен
+		<?php else:?>
+			<a href="/gadaniya/book">Книга Перемен</a>
+		<?php endif;?>
+	</div>
+	<div class="orange_sign_item4" <?=($this->divType == 'other')?'id="you_here"':''?>>
+		<?php if($this->divType == 'other'):?>
+			Другие гадания
+		<?php else:?>
+			<a href="/gadaniya/other">Другие гадания</a>
+		<?php endif;?>
+	</div>
+	<div class="clear"></div>
+</div>

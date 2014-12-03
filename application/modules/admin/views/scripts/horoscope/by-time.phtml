@@ -1,0 +1,155 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+$this->headLink()
+		->appendStylesheet(
+			'/css/jquery-ui.css	');
+?>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		var timeType = $('#time-type option:selected').val();
+		if(timeType == 'today'){
+			loadTimeType();
+		}
+		if(timeType == 'week'){
+			loadTimeType();
+		}
+		$('#time-type').change(function(){
+			if($(this).val() != ''){
+				$.post(
+						'/admin/horoscope/get-data-by-time',
+						{
+							'type': $('#time-type option:selected').val()
+							},
+						function(data){
+							$('#wrapper').html(data);	
+						});
+			}
+		});
+	});
+	function nextMonth(){
+		$.post(
+				'/admin/horoscope/get-data-by-time',
+				{
+					'type': 'today',
+					'next': 'next'
+					},
+				function(data){
+					$('#wrapper').html(data);
+				});
+	}
+	
+	function prevMonth(){
+		$.post(
+			'/admin/horoscope/get-data-by-time',
+			{
+				'type': 'today',
+				},
+			function(data){
+				$('#wrapper').html(data);
+			});
+	}
+	function loadTimeType(){
+		$.post(
+				'/admin/horoscope/get-data-by-time',
+				{
+					'type': $('#time-type option:selected').val()
+					},
+				function(data){
+					$('#wrapper').html(data);
+				});
+	}
+	function showDialog(startdate,enddate){
+		var sign = $('#sign option:selected').val();
+		if(sign != ''){
+			var dialog = $('#description-table').dialog({
+				'modal': true,
+				'width' : 800,
+				'autoOpen': true,
+				'open': function(){
+					$.post(
+							'/admin/horoscope/get-time-horoscope-item',
+							{
+								'type': $('#time-type option:selected').val(),
+								'startdate': startdate,
+								'enddate': enddate,
+								'sign': sign,
+							},
+							function(data){
+								if(!CKEDITOR.instances.hasOwnProperty('description')){
+									CKEDITOR.replace( 'description',{
+										filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+										filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+										filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+										filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+										filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+										filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+									} );
+								}
+								CKEDITOR.instances.description.setData(data.description);
+							},
+							'json'
+							);
+					
+				},
+				 buttons: {
+					 "Сохранить": function() {
+						 //var text = CKEDITOR.instances.description.getData();
+						$.post(
+							'/admin/horoscope/save-time-horoscope-item',
+							{
+								'type': 'today',
+								'startdate': startdate,
+								'enddate': enddate,
+								'sign': sign,
+								'description': CKEDITOR.instances.description.getData()
+								},
+							function(data){
+								if (CKEDITOR.instances.description) CKEDITOR.instances.description.destroy();
+								dialog.dialog( "close" );
+							},'json');
+					 },
+					 'Отмена': function() {
+						if (CKEDITOR.instances.description) CKEDITOR.instances.description.destroy(); 
+						dialog.dialog( "close" );
+					 }
+				}
+			});
+		}else{
+			alert('Выберите знак');
+		}
+	}
+//-->
+</script>
+<h1>Гороскоп по времени</h1>
+<div>
+	Выберите тип времени для гороскопа
+	<select id="time-type">
+		<option value=""></option>
+		<option value="today">по дням</option>
+		<option value="week">по неделям</option>
+		<option value="month">по месяцам</option>
+		<option value="year">по годам</option>
+	</select>
+	Знак
+	<select id="sign">
+		<option value=""></option>
+		<?php foreach($this->signs as $sign):?>
+			<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<div id="wrapper">
+	
+</div>
+<div id="dialog" style="display:none;">
+	<table id="description-table">
+		<tr>
+			<td>
+				<textarea id="description" name="description" rows="3" cols="30"></textarea>
+			</td>
+		</tr>
+	</table>
+</div>

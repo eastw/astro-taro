@@ -1,0 +1,333 @@
+<?php 
+$this->headScript()->appendFile(
+		'/js/scripts/comments.js',
+		'text/javascript'
+		);
+
+$this->headLink()
+ 	->appendStylesheet(
+	'/css/jquery-ui.css');
+?>
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	$('#type').change(function(){
+		$('#loading').show();
+		var type = $('#type option:selected').val();
+		$.post('/admin/comments/data-by-type',
+				{
+				'type' : type
+				},
+				function(data){
+					//if(type == 'all'){
+					$('#subtype option:selected').removeAttr('selected');
+					$('#subtype').attr('disabled','disabled');
+					$('#sign option:selected').removeAttr('selected');
+					$('#sign').attr('disabled','disabled');
+					$('#resource option:selected').removeAttr('selected');
+					$('#resource').attr('disabled','disabled');
+					$('#resource').resourcecombobox('destroy');
+					//}
+					if(type == 'horoscope' || type == 'numerology'){
+						$('#subtype').removeAttr('disabled');
+						if(type == 'horoscope'){
+							$('#sign').removeAttr('disabled');
+						}
+						var html = '<option value=""></option>';
+						for(var i in data.subtypes){
+							html += '<option value="'+data.subtypes[i].id+'">'+data.subtypes[i].value+'</option>';
+						}
+						$('#subtype').html(html);
+						$('#resource').html('<option value=""></option>');
+					}
+					if(type == 'article' || type == 'news' || type == 'magic' || type == 'divination'){
+						$('#resource').removeAttr('disabled');
+						$('#resource').resourcecombobox({
+							dataSource: "/admin/comments/get-resource-autocomplete",
+						    dataType: "json",
+						    minLength: 3
+						});
+					}
+					/*
+					if(type == 'divination'){
+						$('#resource').removeAttr('disabled');
+					}
+					*/	
+					$('#loading').hide();
+				},'json');
+	});
+
+	$("#user").usercombobox({
+	    dataSource: "/admin/comments/get-user-autocomplete",
+	    dataType: "json",
+	    minLength: 3
+	});
+	<?php if($this->type == 'article' || $this->type == 'news' || $this->type == 'magic' || $this->type == 'divination'):?>
+		$('#resource').removeAttr('disabled');
+		$('#resource').resourcecombobox({
+			dataSource: "/admin/comments/get-resource-autocomplete",
+		    dataType: "json",
+		    minLength: 3
+		});
+	<?php endif;?>
+});
+function removeComment(id,page){
+	if(confirm('Вы действительно хотите удалить этот комменарий?')){
+		$.post('/admin/comments/remove',
+				{
+				'id':id
+				},function(){
+					window.location.reload();
+				});
+	}
+}
+function removeAllComments(id,email){
+	if(confirm('Вы действительно хотите удалить все комменарии пользователя c почтой '+email+'?')){
+		$.post('/admin/comments/remove-all',
+				{
+				'id':id
+				},function(){
+					window.location.reload();
+				});
+	}
+}
+function banUser(id){
+	$.post('/admin/users/change-activity',
+			{
+				'id': id,
+			},function(data){
+				if(data.activity == 'y'){
+					$('.user_' + id).each(function(){
+						$(this).text('Забанить');
+					});
+				}else{
+					$('.user_' + id).each(function(){
+						$(this).text('Разбанить');
+					});
+				}
+			},'json');
+}
+function clearUser(){
+	$('#usercombobox').val('');
+	$('#user option:selected').removeAttr('selected');
+}
+function clearResource(){
+	$('#resourcecombobox').val('');
+	$('#resource option:selected').removeAttr('selected');
+}
+//-->
+</script>
+<h1>Управление комментариями</h1>
+<div id="loading" style="display:none;">
+	<table>
+		<tr>
+			<td>
+				Пожалуйста, подождите
+			</td>
+			<td>
+				<img src="/files/images/preloader_2_50_50.gif"/>
+			</td>
+		</tr>
+		
+	</table>
+</div>
+<form action="/admin/comments" method="GET">
+	<table style="border:1px solid grey;min-width:900px;">
+		<tr>
+			<td>
+				Тип
+			</td>
+			<td>
+				<select id="type" name="type" style="min-width:500px;">
+					<option value="all">Все комментарии</option>
+					<?php foreach($this->types as $type):?>
+						<option value="<?=$type?>"
+							<?=(isset($this->type)&& $this->type == $type)?'selected="selected"':''?>
+							><?=App_UtilsService::commentTypeToRu($type)?></option>
+					<?php endforeach;?>
+				</select>
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Подтип
+			</td>
+			<td>
+				<select id="subtype" name="subtype" style="min-width:500px;"
+					<?=($this->type != 'horoscope' && $this->type != 'numerology' && $this->type != 'payservice')?'disabled="disabled"':'';?>
+				>
+					<option value=""></option>
+					<?php foreach($this->subtypes as $subtype):?>
+						<option value="<?=$subtype['id']?>"
+							<?=(isset($this->subtype)&& $this->subtype == $subtype['id'])?'selected="selected"':''?>
+							><?=$subtype['value']?></option>
+					<?php endforeach;?>
+				</select>
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Знак
+			</td>
+			<td>
+				<select id="sign" name="sign" style="min-width:500px;"
+					<?=($this->type != 'horoscope')?'disabled="disabled"':'';?>>
+					<option value=""></option>
+					<?php if(isset($this->signs)):?>
+						<?php foreach($this->signs as $index => $sign):?>
+							<option value="<?=$index?>"
+								<?=($this->sign == $index)?'selected="selected"':''?>
+							><?=$sign?></option>
+						<?php endforeach;?>
+					<?php endif;?>
+				</select>
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Ресурс(начните набирать)
+			</td>
+			<td>
+				<select id="resource" name="resource" style="min-width:500px;"
+					<?=(empty($this->resource))?'disabled="disabled"':'';?>
+				>
+					<option value=""></option>
+					<?php if(!empty($this->resource)):?>
+						<option selected="selected" value="<?=$this->resource?>"><?=$this->resourceDetails['title']?></option>
+					<?php endif;?>
+				</select>
+			</td>
+			<td>
+				<a href="javascript:void(0)" onclick="clearResource()" title="Очистить фильтр по ресурсам">
+					<img style="width:10px;margin:15px 0 0 -20px;" src="/files/images/remove-icon.jpg"/>
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Юзер(начните набирать)
+			</td>
+			<td>
+				<div class="ui-widget">
+					<select name="user" id="user" style="min-width:500px;">
+						<option value=""></option>
+						<?php if(!empty($this->user)):?>
+							<option selected="selected" value="<?=$this->user?>"><?=$this->userDetails['email']?></option>
+						<?php endif;?>
+					</select>
+				</div>
+			</td>
+			<td>
+				<a href="javascript:void(0)" onclick="clearUser()" title="Очистить фильтр по пользователям">
+					<img style="width:10px;margin:15px 0 0 -20px;" src="/files/images/remove-icon.jpg"/>
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				&nbsp;
+			</td>
+			<td>
+				<input type="submit" value="Задать фильтр"/>
+			</td>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+	</table>
+</form>
+<table class="admin-table" id="article-table" style="width:1550px;margin-left: 30px;">
+	<tr>
+		<th style="width:35%">
+			Комм.
+		</th>
+		<th style="width:5%">
+			Тип
+		</th>
+		<th style="width:5%">
+			Подтип
+		</th>
+		<th style="width:5%">
+			Знак
+		</th>
+		<th style="width:10%">
+			Ресурс
+		</th>
+		<th style="width:5%">
+			Добавлен
+		</th>
+		<th style="width:5%">
+			Помечен как спам
+		</th>
+		<th style="width:10%">
+			Жалоба
+		</th>
+		<th style="width:5%">
+			Юзер
+		</th>
+		<th style="width:15%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->paginator)):?>
+	<?php foreach($this->paginator as $item):?>
+	<tr>
+		<td>
+			<?=$item['body'];?>
+		</td>
+		<td>
+			<?=App_UtilsService::commentTypeToRu($item['type'])?>
+		</td>
+		<td>
+			<?php if($this->type != 'payservice'):?>
+				<?=App_UtilsService::commentSubtypeToRu($item['type'], $item['subtype'])?>
+			<?php else:
+				foreach($this->themes as $theme){
+					if($item['subtype'] == $theme['theme_smalltype']){
+						echo $theme['theme_name'];
+						break;
+					}
+				}
+			 	endif;?>
+		</td>
+		<td>
+			<?=App_UtilsService::commentSignToRu($item['sign'])?>
+		</td>
+		<td>
+			<?=$item['resource_title']?>
+		</td>
+		<td>
+			<?=date('d-m-y H:i:s',strtotime($item['date_created']))?>
+		</td>
+		<td>
+			<?=($item['is_spam'] == 'y')?'да':'нет'?>
+		</td>
+		<td>
+			<?=$item['abuse']?>
+		</td>
+		<td>
+			<?=$item['email']?>
+		</td>
+		<td>
+			<a class="user_<?=$item['user_id']?>" href="javascript:void(0)" onclick="banUser('<?=$item['user_id']?>')"><?=($item['activity'] == 'y')?'Забанить':'Разбанить'?></a> 
+				/ <a href="javascript:void(0)" onclick="removeComment('<?=$item['id']?>')" title="Удалить комментарий"><img style="width:10px" src="/files/images/remove-icon.jpg"></a>
+				/ <a href="javascript:void(0)" onclick="removeAllComments('<?=$item['user_id']?>','<?=$item['email']?>')" title="Удалить все комментарии этого пользователя"><img style="width:15px" src="/files/images/remove-icon.jpg"></a>	
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<tr>
+		<td colspan="7">
+			<?php echo $this->paginationControl($this->paginator, 'Sliding', 'comments/pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray,'requestParams' => $this->requestParams)) ?>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>

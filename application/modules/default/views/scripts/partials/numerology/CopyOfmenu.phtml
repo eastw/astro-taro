@@ -1,0 +1,25 @@
+<table>
+	<tr>
+		<td>
+			<?php if($this->curType == 'personal'):?>
+				Мои числа
+			<?php else:?>
+				<a href="/numerology/personal">Мои числа</a>
+			<?php endif;?>
+		</td>
+		<td>
+			<?php if($this->curType == 'forecast'):?>
+				Мои прогнозы
+			<?php else:?>
+				<a href="/numerology/forecast">Мои прогнозы</a>
+			<?php endif;?>
+		</td>
+		<td>
+			<?php if($this->curType == 'compability'):?>
+				Совместимость
+			<?php else:?>
+				<a href="/numerology/compability">Совместимость</a>
+			<?php endif;?>
+		</td>
+	</tr>
+</table>

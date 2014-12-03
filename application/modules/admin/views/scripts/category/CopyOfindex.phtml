@@ -1,0 +1,64 @@
+<?php 
+	$this->headScript()->appendFile(
+            '/js/plugins/tree.jquery.js',
+            'text/javascript'
+        );
+ $this->headLink()->appendStylesheet(
+	'/css/jqtree.css');
+?>
+<script type="text/javascript">
+<!--
+function confirmation(id){
+	if(confirm('Вы действительно хотите удалить эту категорию?')){
+		window.location.href="/admin/category/remove/id/" + id;
+	}	
+}
+//-->
+</script>
+<h1>Категории</h1>
+<p>В этом разделе можно отредактировать категории на сайте.</p>
+<div style="text-align:left;"><a href="/admin/category/add">Добавить категорию.</a></div>
+<table class="admin-table">
+	<tr>
+		<th>
+			Название категории
+		</th>
+		<th>
+			Алиас
+		</th>
+		<th>
+			Активность на сайте
+		</th>
+		<th>
+			Порядок
+		</th>
+		<th>
+			Редактировать
+		</th>
+		<th>
+			Удалить
+		</th>
+	</tr>
+	<?php foreach($this->categories as $category):?>
+		<tr>
+			<td>
+				<?=$category->name;?>
+			</td>
+			<td>
+				<?=$category->alias;?>
+			</td>
+			<td>
+				<?=($category->active == 'y')?'Активна':'Не активна';?>
+			</td>
+			<td>
+				<?=$category->cat_order;?>
+			</td>
+			<td>
+				<a href="#">Редактировать</a>
+			</td>
+			<td>
+				<a style="cursor:pointer;" onclick="confirmation('<?=$category->id?>')">Удалить</a>
+			</td>
+		</tr>
+	<?php endforeach;?>
+</table>

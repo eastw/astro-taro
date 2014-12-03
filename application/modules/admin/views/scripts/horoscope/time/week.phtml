@@ -1,0 +1,10 @@
+<div id="week-wrapper" style="width:700px;">
+	<?php foreach($this->weeks as $week):?>
+		<div style="width:120px;height:80px;border:1px solid black;float:left;" class="">
+			<div>
+				<?=$week['startdate']?>- <?=$week['enddate']?> 
+			</div>
+			<a style="cursor:pointer" onclick="showDialog('<?=$week['startdate']?>','<?=$week['enddate']?>')">Описание</a>
+		</div>
+	<?php endforeach;?>
+</div>

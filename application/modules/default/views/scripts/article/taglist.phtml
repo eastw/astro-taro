@@ -1,0 +1,22 @@
+<?php 
+	$this->headScript()->appendFile(
+            '/js/scripts/article.js',
+            'text/javascript'
+        );
+?>
+<div id="tag_info">
+	<div class="item_header"><?=$this->tag['tagname']?></div>
+	<div class="text"><?=$this->tag['description']?></div>
+	<div class="the_same">
+		<div class="the_same_header">В материалах встречается:</div>
+		<?=$this->AlsoTags($this->paginator,$this->tags,'statyi');?>
+	</div>
+</div>
+<div id="article">
+	<?php if(count($this->paginator)):?>
+		<?php foreach($this->paginator as $item):?>
+		<?=$this->partial('partials/article/article-anonse.phtml', array('data' => $item,'tags' => $this->tags,'tag' => $this->tag)); ?>
+		<?php endforeach;?>
+		<?php echo $this->paginationControl($this->paginator, 'Sliding', 'partials/article/tag-pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray,'tag' => $this->tag,'type'=>'statyi')) ?>
+	<?php endif;?>
+</div>

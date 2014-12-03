@@ -1,0 +1,30 @@
+<div id="opisanie">
+	<div class="item_header">Нумерология</div>
+	<div class="text">
+		<?=$this->minidesc?>
+		<div class="more">
+			<a href="/statyi/tag/13-numerologiya">Статьи по нумерологии →</a>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="all_horo">
+	<?php foreach($this->fullTypes as $typekey => $type):?>
+		<div class="all_horo_item">
+			<img src="<?=$type['image']?>" alt="" title=""/>
+			<div class="all_horo_right">
+				<div class="item_header"><a href="/numerology/<?=$typekey?>"><?=$type['name']?></a></div>
+				<div class="free_horo"><?=$type['small_desc']?></div>
+				<?php if(count($type['children'])):?>
+					<div class="links_vis">
+					<?php foreach ($type['children'] as $key => $value):?>
+						<a href="/numerology/<?=$typekey?>/<?=$key?>"><?=$value?></a><br/>
+					<?php endforeach;?>
+					</div>
+				<?php endif;?>
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	<?php endforeach;?>
+</div>

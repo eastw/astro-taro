@@ -1,0 +1,38 @@
+<div style="border: 1px solid grey;margin: 5px;">
+	<table>
+		<tr>
+			<td colspan="2">
+				<span style="color:grey;font-size: 9px;"><?php $date = new Zend_Date($this->data['date_created']);
+					echo $date->toString(Zend_Date::DATE_LONG);
+				?>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<a href="/magic/content/<?=$this->ArticleTagPath($this->data['quicktag'],$this->tags,$this->tag)?>/<?=$this->data['alias']?>"><?=$this->data['title']?></a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img src="/files/magic/<?=$this->data['image']?>"/>
+			</td>
+			<td>
+				<?=$this->data['anonse'];?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div style="float:left;width: 500px;"><?=$this->MagicTags($this->data['quicktag'],$this->tags)?></div>
+				<div style="float:left">
+					<?php if(isset($_COOKIE['vote_'.$this->data['id']])):?>
+						<img src="/files/images/oldlike.jpg"/>
+					<?php else:?>
+						<a style="cursor:pointer" id="like_<?=$this->data['id']?>" onclick="vote('<?=$this->data['id']?>')"><img src="/files/images/oldlike.jpg"/></a>
+					<?php endif;?>
+					<span id="vote-count-<?=$this->data['id']?>"><?=$this->data['raiting']?></span>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>

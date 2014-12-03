@@ -1,0 +1,39 @@
+<div class="moon_row">
+	<?php if(count($this->data['first'])):?>
+		<?php foreach($this->data['first'] as $item):?>
+			<div class="moon_row_item">
+				<img src="/files/moon-days/<?=$item['image']?>" alt="" title=""/>
+				<div class="item_header">
+					<a href="/moon/day/<?=$item['day_date']?>"><?=$item['day']?></a>
+				</div>
+				<div class="clear"></div>
+			</div>	
+		<?php endforeach;?>
+	<?php endif;?>
+</div>
+<div class="moon_row">
+	<?php if(count($this->data['second'])):?>
+		<?php foreach($this->data['second'] as $item):?>
+			<div class="moon_row_item">
+				<img src="/files/moon-days/<?=$item['image']?>" alt="" title=""/>
+				<div class="item_header">
+					<a href="/moon/day/<?=$item['day_date']?>"><?=$item['day']?></a>
+				</div>
+				<div class="clear"></div>
+			</div>	
+		<?php endforeach;?>
+	<?php endif;?>
+</div>
+<div class="moon_row">
+	<?php if(count($this->data['third'])):?>
+		<?php foreach($this->data['third'] as $item):?>
+			<div class="moon_row_item">
+				<img src="/files/moon-days/<?=$item['image']?>" alt="" title=""/>
+				<div class="item_header">
+					<a href="/moon/day/<?=$item['day_date']?>"><?=$item['day']?></a>
+				</div>
+				<div class="clear"></div>
+			</div>	
+		<?php endforeach;?>
+	<?php endif;?>
+</div>

@@ -1,0 +1,40 @@
+<script type="text/javascript">
+<!--
+function confirmation(id){
+	if(confirm('Вы действительно хотите удалить эту платежную систему?')){
+		window.location.href="/admin/payservice/remove-gate/id/" + id;
+	}
+}
+//-->
+</script>
+<h1>Управление платежными системами платного сервиса</h1>
+<table>
+	<tr>
+		<td>
+			<div style="text-align:left;"><a href="/admin/payservice/add-gate">Добавить платежную систему</a></div>
+		</td>
+	</tr>
+</table>
+<table class="admin-table" id="article-table" style="">
+	<tr>
+		<th style="width:80%">
+			Платежная система
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+		<?php foreach($this->data as $item):?>
+		<tr>
+			<td>
+				<a href="/admin/payservice/edit-gate/id/<?=$item['id']?>"><?=$item['gate'];?></a>
+			</td>
+			<td>
+				<a href="/admin/payservice/edit-gate/id/<?=$item['id']?>">Редактировать</a> / 
+				<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>')">Удалить</a>
+			</td>
+		</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+</table>

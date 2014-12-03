@@ -1,0 +1,46 @@
+<?php
+    $bannerData = null;
+    
+    if(isset($this->banners)){
+    	foreach($this->banners as $banner){
+    		if(null !== $this->bannerSubtype){
+    			if($banner['banner'] == 'right1' && $this->bannerSubtype == $banner['position']){
+    				$today = strtotime('now');
+    				if($today >= strtotime($banner['date_started']) && $today <= strtotime($banner['date_ended'])){
+    					$bannerData = $banner;
+		    			break;
+    				}
+    			}
+    		}else{
+	    		if($banner['banner'] == 'right1' && $this->controllerName == $banner['position']){
+	    			$today = strtotime('now');
+	    			if($today >= strtotime($banner['date_started']) && $today <= strtotime($banner['date_ended'])){
+		    			$bannerData = $banner;
+		    			break;
+	    			}
+	    		}
+    		}
+    	}
+    	foreach($this->banners as $banner){
+    		if($banner['banner'] == 'right1' && $banner['through'] == 'y'){
+    			$today = strtotime('now');
+    			if($today >= strtotime($banner['date_started']) && $today <= strtotime($banner['date_ended'])){
+	    			$bannerData = $banner;
+	    			break;
+    			}
+    		}
+    	}
+    }
+    ?>
+    <?php if(null !== $bannerData):?>
+        <div class="banner_right_200x350">
+        <?php if($bannerData['outer_type'] == 'order'):?>
+        	<a href="<?=$bannerData['link']?>" target="blank">
+            	<img src="/files/ad/<?=$bannerData['filename']?>" alt="">
+            </a>
+        <?php endif;?>
+        <?php if($bannerData['outer_type'] == 'partner'):?>
+        	<?=$bannerData['code']?>
+        <?php endif;?>
+        </div>
+	<?php endif;?>

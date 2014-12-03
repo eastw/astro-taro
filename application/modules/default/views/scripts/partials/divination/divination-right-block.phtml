@@ -1,0 +1,17 @@
+<?php if(isset($this->divinationsList) && count($this->divinationsList)):?>
+<div id="vklad">
+	<div class="actual_header">В этом разделе</div>
+	<div id="vklad_content">
+		<?php foreach($this->divinationsList as $item):?>
+			<div class="vklad_item<?=($this->active == $item['id'])?'_active':''?>">
+				<img src="/files/images/horo_corner.png" alt="" />
+				<?php if($this->active != $item['id']):?>
+					<a href="/gadaniya/<?=$item['type']?>/<?=$item['category_alias']?>/<?=$item['alias']?>"><?=$item['name']?></a>
+				<?php else:?>
+					<?=$item['name']?>
+				<?php endif;?>
+			</div>
+		<?php endforeach;?>
+	</div>
+</div>
+<?php endif;?>

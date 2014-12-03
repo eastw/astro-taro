@@ -1,0 +1,18 @@
+<?php if(count($this->sliders)):?>
+<div id="slyder">
+	<?php foreach($this->sliders as $index => $slider):?>
+	    <div id="slyde<?=$slider['order']?>" 
+	    	<?=($slider['pay_service'] == 'y')?'onclick="showPaymentService()"':''?>
+	    	<?=($slider['pay_service'] == 'n' && !empty($slider['link']))?'onclick="window.location.href=\''.$slider['link'].'\'"':''?>
+	    	style="cursor:pointer"
+	    	>
+	        <img src="/files/slider/<?=$slider['filename']?>" alt="" />
+	    </div>
+    <?php endforeach;?>
+</div>
+<div id="slyder_element">
+	<?php foreach($this->sliders as $index => $slider):?>
+    <div class="slyder_dot" num="<?=($index+1)?>"></div>
+    <?php endforeach;?>
+</div>
+<?php endif;?>

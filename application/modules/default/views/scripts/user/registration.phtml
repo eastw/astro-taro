@@ -1,0 +1,238 @@
+<?php if(!isset($this->userdata)):?>
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	//$('select').selectbox();
+	$('#full-refresh,#simple-refresh').click(function(){
+		var type = '';
+		if($(this).attr('id') == 'full-refresh'){
+			type = 'full';
+		}
+		if($(this).attr('id') == 'simple-refresh'){
+			type = 'simple';
+		}
+		$.post('/user/refresh-captcha',
+				{'type': type},
+				function(data){
+					if(type == 'simple'){
+						$('#captcha-id').val(data['new_id']);
+						$('#simple-image-div').find('img').attr('src','/files/captcha/' + data['new_id'] + '.png');
+					}
+					if(type == 'full'){
+						$('#full_captcha-id').val(data['new_id']);
+						$('#full-image-div').find('img').attr('src','/files/captcha/' + data['new_id'] + '.png');
+					}
+				},
+				'json'
+		);
+	});
+	
+	$('#simple-submit,#full-submit').click(function(){
+		var type = $(this).next().val();
+		var formdata;
+		if(type == "simple"){
+			formdata = $('#simple').serialize();
+		}
+		if(type == "full"){
+			var byear = $('#byear option:selected').val();
+			var text = $('#byear').prev().find('div.text').text();
+			$('#byear option').each(function(){
+				if($(this).text() == text){
+					byear = $(this).val();
+				}
+			});
+			
+			var bmonth = $('#bmonth option:selected').val();
+			var text = $('#bmonth').prev().find('div.text').text();
+			$('#bmonth option').each(function(){
+				if($(this).text() == text){
+					bmonth = $(this).val();
+				}
+			});
+			var bday = $('#bday option:selected').val();
+			var text = $('#bday').prev().find('div.text').text();
+			$('#bday option').each(function(){
+				if($(this).text() == text){
+					bday = $(this).val();
+				}
+			});
+			var gender = $('#gender option:selected').val();
+			var text = $('#gender').prev().find('div.text').text();
+			$('#gender option').each(function(){
+				if($(this).text() == text){
+					gender = $(this).val();
+				}
+			});
+			var agree = '';
+			if($('#agree_full').is(':checked')){
+				agree = '1';
+			}
+			formdata = {
+				'email' : $('#full #email').val(),
+				'pass' : $('#full #pass').val(),
+				'pass_confirm' : $('#full #pass_confirm').val(),
+				'byear' : byear,
+				'bmonth' : bmonth,
+				'bday' : bday,
+				'gender' : gender,
+				'fname' : $('#fname').val(),
+				'mname' : $('#mname').val(),
+				'lname' : $('#lname').val(),
+				'formtype': 'full',
+				'full_captcha[id]' : $('#full_captcha-id').val(),
+				'full_captcha[input]' : $('#full_captcha-input').val(),
+				'agree_full': agree,
+			};
+			//formdata = $('#full').serialize();
+		}
+		$.post(
+				'/user/check-form',
+				formdata,
+				function(data){
+					if(data.errors.length == 0){
+						window.location.href="/profile";
+					}else{
+						var selector = '';
+						if(type == 'simple'){
+							selector = 'form#simple';
+							$('#captcha-id').val(data.new_id);
+							$('#simple-image-div').find('img').attr('src','/files/captcha/' + data['new_id'] + '.png');
+						}
+						if(type == 'full'){
+							selector = 'form#full';
+							$('#full_captcha-id').val(data.new_id);
+							$('#full-image-div').find('img').attr('src','/files/captcha/' + data['new_id'] + '.png');
+						}
+						var html = '';
+						$(selector + ' div.wrong_text').remove();
+						$(selector + ' input').removeClass('wrong_form');
+						for(var i in data.errors){
+							html = '';
+							for(var j in data.errors[i]){
+								html += '<div class="wrong_text">' + data.errors[i][j] + '</div>';
+							}
+							
+							if(i == 'captcha' || i == 'full_captcha'){
+								$(selector + ' #'+i + '-input').after(html);
+								$(selector + ' #'+i + '-input').addClass('wrong_form');
+							}else{
+								if(i == 'agree' || i == 'agree_full'){
+									$(selector + ' #'+i).next().after(html);
+								}else{
+									$(selector + ' #'+i).after(html);
+									$(selector + ' #'+i).addClass('wrong_form');
+								}
+							}
+						}
+					}
+				},
+				'json'
+				);
+		return false;
+	});
+	//<div class="wrong_text">Кто не работает, тот - ест</div>
+	$('#byear,#bmonth').change(function(){
+		var byear = $('#byear option:selected').val();
+		var text = $('#byear').prev().find('div.text').text();
+		$('#byear option').each(function(){
+			if($(this).text() == text){
+				byear = $(this).val();
+			}
+		});
+		
+		var bmonth = $('#bmonth option:selected').val();
+		var text = $('#bmonth').prev().find('div.text').text();
+		$('#bmonth option').each(function(){
+			if($(this).text() == text){
+				bmonth = $(this).val();
+			}
+		});
+		
+		if(byear != '' && bmonth != ''){
+			$.post(
+				'/user/days',
+				{
+					'year' : byear,
+				 	'month': bmonth
+				 },
+				 function(data){
+					var html = '';
+					for(var i in data){
+						html += '<option value="'+i+'">' + data[i] + '</option>';
+					}
+					$('#bday').html(html);
+					$('#bmonth').next().remove();
+					$('#bday').removeAttr('style');
+					$('#bday').selectbox();
+				},
+				'json');
+		}
+	});
+	$('input[type="checkbox"]').change(function(){
+		if($(this).is(':checked')){
+			$(this).attr('value','1');
+		}else{
+			$(this).attr('value','');
+		}
+	});
+});
+//-->
+</script>
+<div class="left_block">
+	<div id="vklad_reg">
+		<div id="vklad_reg_pult">
+			<div class="vklad_reg_pult_item">Простая</div>
+			<div class="vklad_reg_pult_item">Полная</div>
+			<div class="vklad_reg_pult_item" id="vklad_reg_pult_last">Через соц.сеть</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div id="vklad_reg_content">
+		<div class="vklad_reg_item">
+			<?=$this->simpleform?>
+		</div>
+		<div class="vklad_reg_item">
+			<?=$this->fullform?>
+		</div>
+		<div class="vklad_reg_item">
+			<span>Используя аккаунт вашей социальной сети</span><br />
+			<div>
+				<div class="socnet"><a id="fb_auth_register" href="javascript:void(0)"><img src="/files/images/socnet1.png" alt="" /></a></div>
+				<div class="socnet"><a id="vk_auth_register" href="javascript:void(0)"><img src="/files/images/socnet2.png" alt="" /></a></div>
+				<div class="socnet" id="socnet_last"><a href="<?=$this->twitterUrl?>"><img src="/files/images/socnet3.png" alt="" /></a></div>
+				<div class="clear"></div>
+			</div>
+			<div class="text">Мы обещаем ничего не публиковать без вашего ведома!</div>
+		</div>
+	</div>
+</div>
+<div class="right_block">
+	<div class="prem_header">Что мне даст полная регистрация?</div>
+	<div class="prem_item">
+		<img src="/files/images/prem_img1.png" alt="" />
+		<div class="item_header">Гороскопы</div>
+		<div class="text">
+			Заходя на сайт, вы имеете возможность читать свой гороскоп сразу, не тратя время на поиск. Активируется функция отправки на e-mail вашего гороскопа (ежедневный, на неделю, на месяц, на год). Возможность заказа персонального гороскопа.
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="prem_item">
+		<img src="/files/images/prem_img2.png" alt="" />
+		<div class="item_header">Гадания</div>
+		<div class="text">
+			Появляется возможность добавлять понравившиеся гадания в избранные. Заходя на сайт, вы получаете Таро-прогноз на сегодня (карта дня). Возможность заказа персонального толкования расклаа.
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="prem_item" id="prem_last">
+		<img src="/files/images/prem_img3.png" alt="" />
+		<div class="item_header">Нумерология</div>
+		<div class="text">
+			Вы получаете персональный нумерологический расчет. Активируется функция отправки на e-mail вашего нумерологического прогноза (ежедневный, на месяц, на год). Возможность заказа персонального нумерологического прогноза.
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<?php endif;?>
+<div class="clear"></div>
+<?=$this->partial('partials/bottom-text-and-banner.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName))?>

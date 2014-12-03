@@ -1,0 +1,132 @@
+<?php
+$this->headScript()
+				->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');
+$this->headLink()
+		->appendStylesheet(
+			'/css/jquery-ui.css	');
+?>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		loadDescription();
+		$('#day').change(function(){
+			loadDescription();
+		});
+		$('#attribute').change(function(){
+			loadDescription();
+		});
+		$('#save').click(function(){
+			save();
+		});
+	});
+	function loadDescription(){
+		var day = $('#day option:selected').val();
+		var attribute = $('#attribute option:selected').val();
+		if(day != '' && attribute != ''){
+			$.post(
+					'/admin/moon/get-day-attribute',
+					{
+						'day'			: day,
+						'attribute'		: attribute,
+						},
+					function(data){
+							CKEDITOR.instances.desc.setData(data.description);
+							$('#rating option:selected').removeAttr('selected');
+							$('#rating option').each(function(){
+								if($(this).val() == data.rating){
+									$(this).attr('selected','selected');
+								}
+							});
+					},'json');
+		}else{
+			
+		}
+	}
+	function save(){
+		var day = $('#day option:selected').val();
+		var attribute = $('#attribute option:selected').val();
+		var rating = $('#rating option:selected').val();
+		if(day != '' && attribute != '' && rating != ''){
+			$.post(
+					'/admin/moon/save-day-attribute',
+					{
+						'day'			: day,
+						'attribute'		: attribute,
+						'rating'		: rating,
+						'description'	: CKEDITOR.instances.desc.getData()
+						},
+					function(data){
+						
+					},'json');
+		}else{
+			alert('Не все значения выпадающих списков выбраны');
+		}
+	}
+//-->
+</script>
+<h1>Управление атрибутами дня</h1>
+<div>
+	Лунный день
+	<select id="day" style="width:100px;">
+		<option value=""></option>
+		<?php foreach($this->days as $day):?>
+			<option value="<?=$day['id']?>"><?=$day['day_number']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<div>
+	Атрибут
+	<select id="attribute" style="width:100px;">
+		<option value=""></option>
+		<?php foreach($this->attributes as $attribute):?>
+			<option value="<?=$attribute['id']?>"><?=$attribute['name']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<table>
+	<tr>
+		<td>
+			Рейтинг 
+		</td>
+		<td>
+			<select id="rating">
+				<option value=""></option>
+				<option value="3">3</option>
+				<option value="2">2</option>
+				<option value="1">1</option>
+				<option value="0">0</option>
+				<option value="-1">-1</option>
+				<option value="-2">-2</option>
+				<option value="-3">-3</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Описание 
+		</td>
+		<td>
+			<textarea rows="2" cols="30" name="desc"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:right">
+			<input type="button" id="save" value="Сохранить"/>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'desc',{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+	
+//-->
+</script>

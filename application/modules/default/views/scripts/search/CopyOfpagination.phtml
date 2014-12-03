@@ -1,0 +1,25 @@
+<div class="pager">
+	<ul>
+		<li class="first"><a style="text-decoration:underline;" href="/search/query/<?=$this->searchQuery?>/page/1">первая</a></li>
+		<?php $prevPage = 0;?>
+		<?php if($this->curPage != 1){ $prevPage = $this->curPage - 1;} else {$prevPage = $this->curPage;} ?>
+		<li class="prev"><a href="/search/query/<?=$this->searchQuery?>/page/<?=$prevPage?>">&lt;&lt;</a></li>
+		<li>&nbsp;</li>
+		<?php foreach($this->pagination as $item){?>
+			<?php if($item != '...' && $item != $this->curPage){?>
+				<li><a href="/search/query/<?=$this->searchQuery?>/page/<?=$item?>"><?=$item?></a></li>
+			<?php }?>
+			<?php if($item == $this->curPage){?>
+				<li class="active"><?php echo $this->curPage?></li>
+			<?php }?>
+			<?php if($item == '...'){?>
+				<?php echo $item;?><li>&nbsp;</li>
+			<?php }?>
+		<?php }?>
+		<li>&nbsp;</li>
+		<?php $nextPage = 0;?>
+		<?php if($this->curPage != $this->pagination[count($this->pagination)-1]){ $nextPage = $this->curPage + 1;} else {$nextPage = $this->curPage;} ?>
+		<li class="next"><a href="/search/query/<?=$this->searchQuery?>/page/<?=$nextPage?>">&gt;&gt;</a></li>
+		<li class="last"><a style="text-decoration:underline;" href="/search/query/<?=$this->searchQuery?>/page/<?=$this->pagination[count($this->pagination)-1]?>">последняя</a></li>
+	</ul>
+</div>

@@ -1,0 +1,115 @@
+<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		toggleControlsBySelectedType();
+		$('#adddeck').click(function(){
+			if($('#decks option:selected').is('[disabled]')){
+				alert('Колода уже выбрана');
+			}else{
+				if($('#decks option:selected').val() != ''){
+					var deck_id = $('#decks option:selected').val();
+					$.post(
+							'/admin/divination/add-taro-deck',
+							{'deck_id':deck_id, 'deckname': $('#decks option:selected').text()},
+							function(){
+								$('#decks option:selected').attr('disabled','1');
+								var decks = $('#decksplace').html();
+								decks += '<div class="tag" id="deckplace_'+deck_id+'"><a>'+$('#decks option:selected').text()+'</a><img onclick="delete_deck(\''+deck_id+'\')" src="/files/images/input_clear.gif"/></div>';
+								$('#decksplace').html(decks);
+							});
+				}
+			}
+		});
+		$('#type').change(function(){
+			$('#category option').remove();
+			$('#category').html('<option value="">Выберите категорию</option>');
+			$('#decks option').remove();
+			$('#decks').html('<option value="">Выберите колоду</option>');
+			$('#decksplace').html('');
+			
+			toggleControlsBySelectedType();
+			
+			$.post(
+					'/admin/divination/get-decks-and-categories-by-type',
+					{'type':$(this).val()},
+					function(data){
+						var html = '';
+						if(data.decks.length != 0 && data.categories.length != 0 ){
+							html = '<option value="">Выберите колоду</option>';
+							for(var i in data.decks){
+								html += '<option value="'+data.decks[i].id+'">'+data.decks[i].name+'</option>';
+							}
+							$('#decks option:eq(0)').replaceWith(html);
+							html = '<option value="">Выберите категорию</option>';
+							for(var i in data.categories){
+								html += '<option value="'+data.categories[i].id+'">'+data.categories[i].name+'</option>';
+							}
+							$('#category option:eq(0)').replaceWith(html);
+						}else{
+							//console.log($('#type option:selected').val());
+							html = '<option value="">Выберите категорию</option>';
+							if( $('#type option:selected').val() > 3){
+								for(var i in data.categories){
+									html += '<option value="'+data.categories[i].id+'">'+data.categories[i].name+'</option>';
+								}
+								$('#category option:eq(0)').replaceWith(html);
+							}else{
+								alert('Для данного типа гадания нет категорий или колод');
+							}
+							
+						}
+					},
+					'json'
+					);
+		});
+		
+	});
+	function toggleControlsBySelectedType(){
+		//console.log($('#type option:selected').val());
+		if($('#type option:selected').val() > 2){
+			$('#only_old_arkans').parent().parent().hide();
+		}else{
+			$('#only_old_arkans').parent().parent().show();
+		}
+		if($('#type option:selected').val() > 3){
+			$('#cards').parent().parent().hide();
+			$('#decks').parent().parent().hide();
+			$('#significators').parent().parent().hide();
+		}else{
+			$('#cards').parent().parent().show();
+			$('#decks').parent().parent().show();
+			$('#significators').parent().parent().show();
+		}
+	}
+	function delete_deck(id){
+		$.loading(true, {img: '/files/images/progress.gif', align:'center'});
+		$.post(
+				'/admin/divination/remove-taro-deck',
+				{'deck_id':id},
+				function(){
+					$('#deckplace_' + id).remove();
+					$('#decks option[value="'+id+'"]').removeAttr('disabled');
+					$.loading(false, {img: '/files/images/progress.gif', align:'center'});
+				});
+	}	
+//-->
+</script>
+<?php if($this->actionType == 'add'):?>
+<h1>Добавление нового гадания</h1>
+<?php elseif($this->actionType == 'edit'):?>
+<h1>Редактирование гадания</h1>
+<?php endif;?>
+<?=$this->form;?>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'desc',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

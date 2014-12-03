@@ -1,0 +1,25 @@
+<?php if($this->item['parent_id'] != 0):?>
+<div class="all_horo_item">
+	<img src="/files/divinations/<?=$this->item['image']?>" alt="" />
+	<div class="all_horo_right">
+		<div class="item_header"><a href="/gadaniya/classic/<?=$this->item['alias']?>"><?=$this->item['name']?></a></div>
+		<div class="free_horo"><?=$this->item['minidesc']?></div>
+		<div class="links_vis">
+			<?php if(count($this->item['children']['vis'])):?>
+				<?php foreach($this->item['children']['vis'] as $item):?>
+					<a href="/gadaniya/classic/<?=$this->item['alias']?>/<?=$item['alias']?>"><?=$item['name']?></a><br/>
+				<?php endforeach;?>
+			<?php endif;?>
+		</div>
+		<?php if(count($this->item['children']['unvis'])):?>
+		<div class="links_unvis">
+			<?php foreach($this->item['children']['unvis'] as $item):?>
+				<a href="/gadaniya/classic/<?=$this->item['alias']?>/<?=$item['alias']?>"><?=$item['name']?></a><br/>
+			<?php endforeach;?>
+		</div>
+		<div class="make_unvis_vis3"><span>все расклады</span> ↓</div>
+		<?php endif;?>
+		<div class="clear"></div>
+	</div>
+</div>
+<?php endif;?>

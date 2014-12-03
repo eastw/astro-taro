@@ -1,0 +1,33 @@
+<?=$this->partial('partials/favorite.phtml',array('voteCount' =>$this->divination['raiting'],'resourse' => $this->divination,'resourseType' => 'divination','subtype'=>$this->divination['type'],'userdata' =>$this->userdata ))?>
+<br /><br />
+<div id="opisanie">
+	<div class="item_header"><?=$this->divination['name']?></div>
+	<div class="text"><?=$this->divination['description']?></div>
+	<div class="clear"></div>
+</div>
+<div id="tolk" style="display:none;">
+	<div class="comp_header">Толкование расклада</div>
+	<?php if($this->haveNotParticipatedCards != 'true'):?>
+		<?php for($i = 0; $i < $this->divination['cards_in_alignment']; $i++):?>
+			<div id="desc_wrapper_<?=$i?>" class="tolk_item">
+				
+			</div>
+		<?php endfor;?>
+	<?php else:?>
+		<?php for($i = 0; $i < $this->divination['cards_in_alignment']-$this->divination['significators']; $i++):?>
+			<div id="desc_wrapper_<?=$i?>" class="tolk_item">
+				
+			</div>
+		<?php endfor;?>
+	<?php endif;?>
+</div>
+<?=$this->partial('partials/social.phtml',array())?>
+<div class="big_like"
+	<?=(isset($_COOKIE['votediv_'.$this->divination['id']]))?'':'onclick="divVoteBig(\''.$this->divination['id'].'\')"'?> 
+	<?=(isset($_COOKIE['votediv_'.$this->divination['id']]))?'style="cursor:default;"':''?>
+>
+	<div id="vote-count-<?=$this->divination['id']?>" class="big_like_count">
+		<?=$this->divination['raiting']?>
+	</div>
+</div>
+<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>

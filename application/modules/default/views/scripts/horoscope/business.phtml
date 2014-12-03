@@ -1,0 +1,20 @@
+<div id="all_horo">
+	<div class="sign_top">
+		<img src="/files/images/profile/sun/<?=$this->curSign?>.png" alt="" />
+		<div class="item_header"><span><?=$this->data['sign']['sign_ru']?></span><br /><?=$this->data['sign']['text_date_range']?></div>
+		<div class="feature">
+			<a href="/horoscope/<?=$this->curSign?>/simple"><?=$this->data['sign']['sign_ru']?> — характеристика знака →</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="packs">
+		<div id="horo_pack">
+			<div class="item_header"><?=$this->data['sign']['sign_ru']?> — бизнес гороскоп</div>
+			<div class="text">
+				<?=$this->data['description']?>
+			</div>
+		</div>
+	</div>
+	<?=$this->partial('partials/also.phtml',array('type'=>$this->controllerName))?>
+	<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>
+</div>

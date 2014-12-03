@@ -1,0 +1,45 @@
+			<div id="horoscope">
+            	<div class="header">Гороскопы</div>
+                <div class="left_block">
+                	<?php if(isset($this->horoscopeData) && !empty($this->horoscopeData)):?>
+	                    <?php foreach($this->horoscopeData as $item):?>
+	                	<div class="sign_small_item">
+	                    	<div id="sign_small_img<?=$item['sign_id']?>"></div>
+	                        <div class="sign_small_text">
+	                        	<span><?=$item['sign_ru']?></span><br /><?=$item['sign_startdate']?>-<?=$item['sign_enddate']?>
+	                        	<input type="hidden" value="<?=$item['sign']?>"/>
+	                        </div>
+	                    </div>
+	                    <?php endforeach;?>
+                    <?php endif;?>
+                </div>
+                <div class="right_block">
+                	<div id="horo_arrow">
+                    	<div class="arrow_left"></div>
+                        <div class="arrow_right"></div>
+                    </div>
+                    <?php if(isset($this->horoscopeData) && !empty($this->horoscopeData)):?>
+                    <?php foreach($this->horoscopeData as $item):?>
+                	<div class="sign_item">
+                    	<div id="sign_img<?=$item['sign_id']?>"></div>
+                        <div class="item_header"><span><?=$item['sign_ru']?></span><br /><?=$item['sign_startdate']?>-<?=$item['sign_enddate']?></div>
+                        <div class="clear"></div>
+                        <div class="sign_item_header"><?=$item['sign_ru']?> — гороскоп на сегодня</div>
+                        <div class="data">
+                        	<?php $date = new Zend_Date(date('Y-m-d'));
+                            	echo $date->toString(Zend_Date::DATE_LONG);
+                            ?>
+                        </div>
+                        <div class="text"><?=$item['short_desc']?> ... <a href="/horoscope/<?=$item['sign']?>/today">гороскоп полностью →</a></div>
+                        <div class="button" style="bottom:45px;">
+                            <div class="button_left"></div>
+                            <div class="button_content"><a id="sign-all-horoscoper" href="/horoscope/<?=$item['sign']?>/today">Все горосокопы знака <?=$item['sign_ru']?></a></div>
+                            <div class="button_right"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <?php endforeach;?>
+                    <?php endif;?>
+                </div>
+                <div class="clear"></div>
+            </div>

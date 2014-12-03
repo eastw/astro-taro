@@ -1,0 +1,29 @@
+<div id="upr">
+	<div class="upr_item">
+		<?php if(isset($this->userdata)):?>
+			<?php if(!$this->resourse['is_favorite']):?>
+				<a id="favorite-link" onclick="addFavorite('<?=$this->resourse['id']?>','<?=$this->resourseType?>','<?=$this->subtype?>');" href="javascript:void(0)" >
+					<img src="/files/images/upr_img1.png" alt="" />
+					В избранное
+				</a>
+			<?php else:?>
+				<a href="javascript:void(0)" >
+					<img src="/files/images/upr_img1.png" alt="" />
+					В избранном
+				</a>
+			<?php endif;?>
+		<?php else:?>
+			<a href="/user/registration" >
+				<img src="/files/images/upr_img1.png" alt="" />
+				В избранноe
+			</a>
+		<?php endif;?>
+	</div>
+	<div class="upr_item" id="upr_item_center">
+		<img src="/files/images/upr_img3.png" alt="" /><span>Отзывы:</span> <span id="comments_count" ><?=$this->resourse['comments_count']?></span> 
+	</div>
+	<div class="upr_item">
+		<img src="/files/images/upr_img2.png" alt="" /><span>Рейтинг</span>: <span id="head-vote-count"><?=$this->voteCount?></span> 
+	</div>
+	<div class="clear"></div>
+</div>

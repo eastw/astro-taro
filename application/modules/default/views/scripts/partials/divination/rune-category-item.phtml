@@ -1,0 +1,25 @@
+<?php if(isset($this->item['name'])):?>
+<div class="all_divi_item">
+	<img src="/files/divinations/<?=$this->item['image']?>" alt="" />
+	<div class="all_divi_item_content">
+		<div class="item_header">
+			<a href="/gadaniya/rune/<?=$this->parentAlias?>/<?=$this->item['alias']?>"><?=$this->item['name']?></a>
+		</div>
+		<div class="text">
+			<?=$this->item['description']?>
+		</div>
+		<div class="talk_like">
+			<img class="lower" src="/files/images/talk.png" alt="" />
+			<span><?=$this->item['comments_count']?></span> 
+			<?php if(isset($_COOKIE['votediv_'.$this->item['id']])):?>
+				<img src="/files/images/like.png" alt="" />
+			<?php else: ?>
+				<a style="cursor:pointer;float:none;font-size:14px;" id="like_<?=$this->item['id']?>" onclick="divVote('<?=$this->item['id']?>')"><img src="/files/images/like.png"/></a>
+			<?php endif;?>
+			<span id="vote-count-<?=$this->item['id']?>"><?=$this->item['raiting']?></span>
+			<a href="/gadaniya/rune/<?=$this->parentAlias?>/<?=$this->item['alias']?>">гадать →</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<?php endif;?>

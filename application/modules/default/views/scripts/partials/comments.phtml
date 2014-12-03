@@ -1,0 +1,109 @@
+<div id="comments">
+	<div class="item_header">Отзывы</div>
+	<?php if(isset($this->userdata)):?>
+		<div id="do_comment">
+			<?php if(empty($this->userdata->avatar)):?>
+				<img src="/files/images/comment_profile.png" alt="" />
+			<?php else:?>
+				<img src="/files/avatar/<?=$this->userdata->avatar?>" style="width:41px" alt="" />
+			<?php endif;?>
+			<div class="comment_form">
+				<form>
+					<textarea id="comment_field" class="comment_field">Ваш отзыв</textarea>
+					<br />
+					<div class="ruls_comment">
+						<a href="/statyi/content/17-no-tag/48-pravila-dobavleniya-kommentariev" target="blank">правила добавления комментариев</a>
+					</div>
+					<input id="comment_type" type="hidden" value="<?=$this->attributes['type']?>"/>
+					<input id="comment_subtype" type="hidden" value="<?=$this->attributes['subtype']?>"/>
+					<input id="comment_sign" type="hidden" value="<?=$this->attributes['sign']?>"/>
+					<input id="comment_resource_id" type="hidden" value="<?=$this->attributes['resource_id']?>"/>
+					<input onclick="addComment()" class="comment_send" type="button" value="" />
+				</form>
+			</div>
+			<div class="clear"></div>
+		</div>
+	<?php else:?>
+		<div class="the_same_comment" >
+			<div class="the_same_header">Для добавления комментария:</div>
+			<div class="the_same_header">Необходимо <a class="ident-enter" href="#">авторизоваться</a> или <a href="/user/registration">зарегистрироваться</a></div>
+		</div>
+	<?php endif;?>
+	<div id="comments-items">
+		<?php if(count($this->comments)):?>
+			<?php foreach ($this->comments as $comment):?>
+			<div id="comm_<?=$comment['id']?>" class="comment_item">
+				<?php if(empty($comment['avatar'])):?>
+					<img src="/files/images/comment_profile.png" alt="" />
+				<?php else:?>
+					<img src="/files/avatar/<?=$comment['avatar']?>" style="width:41px" alt="" />
+				<?php endif;?>
+				
+				<div class="comment_content">
+					<div class="comment_header">
+							<?=$comment['name']?>
+							<span>
+								<?php 
+									$date = new Zend_Date($comment['date_created']);
+									if(date('Y-m-d') == date('Y-m-d',strtotime($comment['date_created']))){
+										echo 'Сегодня&nbsp;в&nbsp;'.date('H:i',strtotime($comment['date_created']));
+									}else{
+										echo $date->toString(Zend_Date::DATE_LONG).'&nbsp;'.date('H:i',strtotime($comment['date_created']));
+									}
+								?>
+							</span>
+					</div>
+					<div class="comment_text"><?=$comment['body']?></div>
+					<div class="dialog_line">
+						<a class="answer" onclick="answer('<?=$comment['name']?>')" href="javascript:void(0)">ответить</a>
+						<?php if(isset($this->userdata) && !empty($this->userdata)):?> 
+							<a href="javascript:void(0)" onclick="abuseComment('<?=$comment['id']?>',$(this).position())">пожаловаться</a>
+							<a href="javascript:void(0)" onclick="sendSpam('<?=$comment['id']?>')">это спам</a>
+						<?php endif;?>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div id="abuse-inform_<?=$comment['id']?>" class="abuse-inform">Спасибо за участие, мы получили ваше сообщение</div>
+			</div>
+			<?php endforeach;?>
+		<?php endif;?>
+	</div>
+</div>
+ <div id="abuse-comment-form" style="z-index:1000;">
+    <div class="reference">
+         <form >
+			  <table>
+			  	<tr>
+			  		<td>
+			  			<textarea id="abuse-field" rows="3" cols="29"></textarea>
+			  			<input type="hidden" id="comment" />
+			  		</td>
+			  	</tr>
+			  	<tr>
+			  		<td>
+			  			<table>
+			  				<tr>
+			  					<td>
+			  						<div class="button" style="position:static">
+										<div class="button_left"></div>
+										<div class="button_content">
+											<a href="javascript:void(0)" onclick="sendAbuse()">Оставить жалобу</a></div>
+										<div class="button_right"></div>
+									</div>
+			  					</td>
+			  					<td>
+						  			<div class="button" style="position:static">
+										<div class="button_left"></div>
+										<div class="button_content">
+											<a href="javascript:void(0)" onclick="closeAbuse()">Отмена</a></div>
+										<div class="button_right"></div>
+									</div>
+						  		</td>
+			  				</tr>
+			  			</table>
+			  		</td>
+			  	</tr>
+			  </table>
+        </form>
+    </div>
+</div>

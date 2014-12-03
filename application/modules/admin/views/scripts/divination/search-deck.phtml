@@ -1,0 +1,30 @@
+<table class="admin-table" id="deck-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:60%">
+			Название колоды 
+		</th>
+		<th style="width:10%">
+			Активность
+		</th>
+		<th style="width:30%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+	<?php foreach($this->data as $item):?>
+	<tr>
+		<td>
+			<a href="/admin/divination/edit-deck/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><?=$item['name'];?></a>
+		</td>
+		<td>
+			<a style="cursor:pointer;" id="<?=$item['id']?>" onclick="change_activity('<?=$item['id']?>')"><?=($item['activity'] == 'y')?'Акт':'Неакт';?></a>
+		</td>
+		<td>
+			<a href="/admin/divination/cards-deck/id/<?=$item['id']?>">Задать карты</a>
+			<a href="/admin/divination/edit-deck/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Ред.</a> / 
+			<a style="cursor:pointer" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<?php endif;?>
+</table>

@@ -1,0 +1,39 @@
+<div id="all_horo">
+	<div class="sign_top">
+		<img src="/files/images/profile/sun/<?=$this->curSign?>.png" alt="" />
+		<div class="item_header"><span><?=$this->data[0]['sign']['sign_ru']?></span><br /><?=$this->data[0]['sign']['text_date_range']?></div>
+		<div class="feature">
+			<a href="/horoscope/<?=$this->curSign?>/simple"><?=$this->data[0]['sign']['sign_ru']?> — характеристика знака →</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="packs">
+		<?php if(isset($this->data) && count($this->data)):?>
+			<?php foreach ($this->data as $index => $item):?>
+				<div id="horo_pack">
+					<?php if($item['startdate'] == date('Y-m-d')):?>
+						<div class="item_header">Гороскоп на сегодня</div>
+						<div class="data">
+							<?=(new Zend_Date(date('Y-m-d')))->toString(Zend_Date::DATE_LONG)?>
+						</div>
+					<?php elseif($item['startdate'] == date('Y-m-d',strtotime('+1 day'))):?>
+						<div class="item_header">Гороскоп на завтра</div>
+						<div class="data">
+							<?=(new Zend_Date(date('Y-m-d',strtotime('+1 day'))))->toString(Zend_Date::DATE_LONG)?>
+						</div>
+					<?php endif;?>
+					<div class="text">
+						<?=$item['description']?>
+					</div>
+				</div>
+			<?php endforeach;?>
+			<p style="text-align: right;">
+				<span style="color:#d3d3d3;">Авторский материал</span><br>
+				&copy; AstroTarot.ru
+			</p>
+		<?php endif;?>
+		
+	</div>
+	<?=$this->partial('partials/also.phtml',array('type'=>$this->controllerName))?>
+	<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>
+</div>

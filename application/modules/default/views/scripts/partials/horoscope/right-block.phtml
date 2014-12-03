@@ -1,0 +1,17 @@
+<div id="vklad">
+	<div class="actual_header">Гороскопы</div>
+	<div id="vklad_content">
+		<?php foreach($this->horoscopeTypes as $type=> $text):?>
+			<?php if($type != 'week'):?>
+			<div class="vklad_item<?=($this->curType == $type)?'_active':''?>">
+				<img src="/files/images/horo_corner.png" alt="" />
+				<?php if($this->curType == $type ):?>
+					<?=$text?>
+				<?php else:?>
+					<a href="/horoscope/<?=$this->curSign?>/<?=$type?>"><?=$text?></a>	
+				<?php endif;?>
+			</div>
+			<?php endif;?>
+		<?php endforeach;?>
+	</div>
+</div>

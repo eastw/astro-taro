@@ -1,0 +1,235 @@
+<?= $this->headLink()
+		 	->appendStylesheet(
+			'/css/jquery-ui.css	');?>
+<script type="text/javascript">
+<!--
+var cards = <?=Zend_Json::encode($this->cards)?>;
+var count = <?=$this->cards_full;?>;
+var divination = <?=$this->divination['id']?>;
+var divination_type = '<?=$this->divination['type']?>'; 
+
+$(document).ready(function(){
+	for(var i in cards){
+		if(cards[i].alignment_position != 0){
+			var html = '';
+			if(cards[i].is_significator == 'y'){
+				html = '<img src="/files/images/card_' + cards[i].significator_type + '.jpg"/>';
+			}else{
+				html = '<img src="/files/images/card_'+cards[i].alignment_position+'.jpg"/>';
+			}
+			$('#' + cards[i].net_row + '_' + cards[i].net_column).html(html);
+		}
+	}
+	$('#participation').change(function(){
+		if($(this).val() == 'n'){
+			$('#card_order_select option:selected').removeAttr('selected');
+		}
+	});
+});
+function showCardDialog(column,row){
+	$('#column').text(column);
+	$('#row').text(row);
+	$('#card-form').dialog({
+		'width': 400,
+		'modal': true,
+		'open': function(){
+			if($('#'+row+'_' + column + ' img').length){
+				for(var i in cards){
+					if(cards[i].net_column == column &&  cards[i].net_row == row){
+						$('#card_order_select option[value="'+cards[i].alignment_position+'"]').attr('selected','selected');
+						$('#desc').val(cards[i].position_desc);
+						if(cards[i].is_significator == 'y'){
+							$('#is_significator').attr('checked','checked');
+							$('#significator_type').show();
+							$('#participation-container').show();
+							$('#participation option').each(function(){
+								if($(this).val() == cards[i].participation){
+									$(this).attr('selected','selected');
+								}
+							});
+							$('#significator_type option[value="'+cards[i].significator_type+'"]').attr('selected','selected');
+						}
+						break;
+					}
+				}
+			}
+		},
+		'close': function(){
+			$('ul.errors').html('');
+			$('#desc').val('');
+			$('#is_significator').removeAttr('checked');
+			$('#significator_type option:selected').removeAttr('selected');
+			$('#significator_type').hide();
+			$('#card_order_select option:selected').removeAttr('selected');
+		},
+		'buttons': {
+			'Сохранить': function(){
+				if($('#card_order_select option:selected').val() != '' 
+					|| ($('#card_order_select option:selected').val() == '' && $('#participation-container').is(':visible') && $('#participation option:selected').val() == 'n')){
+					var sign = '';
+					var sign_type = '';
+					if($('#is_significator').is(':checked')){
+						sign = '1';
+						sign_type = $('#significator_type option:selected').val();
+					}else{
+						sign = '0';
+					}
+					var participation = 'y';
+					if(divination_type == 'classic' && $('#participation-container').is(':visible')){
+						participation = $('#participation option:selected').val();
+					}
+					
+					var dialog = $(this); 
+					$.post(
+							'/admin/divination/save-card-in-net',
+							{
+								'column'			: column,
+								'row' 				: row,
+								'order' 			: $('#card_order_select option:selected').val(),
+								'is_significator'	: sign,
+								'significator_type'	: sign_type,
+								'position_desc' 	: $('#desc').val(),
+								'divination_id' 	: divination,
+								'participation'		: participation
+							},
+							function(data){
+								if(data.errors.length == 0){
+									cards = data.data;
+									if(sign == 1){
+										$('#' + row + '_' + column).html('<img src="/files/images/card_'+$('#significator_type option:selected').val()+'.jpg" />');
+									}else{
+										$('#' + row + '_' + column).html('<img src="/files/images/card_'+$('#card_order_select option:selected').val()+'.jpg" />');
+									}
+									$('#participation-container').hide();
+									dialog.dialog('close');
+								}else{
+									var html = '';
+									$('ul.errors').html('');
+									for(var i in data.errors){
+										html += '<li>' + data.errors[i] + '</li>';
+									}
+									$('ul.errors').html(html);
+								}
+							},
+							'json');
+				}else{
+					$('ul.errors').html('');
+					$('ul.errors').html('<li>Выберите позицию</li>');
+				}
+				
+			},
+			'Отмена': function(){
+				$('#participation-container').hide();
+				$(this).dialog('close');
+			}
+		}
+	});
+}
+function sign_visibility(){
+	if($('#significator_type').is(':visible')){
+		$('#significator_type').hide();
+		$('#participation-container').hide();
+	}else{
+		$('#significator_type').show();
+		$('#participation-container').show();
+	}
+}
+function resetAlignment(div_id){
+	$.post('/admin/divination/reset-alignment',
+		{
+			'divination_id' : div_id
+		},
+		function(){
+			$('table.cards-net img').remove();
+		});
+}
+//-->
+</script>
+<h1>Управление формой расклада</h1>
+<table style="width:100%">
+	<tr>
+		<td>
+			<div><input type="button" value="Сбросить расклад" onclick="resetAlignment('<?=$this->divination['id']?>')"/></div><div style="text-align:right;"><a href="/admin/divination/taro">Назад к гаданиям</a></div>
+		</td>
+	</tr>
+</table>
+<table class="cards-net" style="">
+<?php for($i = 0,$n = 5; $i < $n; $i++):?>
+<tr>
+	<?php for($j = 0,$m = 9; $j < $m;$j++ ):?>
+		<td id="<?=$i?>_<?=$j?>" onclick="showCardDialog('<?=$j?>','<?=$i?>')" >
+		</td>
+	<?php endfor;?>
+</tr>	
+<?php endfor;?>
+</table>
+<div id="dialog" style="display:none;">
+	<form action="" id="card-form">
+		<table>
+			<tr>
+				<td colspan="2">
+					Столбец: <span id="row"></span>
+					Строка: <span id="column"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Значение номера карты
+				</td>
+				<td>
+					<input type="text" id="desc"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Порядок карты
+				</td>
+				<td>
+					<select id="card_order_select">
+						<option value="">Порядковый номер</option>
+						<?php for($i = 1,$n = ( $this->divination['cards_in_alignment'] + 1 ); $i < $n; $i++):?>
+							<option value="<?=$i?>" >
+								<?=$i?>
+							</option>
+						<?php endfor;?>
+					</select>
+					<ul class="errors">
+						
+					</ul>
+				</td>
+			</tr>
+			<?php if($this->divination['significators'] > 0):?>
+			<tr>
+				<td>
+					Является ли сигнификатором
+				</td>
+				<td>
+					<input id="is_significator" type="checkbox" onchange="sign_visibility()"/>
+					<select id="significator_type" style="display:none;">
+						<?php if($this->divination['significators'] > 1):?>
+							<option value="s1">S1</option>
+							<option value="s2">S2</option>
+						<?php else:?>
+							<option value="s">S</option>
+						<?php endif;?>
+					</select>
+				</td>
+			</tr>
+			<?php endif;?>
+			<tr id="participation-container" style="display:none;">
+				<td>
+					Участвует в гадании
+				</td>
+				<td>
+					<select id="participation">
+						<option value="y">Да</option>
+						<option value="n">Нет</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<input type="hidden" id="card_order_value" value=""/>
+		<input type="hidden" id="is_significator_value" value=""/>
+		<input type="hidden" id="significator_type_value" value=""/>
+	</form>
+</div>

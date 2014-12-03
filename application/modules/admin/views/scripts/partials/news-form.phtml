@@ -1,0 +1,36 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>" 
+		class="article-form">
+	<table>
+		<?=$this->element->title;?>
+		<?=$this->element->image;?>
+		<?=$this->element->img_note;?>
+		<?=$this->element->anonse;?>
+		<?=$this->element->content;?>
+		<?=$this->element->activity;?>
+		<?=$this->element->seokeywords;?>
+		<?=$this->element->seodescription;?>
+		<tr>
+			<td>
+				Теги
+			</td>
+			<td>
+				<?=$this->element->tagslist;?>
+				<?=$this->element->addtag;?>
+			</td>
+		</tr>
+		<?=$this->element->tagsplace?>
+		<tr>
+			<td colspan="2">
+			<?=$this->element->page;?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+				<?=$this->element->cancel;?>
+			</td>
+		</tr>
+	</table>
+</form>

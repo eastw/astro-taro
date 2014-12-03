@@ -1,0 +1,42 @@
+<h1>Нумерология</h1>
+<div>
+	Описание нумерологии бла бла бла. Дает возможность получить информацию по дате рождения человека. Теперь можно предсказать судьбу, раскрыть таланты человека и так далее.
+</div>
+<div style="text-align:right">
+	<a href="/statyi/tag/13-numerologiya">Статьи о нумерологии</a>
+</div>
+<div>
+	<?php foreach($this->fullTypes as $typekey => $type):?>
+		<table>
+			<tr>
+				<td style="vertical-align: top;">
+					<img src="<?=$type['image']?>"/>
+				</td>
+				<td>
+				<table>
+					<tr>
+						<td>
+							<h2><a href="/numerology/<?=$typekey?>"><?=$type['name']?></a></h2>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<?=$type['small_desc']?>
+							<hr>
+						</td>
+					</tr>
+					<?php if(count($type['children'])):?>
+					<?php foreach ($type['children'] as $key => $value):?>
+						<tr>
+							<td>
+								<a href="/numerology/<?=$typekey?>/<?=$key?>"><?=$value?></a>
+							</td>
+						</tr>
+					<?php endforeach;?>
+					<?php endif;?>
+				</table>
+			</td>
+			</tr>
+		</table>
+	<?php endforeach;?>
+</div>

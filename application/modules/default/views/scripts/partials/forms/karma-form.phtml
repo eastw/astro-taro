@@ -1,0 +1,29 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>">
+		
+		<div class="num_calc1_line" style="padding: 55px 0 0 35px;height:75px;">
+			<span>Дата рождения</span><br />
+			<div class="num_calc1_form">
+				<?=$this->element->byear?>
+			</div>
+			<div class="num_calc1_form" id="num_calc1_center2">
+				<?=$this->element->bmonth?>
+			</div>
+			<div class="num_calc1_form">
+				<?=$this->element->bday?>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="errors" class="wrong_text" style="margin: 15px 0 0 0 ">
+		</div>
+		<input id="send-data" style="margin-top: 10px;" class="enter_calc" type="image" src="/files/images/num_calc_enter.png" />
+</form>
+
+
+
+
+
+
+
+

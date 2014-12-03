@@ -1,0 +1,84 @@
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	$('#search-deck').click(function(){
+		$.post('/admin/divination/search-deck',
+				{'query':$('#query').val()},
+				function(data){
+					$('#deck-table').html(data);
+				}
+			);
+	});
+});
+function confirmation(id,page){
+	if(confirm('Вы действительно хотите удалить эту статью?')){
+		window.location.href="/admin/divination/remove-deck/id/" + id + '/page/' + page;
+	}
+}
+function change_activity(id){
+	$.post('/admin/divination/change-deck-activity',
+			{'id':id},
+			function(data){
+				if(!data.hasOwnProperty('activity')){
+					if(data.hasOwnProperty('error') && data.error.lenght != 0){
+						alert(data.error);
+					}
+				}else{
+					if(data.activity == 'y'){
+						$('#' + data.id).text('Акт');
+					}
+					if(data.activity == 'n'){
+						$('#' + data.id).text('Неакт');
+					}
+				}
+			},'json');
+}
+//-->
+</script>
+<h1>Управление колодами</h1>
+<table>
+	<tr>
+		<td>
+			<div style="text-align:left;"><a href="/admin/divination/add-deck">Добавить колоду.</a></div>
+		</td>
+		<td>
+			<input id="query" type="text"/><input id="search-deck" type="button" value="Найти колоду"/>
+			<input type="button" id="clear-search" value="Очистить поиск" onclick='window.location.href="/admin/divination/deck"'/>
+		</td>
+	</tr>
+</table>
+<table class="admin-table" id="deck-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:60%">
+			Название колоды 
+		</th>
+		<th style="width:10%">
+			Активность
+		</th>
+		<th style="width:30%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->paginator)):?>
+	<?php foreach($this->paginator as $item):?>
+	<tr>
+		<td>
+			<a href="/admin/divination/edit-deck/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><?=$item['name'];?></a>
+		</td>
+		<td>
+			<a style="cursor:pointer;" id="<?=$item['id']?>" onclick="change_activity('<?=$item['id']?>')"><?=($item['activity'] == 'y')?'Акт':'Неакт';?></a>
+		</td>
+		<td>
+			<a href="/admin/divination/cards-deck/id/<?=$item['id']?>">Задать карты</a>
+			<a href="/admin/divination/edit-deck/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Ред.</a> / 
+			<a style="cursor:pointer" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<tr>
+		<td colspan="3">
+			<?=$this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray)) ?>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>

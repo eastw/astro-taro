@@ -1,0 +1,53 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/plugins/jquery.form.min.js',
+				'text/javascript')
+			->appendFile(
+				'/js/scripts/profile.js',
+				'text/javascript');
+?>
+<div id="column1">
+	<?=$this->partial('partials/profile/leftmenu.phtml',array('active' => 'edit','userdata' => $this->userdata))?>
+</div>
+<div id="column2">
+	<div id="cabinet_content">
+		<?=$this->form?>
+	</div>
+</div>
+<div id="column3">
+	<div id="cabinet_profile">
+		<div id="cabinet_profile_top"></div>
+		<div id="cabinet_profile_content">
+			<?=$this->avatar;?>
+			<div class="clear"></div>
+		</div>
+		<div id="cabinet_profile_bottom"></div>
+	</div>
+	<div id="exit">
+		<a href="/user/logout"><img src="/files/images/exit.png" alt="" /></a>
+	</div>
+	<div id="activity">
+		<div class="item_header">Активность</div>
+		<span class="activity_header">Регистрация</span><br/>
+		<span>
+			<?php $date = new Zend_Date($this->userdata->register_date);echo $date->toString(Zend_Date::DATE_LONG); ?>
+		</span><br /><br />
+		<span class="activity_header">Последний вход</span><br /> 
+		<span>
+			<?php
+				if(date('Y-m-d') == date('Y-m-d',strtotime($this->userdata->last_login))){
+					echo 'Сегодня&nbsp;'.date('H:i',strtotime($this->userdata->last_login));
+				}else{
+					echo $date->toString(Zend_Date::DATE_LONG).'&nbsp;'.date('H:i',strtotime($this->userdata->last_login));
+				}
+			?>
+		</span><br />
+		<br/> <a id="remove-profile" style="cursor:pointer">Удалить мою учетную запись</a>
+	</div>
+	<?=$this->partial('partials/banner-right1.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	<?=$this->partial('partials/banner-right3.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	<?=$this->partial('partials/banner-right2.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	
+</div>
+<div class="clear"></div>
+<?=$this->partial('partials/bottom-text-and-banner.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>

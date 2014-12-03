@@ -1,0 +1,96 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>" 
+		class="article-form">
+	<table>
+		<tr>
+			<td colspan="2">
+				Как вас зовут
+				<table style="border: 1px solid grey;width:100%">
+					<tr>
+						<td>
+							<?=$this->element->fname1?>
+						</td>
+						<td>
+							<?=$this->element->mname1?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<?=$this->element->lname1?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				Дата рождения
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table style="border: 1px solid grey;width:100%">
+					<tr>
+						<td>
+							<?=$this->element->byear1?>
+						</td>
+						<td>
+							<?=$this->element->bmonth1?>
+						</td>
+						<td>
+							<?=$this->element->bday1?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				Как зовут вашего партнера
+				<table style="border: 1px solid grey;width:100%">
+					<tr>
+						<td>
+							<?=$this->element->fname2?>
+						</td>
+						<td>
+							<?=$this->element->mname2?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<?=$this->element->lname2?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				Дата рождения партнера
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table style="border: 1px solid grey;width:100%">
+					<tr>
+						<td>
+							<?=$this->element->byear2?>
+						</td>
+						<td>
+							<?=$this->element->bmonth2?>
+						</td>
+						<td>
+							<?=$this->element->bday2?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+			</td>
+		</tr>
+	</table>
+</form>

@@ -1,0 +1,22 @@
+<?php 
+	$this->headScript()->appendFile(
+            '/js/scripts/article.js',
+            'text/javascript'
+        );
+?>
+<div id="article_nav">
+	<div class="article_nav_item<?=($this->type == 'all'?'_active':'')?>">
+		<a href="/statyi/1/all">Все</a>
+	</div>
+	<div class="article_nav_item<?=($this->type == 'popular'?'_active':'')?>">
+		<a href="/statyi/1/popular">Популярные</a>
+	</div>
+</div>
+<div id="article">
+<?php if(count($this->paginator)):?>
+	<?php foreach($this->paginator as $item):?>
+		<?=$this->partial('partials/article/article-anonse.phtml', array('data' => $item,'tags' => $this->tags)); ?>
+	<?php endforeach;?>
+	<?php echo $this->paginationControl($this->paginator, 'Sliding', 'partials/article/article-pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray, 'funcName' => 'changeAgentListPage','type' => $this->type)) ?>
+<?php endif;?>
+</div>

@@ -1,0 +1,81 @@
+<form action="<?=$this->escape($this->element->getAction());?>"
+	method="<?=$this->escape($this->element->getMethod()); ?>"
+	enctype="<?=$this->element->getEncType(); ?>" id="profile-form">
+	<div class="cabinet_header">Учетная запись</div>
+	<div class="reg_full2">
+		<div class="in_input" id="in_input_first">
+			<span>Электронная почта<img src="/files/images/must.png" alt=""></span><br /> 
+			<?=$this->element->email;?>
+		</div>
+		<div class="in_input">
+			<span>Пароль для входа<img src="/files/images/must.png" alt=""></span><br /> 
+			<?=$this->element->pass;?>
+		</div>
+		<div class="clear"></div>
+		<div class="in_input">
+			<span>Подтвердите пароль<img src="/files/images/must.png" alt=""></span><br />
+			<?=$this->element->pass_confirm;?>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="cabinet_header">Мой профиль</div>
+	<div class="reg_full">
+		<div class="in_input" id="in_input_first2">
+			<span>Имя</span><br />
+			<?=$this->element->fname?>
+		</div>
+		<div class="in_input">
+			<span>Фамилия</span><br />
+			<?=$this->element->lname?>
+		</div>
+		<div class="clear"></div>
+		<div class="in_input">
+			<span>Отчество</span><br />
+			<?=$this->element->mname?>
+		</div>
+		<div class="clear"></div>
+		<div class="vipadalki">
+			<span>Дата рождения<img src="/files/images/must.png" alt=""></span><br />
+			<div class="center_span2">
+				<?=$this->element->byear?>
+			</div>
+			<div class="center_span">
+				<?=$this->element->bmonth?>
+			</div>
+			<div class="center_span2">
+				<?=$this->element->bday?>
+			</div>
+			<div class="clear"></div>
+			<br />
+			<div class="nujtak">
+				<span>Пол<img src="/files/images/must.png" alt=""></span><br />
+				<?=$this->element->gender;?>
+			</div>
+		</div>
+	</div>
+	<!-- 
+	<div class="cabinet_header">Форум</div>
+	 -->
+	<div class="reg_full2">
+		<!-- 
+		<div class="in_input">
+			<span>Ник</span><br /> 
+			<?=''//$this->element->nik?>
+		</div>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<div class="clear"></div>
+		<div class="in_input2">
+			<span>Подпись</span><br />
+			<?=''//$this->element->signature?>
+		</div>
+		 -->
+		<div class="clear"></div>
+		<span id="update-success" style="color:green;display:none;">Данные обновлены</span>
+		<input class="send_profile" type="image" src="/files/images/send_profile.png" />
+		<div class="clear"></div>
+	</div>
+</form>

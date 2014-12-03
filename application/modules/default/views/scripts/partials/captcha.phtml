@@ -1,0 +1,9 @@
+<div class="cap_con_dash">
+	<div><?=$this->element->getCaptcha()->render(); ?></div>
+	<img id="simple-refressh" class="captcha_send" src="/files/images/captcha_send.png" alt="" />
+</div>
+<div class="clear"></div>
+<span>Введите слово с картинки:</span><br />
+<input id="captcha" type="text" class="reg_form2" name="captcha[input]" />
+<input type="hidden" name="captcha[id]" value="<?=$this->element->getValue() ?>" >
+<br/>

@@ -1,0 +1,20 @@
+<?php 
+	$this->headScript()->appendFile(
+            '/js/scripts/article.js',
+            'text/javascript'
+        );
+?>
+<h1><?=$this->article['title']?></h1>
+<?=$this->article['content'];?>
+Теги статьи:
+<div style="tags">
+	<?=$this->NewsTags($this->article['quicktag'],$this->newstags)?>
+</div>
+<div>
+	<?php if(isset($_COOKIE['vote_'.$this->article['id']])):?>
+		<img src="/files/images/oldlike.jpg"/>
+	<?php else:?>
+		<a style="cursor:pointer" id="like_<?=$this->article['id']?>" onclick="vote('<?=$this->article['id']?>')"><img src="/files/images/oldlike.jpg"/></a>
+	<?php endif;?>
+	<span id="vote-count-<?=$this->article['id']?>"><?=$this->article['raiting']?></span>
+</div>

@@ -1,0 +1,52 @@
+<?php
+	$this->headScript()->appendFile(
+				'/js/plugins/jquery.serialize-assoc.js',
+				'text/javascript');
+	$this->headScript()->appendFile(
+				'/js/plugins/jquery.serialize-object.js',
+				'text/javascript');
+	
+	if($this->form instanceof Application_Form_PayserviceHoroscopeThemeForm ){
+		$this->headScript()->appendFile(
+				'/js/scripts/payservice-horoscope.js',
+				'text/javascript');
+	}
+	if($this->form instanceof Application_Form_PayserviceHoroscopeDoubleThemeForm ){
+		$this->headScript()->appendFile(
+				'/js/scripts/payservice-horoscope-partner.js',
+				'text/javascript');
+	}
+	if($this->form instanceof Application_Form_PayserviceDivinationThemeForm ){
+		$this->headScript()->appendFile(
+				'/js/scripts/payservice-divination.js',
+				'text/javascript');
+	}
+
+?>
+<div id="opisanie">
+	<div class="item_header"><?=$this->pageTitle?></div>
+	<div class="text">
+		<?=$this->minidesc?>
+	</div>
+	<div class="clear"></div>
+</div>
+<div>
+	<div id="fill-form" class="payservice-header">
+		Заполните анкету
+	</div>
+	<?=$this->form?>
+	<div id="order-info">
+		<p style="font-style:italic">
+			Мы отправили Вам свои реквизиты на указанный адрес электронной почты. 
+			Ответ будет составлен и отправлен на почту в течение 1-3 суток с момента поступления средств на счет.   
+		</p>
+		<p style="font-style:italic">
+			По всем вопросам индивидуальных заказов обращайтесь <br>e-mal: <a href="mailto:zakaz@astrotarot.ru">zakaz@astrotarot.ru</a>
+		</p>
+		<p style="font-style:italic;text-align:right;">
+			С уважнием, администрация сайта Astro Tarot 
+		</p>
+	</div>
+</div>
+<?=$this->partial('partials/social.phtml',array())?>
+<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>

@@ -1,0 +1,69 @@
+<script type="text/javascript">
+<!--
+var divinationId = '<?=$this->divination['id']?>';
+var openForClick = 'true';
+var selectedCellOrder = 0;
+var selectedTableItem = 0;
+function cellDescription(cellOrder,tableItem){
+	if(openForClick == 'true'){
+	$.post(
+			'/divination/get-other-description',
+			{
+				'divination_id': divinationId,
+				'order': cellOrder,
+			},
+			function(data){
+			    openForClick = 'false';
+			    selectedCellOrder = cellOrder;
+			    selectedTableItem = tableItem;
+			    $('#item' + cellOrder).text(data.order);
+			    $('#item' + cellOrder).attr('class','table_item'+tableItem+'_active');
+			    $('.coins2').text(data.order);
+			    $('#again_button').show();
+			    $('#auto_other').html(data.description);
+			    $('#other_divi_tarot').show();
+			},'json');
+	}
+}
+function again(){
+	openForClick = 'true';
+	$('#item' + selectedCellOrder).text('');
+    $('#item' + selectedCellOrder).attr('class','table_item'+selectedTableItem);
+    $('.coins2').text('?');
+    $('#again_button').hide();
+    $('#other_divi_tarot').hide();
+    $('#auto_other').html('Сосредоточьтесь над вопросом, ответ на который вы желаете получить из таблицы. Выберите ячейку которую подсказывает вам интуиция.');
+    return false;
+}
+//-->
+</script>
+<div id="interactive_block_table" <?=(!empty($this->divination['background']))?'style="background:url(/files/divinations/'.$this->divination['background'].')"':'';?>>
+	<div id="inter_block1">
+		<div id="table_net">
+			<?php $count1 = 1;?>
+			<?php $count2 = 1;?>
+			<?php for($i=1;$i<11;$i++):?>
+				<div class="table_row<?=$count1?>">
+					<?php for($j=1; $j<11; $j++):?>
+						<div id="item<?=$count2?>" class="table_item<?=$j?>" onclick="cellDescription('<?=$count2?>','<?=$j?>')"></div>
+						<?php $count2++;?>
+					<?php endfor;?>
+					<?php $count1++;?>
+				</div>
+			<?php endfor;?>
+		</div>
+	</div>
+	<div id="inter_block2">
+		<div class="intuit_header_book">Ваш выбор</div>
+		<div class="intuit_content">
+			<div class="coins_net">
+				<div class="coins2">?</div>
+			</div>
+			<div id="auto_other" >
+				Сосредоточьтесь над вопросом, ответ на который вы желаете получить из таблицы. Выберите ячейку которую подсказывает вам интуиция.
+			</div>
+			<a id="again_button" style="display:none;cursor:pointer" onclick="again()"><img class="re_divi" src="/files/images/re_divi_button.png" alt="" /></a>
+			<div id="other_divi_tarot" style="display:none;"><a href="/gadaniya/other">другие гадания →</a></div>
+		</div>
+	</div>
+</div>

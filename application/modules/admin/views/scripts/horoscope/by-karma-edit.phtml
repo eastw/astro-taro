@@ -1,0 +1,45 @@
+<?php
+$this->headScript()->appendFile(
+		'/js/plugins/jquery.ui.datepicker-ru.js',
+		'text/javascript')
+		->appendFile(
+		'/js/ckeditor/ckeditor.js',
+		'text/javascript');
+$this->headLink()
+	->appendStylesheet(
+		'/css/jquery-ui.css	');
+?>
+
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		
+		$('#startdate,#enddate').datepicker({
+			changeYear: true,
+			changeMonth: true,
+			 yearRange: '-100:+25',
+		});
+	});
+//-->
+</script>
+<?php if($this->actionType == 'add'):?>
+<h1>Добавление нового периода</h1>
+<?php elseif($this->actionType == 'edit'):?>
+<h1>Редактирование периода</h1>
+<?php endif;?>
+<?=$this->form;?>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'desc',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash',
+		width: "700px",
+        height: "300px"
+	} );
+	
+//-->
+</script>

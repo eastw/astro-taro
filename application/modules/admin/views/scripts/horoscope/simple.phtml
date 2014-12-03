@@ -1,0 +1,167 @@
+<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		$('#sign_types').change(function(){
+			var signtype = $(this).val();
+			//console.log(signtype); 
+			hideAllBlocks();
+			if(signtype == 1){
+				$('#sun_sign_wrapper').show();
+			}
+			if(signtype == 2){
+				$('#kelt_sign_wrapper').show();
+			}
+			if(signtype == 3){
+				$('#china_sign_wrapper').show();
+			}
+			$('#sun_sign,#kelt_sign,#china_sign').find('option:selected').removeAttr('selected');
+			CKEDITOR.instances.desc.setData('');
+		});
+
+		
+		$('#sun_sign,#kelt_sign').change(function(){
+			var sign = $(this).val();
+			if(sign != '' ){
+				$.post(
+						'/admin/horoscope/get-simple-sign',
+						{
+							'sign_type'		: $('#sign_types option:selected').val(), 
+							'sign'			: sign
+						},
+						function(data){
+							if(data.hasOwnProperty('description')){
+								CKEDITOR.instances.desc.setData(data.description);
+							}
+						},'json');
+			}else{
+				
+			}
+		});
+		$('#china_sign,#china_type').change(function(){
+			var sign = $('#china_sign option:selected').val();
+			var china_type = $('#china_type option:selected').val();
+			if(china_type != '' && sign != ''){
+				$.post(
+						'/admin/horoscope/get-simple-sign',
+						{
+							'sign_type'				: $('#sign_types option:selected').val(),
+							'sign'			: sign,
+							'china_type'	: china_type 
+						},
+						function(data){
+							if(data.hasOwnProperty('description')){
+								CKEDITOR.instances.desc.setData(data.description);
+							}
+						},'json');
+			}
+		});
+		$('#save').click(function(){
+			var signtype = $('#sign_types option:selected').val();
+			var china_type = $('#china_type option:selected').val();
+			var sign = 0;
+			if(signtype == 1){
+				sign = $('#sun_sign option:selected').val();
+				china_type = '';
+			}
+			if(signtype == 2){
+				sign = $('#kelt_sign option:selected').val();
+				china_type = '';
+			}
+			if(signtype == 3){
+				sign = $('#china_sign option:selected').val();
+				if(china_type == ''){
+					sign = '';
+				}
+			}
+			if(sign != ''){
+				$.post(
+						'/admin/horoscope/save-simple-sign',
+						{
+							'signtype'		: signtype,
+							'sign'			: sign,
+							'china_type'	: china_type, 
+							'description'	: CKEDITOR.instances.desc.getData()
+						},
+						function(){
+							
+						});
+			}
+		});
+	});
+	function hideAllBlocks(){
+		$('#sun_sign_wrapper,#kelt_sign_wrapper,#china_sign_wrapper').hide();
+	}
+//-->
+</script>
+<h1>Обычное описание знаков</h1>
+<div style="width:100%;">
+	Тип знака
+	<select id="sign_types">
+		<option value=""></option>
+		<?php foreach ($this->signTypes as $type):?>
+			<option value="<?=$type['id']?>"><?=$type['type']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<div id="sun_sign_wrapper" style="display:none;">
+	Знак
+	<select id="sun_sign">
+		<option value=""></option>
+		<?php foreach($this->sunSigns as $sign):?>
+			<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<div id="kelt_sign_wrapper" style="display:none;">
+	Знак 
+	<select id="kelt_sign">
+		<option value=""></option>
+		<?php foreach($this->keltSigns as $sign):?>
+			<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<div id="china_sign_wrapper" style="display:none;">
+	Год 
+	<select id="china_sign">
+		<option value=""></option>
+		<?php foreach($this->chinaSigns as $sign):?>
+			<option value="<?=$sign['id']?>"><?=$sign['sign_ru']?></option>
+		<?php endforeach;?>
+	</select>
+	Стихия
+	<select id="china_type">
+		<option value=""></option>
+		<?php foreach($this->chinaTypes as $type):?>
+			<option value="<?=$type['id']?>"><?=$type['type_ru']?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+<table>
+	<tr>
+		<td>
+			Описание знака
+		</td>
+		<td>
+			<textarea name="desc" rows="2" cols="30"></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:right">
+			<input id="save" type="button" value="Сохранить"/>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'desc',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

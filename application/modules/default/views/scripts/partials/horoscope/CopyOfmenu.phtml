@@ -1,0 +1,13 @@
+<table>
+	<tr>
+		<?php foreach($this->signs as $sign):?>
+	    <td>
+	    	<?php if($this->curSign == $sign['sign']):?>
+				<?=$sign['sign_ru']?>
+			<?php else:?>
+				<a href="/horoscope/<?=$sign['sign']?>/today"><?=$sign['sign_ru']?></a>
+			<?php endif;?>
+		</td>
+		<?php endforeach;?>
+	</tr>
+</table>

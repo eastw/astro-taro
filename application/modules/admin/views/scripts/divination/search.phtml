@@ -1,0 +1,49 @@
+<table class="admin-table" id="taro-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:50%">
+			Заголовок
+		</th>
+		<th style="width:5%">
+			Тип
+		</th>
+		<th style="width:20%">
+			Категория
+		</th>
+		<th style="width:5%">
+			Акт.
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+	<?php foreach($this->data as $item):?>
+	<tr>
+		<td>
+			<a href="/admin/divination/edit-taro/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><?=$item['name'];?></a>
+		</td>
+		<td>
+			<?=$item['type_name']?>
+		</td>
+		<td>
+			<?=$item['cat_name']?>
+		</td>
+		<td>
+			<a id="activity_<?=$item['id']?>" style="cursor:pointer" onclick="changeActivity('<?=$item['id']?>')"><?=($item['activity'] == 'y')?'Акт':'Неакт';?></a>
+		</td>
+		<td>
+			<?php if($item['type'] == 'taro' || $item['type'] == 'classic' || $item['type'] == 'rune'):?>
+			<a href="/admin/divination/data-taro/id/<?=$item['id']?>">Описание</a>
+			<a href="/admin/divination/net-taro/id/<?=$item['id']?>">Сетка</a>
+			<?php elseif($item['type'] == 'book'):?>
+				<a href="/admin/divination/book-descriptions/id/<?=$item['id']?>">Описания</a>
+			<?php elseif($item['type'] == 'other'):?>
+				<a href="/admin/divination/other-descriptions/id/<?=$item['id']?>">Описания</a>	
+			<?php endif;?>
+			<a href="/admin/divination/edit-taro/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Ред.</a> / 
+			<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<?php endif;?>
+</table>

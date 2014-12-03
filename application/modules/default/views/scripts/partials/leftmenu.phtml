@@ -1,0 +1,16 @@
+<?php foreach($this->categories as $category):?>
+	<div class="box">
+		<div class="innerBox"> 
+			<h3><?=$category['data']?></h3>
+			<menu>
+				<?php if(isset($category['children'])):?>
+					<?php foreach($category['children'] as $child):?>
+						<li>
+							<a href="#"><?=$child['data']?></a>
+						</li>
+					<?php endforeach;?>
+				<?php endif;?>
+			</menu>
+		</div>
+	</div>
+<?php endforeach;?>

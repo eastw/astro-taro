@@ -1,0 +1,117 @@
+<script type="text/javascript">
+<!--
+var currentTime = 0;
+var divinationId = '<?=$this->divination['id']?>';
+var hexagramm = '';
+var linesBottom = 0;
+$(document).ready(function(){
+	$('#drop-coins').mousedown(function(){
+		if($('#text').is(':visible')){
+			$('#text').hide();
+		}
+		$('#hexagramm').show();
+		if(currentTime < 6){
+			$('#image').hide();
+			$('#drop-animation').show();
+			$('#coins-div').hide();
+		}
+	}).mouseup(function(){
+		if(currentTime < 6){
+			$('#drop-animation').hide();
+			//$('#image').show();
+			var coins = [];
+			for(var i = 0; i < 3;i++){
+				var coin = generateCoin();
+				if(coin == 'normal'){
+					$('#coin-'+i).attr('src','/files/images/a.png');
+				}
+				if(coin == 'reverse'){
+					$('#coin-'+i).attr('src','/files/images/b.png');
+				}
+				coins[i] = coin;
+			}
+			var normal = 0;
+			for(var i = 0; i < 3; i++){
+				if(coins[i] == 'normal'){
+					++normal;
+				}
+			}
+			var html = $('#hexagramm').html();
+			if(normal >= 2){
+				hexagramm = '1' +hexagramm;
+				 html = '<img style="position:absolute;left:100px;bottom:'+linesBottom+'px" src="/files/images/a_line.png"/>' + html;
+			}else{
+				hexagramm = '0' +hexagramm;
+				html = '<img style="position:absolute;left:100px;bottom:'+linesBottom+'px" src="/files/images/b_line.png"/>' + html;
+			}
+			$('#coins-div').show();
+			$('#hexagramm').html(html);
+			//console.log(hexagramm);
+			++currentTime;
+			linesBottom += 35;
+			if(currentTime >= 6){
+				getHexagrammDescription(divinationId,hexagramm);
+			}
+		}else{
+			
+		}
+		
+	});
+	
+	$('#auto-divination').click(function(){
+		var time = 1000;
+		for(var i=0; i < 6;i++){
+			var t1 = setTimeout(function(){
+								$('#drop-coins').mousedown();
+							},time);
+			time += 2000;
+			var t2 = setTimeout(function(){
+				$('#drop-coins').mouseup();
+			},time);
+			time += 2000;
+		}
+	});
+});
+
+function getHexagrammDescription(divId,hex){
+	$.post(
+			'/divination/get-book-description',
+			{
+				'divination_id': divId,
+				'hexagramm': hex,
+			},
+			function(data){
+				$('#our-alignment').show();
+				$('#desc_wrapper_0').html(data);
+				 $('html, body').animate({
+				        scrollTop: $("#desc_wrapper_0").offset().top
+				    }, 2000);
+			}
+		);
+}
+
+function generateCoin(){
+	cardNumber = Math.floor(Math.random()*30);
+	if(cardNumber > 15){
+		return 'normal';
+	}
+	return 'reverse';
+} 
+//-->
+</script>
+<div id="part2" style="width:970px;height:600px;border: 1px solid grey;position:relative;background-color:grey;">
+	<p id="text" style="width:400px;position:absolute;top:100px;left:200px;">Сосредоточьтесь над своим вопросом, ответ на который вы хотите получить из Книги Перемен. <span>Удерживайте кнопку "Подбросить монеты" столько времени, сколько вам подскажет интуиция. Выпавшая комбинация показывает определенную линию гексаграммы. Для соствления все гексаграммы вам нужно подбросить монеты 6 раз, и Книга Перемен даст ответ на ваш вопрос.</span></p>
+	<p id="count-text" style="position:absolute;right:20px;">Подбросьте монеты 6 раз</p>
+	<img id="image" style="position:absolute;top:80px;right:120px;" src="/files/images/monetki.png"/>
+	<img id="drop-animation" style="position:absolute;top:180px;right:15px;display:none;" src="/files/images/china_money_final.gif"/>
+	<div id="coins-div" style="position:absolute;top:230px;right:30px;display:none;">
+		<img id="coin-0" src=""/>
+		<img id="coin-1" src=""/>
+		<img id="coin-2" src=""/>
+	</div>
+	<div id="hexagramm" style="border:1px solid black;position:absolute;top:50px;left:100px;display:none;width:500px;height:400px;">
+		
+	</div>
+	<input type="button" id="drop-coins" value="Подбросить монеты" style="position:absolute;bottom:50px;right: 100px;"/>
+	<input type="button" value="Автоматически" id="auto-divination" style="position:absolute;bottom:20px;right: 100px;"/>
+</div>

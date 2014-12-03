@@ -1,0 +1,10 @@
+<div id="year-wrapper" style="width:700px;">
+	<?php foreach($this->years as $year):?>
+		<div style="width:120px;height:80px;border:1px solid black;float:left;" class="">
+			<div>
+				<?=$year['startdate']?>- <?=$year['enddate']?> 
+			</div>
+			<a style="cursor:pointer" onclick="showDialog('<?=$year['startdate']?>','<?=$year['enddate']?>')">Описание</a>
+		</div>
+	<?php endforeach;?>
+</div>

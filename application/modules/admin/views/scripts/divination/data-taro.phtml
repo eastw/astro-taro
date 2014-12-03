@@ -1,0 +1,285 @@
+<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+<!--
+	var folderAlias = '<?=$this->deck['folder_alias']?>';
+	var back = '<?=$this->deck['back']?>';
+	var divination_id = '<?=$this->divination['id']?>';
+	var type = '<?=$this->divination['type']?>';
+	$(document).ready(function(){
+		$('#cards').change(function(){
+			var selectedNum = $(this).val();
+			$.loading(true, {img: '/files/images/progress.gif', align:'center'});
+			$.post('/admin/divination/get-data-taro',
+					{'id' : divination_id,'number' : selectedNum},
+					function(data){
+
+						$('#title').val(data.title);
+						$('#title_reverse').val(data.title_reverse);
+
+						var normal = CKEDITOR.instances.normal_desc;
+						normal.setData(data.description);
+						var reverse = '';
+						//if(type != 'classic'){
+						reverse = CKEDITOR.instances.reverse_desc;
+						reverse.setData(data.description_reverse);
+							
+						//}
+
+						if($('#cards option:selected').val() != ''){
+							$('#normal_img').attr('src','/files/decks/' + folderAlias + '/' + $('#cards option:selected').val() + '.png');
+							$('#reverse_img').attr('src','/files/decks/' + folderAlias + '/' +$('#cards option:selected').val() + '_0.png');
+						}else{
+							$('#normal_img').attr('src','/files/decks/' + folderAlias + '/' + back);
+							$('#reverse_img').attr('src','/files/decks/' + folderAlias + '/' + back);
+						}
+						$.loading(false, {img: '/files/images/progress.gif', align:'center'});
+					},'json');
+			
+		});
+		$('#submit1,#submit2').click(function(){
+			var normal = CKEDITOR.instances.normal_desc.getData();
+			var reverse = '';
+			//if(type != 'classic'){
+				reverse = CKEDITOR.instances.reverse_desc.getData();
+			//}
+			var title = $('#title').val();
+			var title_reverse = $('#title_reverse').val();
+			$.loading(true, {img: '/files/images/progress.gif', align:'center'});
+			$.post('/admin/divination/save-data-taro',
+					{
+					'id' : divination_id,
+					'title' : title,
+					'title_reverse' : title_reverse,
+					'description' : normal,
+					'description_reverse' : reverse,
+					'number': $('#cards option:selected').val()
+					},
+					function(){
+						$.loading(false, {img: '/files/images/progress.gif', align:'center'});
+					});
+			return false;
+		});
+		$('#type').change(function(){
+			var type = $(this).val();
+			if(type != ''){
+				$.post('/admin/divination/category-by-type',
+					{
+						'type_id': type,
+					},
+						function(data){
+							var html = '<option value=""></option>';
+							for(var i in data){
+								html += '<option value="'+data[i]['id']+'">'+data[i]['name']+'</option>';
+							}
+							$('#category').html(html);
+						},'json');
+			}
+		});
+		$('#category').change(function(){
+			//console.log($(this).val());
+			var category = $(this).val();
+			if(category != ''){
+				$.post('/admin/divination/divinations-by-category',
+					{
+						'category_id': category,
+					},
+						function(data){
+							var html = '<option value=""></option>';
+							for(var i in data){
+								html += '<option value="'+data[i]['id']+'">'+data[i]['name']+'</option>';
+							}
+							$('#divination').html(html);
+						},'json');
+			}
+		});
+		$('#copy').click(function(){
+			var from_divination = $('#divination option:selected').val();
+			if(from_divination != ''){
+				$.post('/admin/divination/copy-divination-descriptions',
+						{
+							'from_divination': from_divination,
+							'to_divination': divination_id,
+						},
+						function(data){
+							$('.errors').html('');
+							if(data.result == 'fail'){
+								var html = '';
+								for(var i in data.errors){
+									html += '<span>' + data.errors[i] + '</span><br/>';
+								}
+								$('.errors').html(html);
+							}
+						},'json');
+				
+			}
+			return false;
+		});
+	});
+//-->
+</script>
+<h1>Редактирование описания карт гадания "<?=$this->divination['name']?>"</h1>
+<select id="cards">
+	<option value="">Выберите карту</option>
+	<?php foreach($this->data as $item):?>
+		<option value="<?=$item['deck_position']?>">Карта № <?=$item['deck_position']?></option>
+	<?php endforeach;?>
+</select>
+<table>
+	<tr>
+		<td >
+			<div style="margin-left:100px;">
+				<form>
+					<table style="border:1px solid black;">
+						<tr>
+							<td>
+							</td>
+							<td>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"><b>Скопировать описания из гадания</b>
+							</td>
+						</tr>
+						<tr>
+							<td>Тип гадания
+							</td>
+							<td>
+								<select id="type" >
+									<option value=""></option>
+									<?php foreach ($this->types as $type):?>
+										<option value="<?=$type['id']?>"><?=$type['name']?></option>
+									<?php endforeach;?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Категория гадания
+							</td>
+							<td>
+								<select id="category" >
+									<option value=""></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Гадание
+							</td>
+							<td>
+								<select id="divination" >
+									<option value=""></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div class="progress"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: right">
+								<input id="copy" type="submit" value="Скопировать описания в это гадание"/>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div class="errors"></div>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</td>
+	</tr>
+</table>
+<table style="width:100%">
+	<tr>
+		<td>
+			<div style="text-align:right;"><a href="/admin/divination/taro">Назад к гаданиям</a></div>
+		</td>
+	</tr>
+</table>
+<form>
+	<table style="width:100%">
+		<tr>
+			<td colspan="2" style="text-align:right;">
+				<input id="submit1" type="button" value="Сохранить"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img id="normal_img" src="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->deck['back']?>"/>
+			</td>
+			<td>
+				<table style="border:1px solid grey;">
+					<tr>
+						<td>
+							Название
+						</td>
+						<td>
+							<input id="title" style="width:300px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Описание
+						</td>
+						<td>
+							<textarea id="normal_desc" rows="5" cols="40"></textarea>
+						</td>
+					</tr>
+				</table>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img id="reverse_img" src="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->deck['back']?>"/>
+			</td>
+			<td>
+				<table style="border:1px solid grey;">
+					<tr>
+						<td>
+							Название
+						</td>
+						<td>
+							<input id="title_reverse" style="width:300px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Описание
+						</td>
+						<td>
+							<textarea id="reverse_desc" rows="5" cols="40"></textarea>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right;">
+				<input id="submit2" type="button" value="Сохранить"/>
+			</td>
+		</tr>
+	</table>
+</form>
+<script type="text/javascript">
+<!--
+	CKEDITOR.replace( 'normal_desc',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+	CKEDITOR.replace( 'reverse_desc',	{
+		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+		filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+		filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+	} );
+//-->
+</script>

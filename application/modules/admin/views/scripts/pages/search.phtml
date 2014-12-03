@@ -1,0 +1,23 @@
+<table class="admin-table" id="article-table" style="width: 500px;margin-left: 30px;">
+	<tr>
+		<th style="width:80%">
+			Заголовок
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+	<?php foreach($this->data as $item):?>
+	<tr>
+		<td>
+			<a href="/admin/pages/edit/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><?=$item['page_name_ru'];?></a>
+		</td>
+		<td>
+			<a href="/admin/pages/edit/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Редактировать</a> / 
+			<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<?php endif;?>
+</table>

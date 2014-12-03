@@ -1,0 +1,196 @@
+<?=$this->doctype();?>
+<html xmlns:og="http://ogp.me/ns#">
+<head>
+	<?=$this->headTitle($this->seotitle);?>
+	<?php $this->headMeta()->appendName('keywords', $this->seokeywords);?>
+	<?=$this->headMeta()->appendName('description', $this->seodescription);?>
+	<link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <?=$this->JQuery()->setVersion('1.10.2')->enable()/*->setUiVersion('1.9.2')->uiEnable()*/;?>
+    <?=$this->headLink()->prependStylesheet('/css/style.css')->prependStylesheet(
+			'/css/selectbox.css');?>
+    <?php $this->headScript()->appendFile(
+            '/js/plugins/jquery.cookie.js',
+            'text/javascript'
+        )->appendFile(
+            '/js/scripts/ani.js',
+            'text/javascript'
+        )->appendFile(
+            '/js/scripts/slyder.js',
+            'text/javascript'
+        )
+		->appendFile(
+			'/js/plugins/jquery.selectbox.min.js',
+			'text/javascript'
+		)->appendFile(
+				'/js/scripts/default.js',
+				'text/javascript'
+		)->appendFile(
+				'/js/scripts/social.js',
+				'text/javascript'
+		);
+		if($this->controllerName == 'index' && $this->actionName == 'index'){
+			$this->headScript()->appendFile(
+				'/js/scripts/magic_slyder.js',
+				'text/javascript'
+			);
+		}
+		
+    ?>
+    <?=$this->headScript();?>
+    <?=$this->partial('partials/analytics.phtml')?>
+    <?php if($this->controllerName == 'article' && $this->actionName == 'content'):?>
+		<meta property="og:image" content="http://astrotarot.ru<?='/files/articles/'.$this->article['image']?>" />
+		<link rel="image_src" href="http://astrotarot.ru<?='/files/articles/'.$this->article['image']?>" />
+    <?php endif;?>
+    <?php if($this->controllerName == 'article' && $this->actionName == 'newscontent'):?>
+		<meta property="og:image" content="http://astrotarot.ru<?='/files/news/'.$this->article['image']?>" />
+		<link rel="image_src" href="http://astrotarot.ru<?='/files/news/'.$this->article['image']?>" />
+    <?php endif;?>
+    <?php if($this->controllerName == 'magic' && $this->actionName == 'content'):?>
+		<meta property="og:image" content="http://astrotarot.ru<?='/files/magic/'.$this->article['image']?>" />
+		<link rel="image_src" href="http://astrotarot.ru<?='/files/magic/'.$this->article['image']?>" />
+    <?php endif;?>
+    <?php if($this->controllerName == 'divination' && $this->actionName == 'divination' ):?>
+		<meta property="og:image" content="http://astrotarot.ru<?='/files/divinations/'.$this->divination['image']?>" />
+		<link rel="image_src" href="http://astrotarot.ru<?='/files/divinations/'.$this->divination['image']?>" />
+    <?php endif;?>
+    <?php if($this->controllerName == 'moon' || $this->controllerName == 'numerology' || $this->controllerName == 'horoscope' ):?>
+    	
+	    <meta property="og:image" content="http://astrotarot.ru/files/images/AstroTarot_1.png" />
+		<link rel="image_src" href="http://astrotarot.ru/files/images/AstroTarot_1.png" />
+		
+		<meta property="og:image" content="http://astrotarot.ru/files/images/AstroTarot_2.png" />
+		<link rel="image_src" href="http://astrotarot.ru/files/images/AstroTarot_2.png" />
+		
+		<meta property="og:description" content="<?=(isset($this->socialDescription))?$this->socialDescription:''?>" />
+		
+	<?php endif;?>
+	<?php if($this->controllerName == 'payservice' && isset($this->themeData)):?>
+		<meta property="og:image" content="http://astrotarot.ru/files/paythemes/<?=$this->themeData['image']?>" />
+	<?php endif;?>
+	
+	<script type="text/javascript" src="//vk.com/js/api/openapi.js?112"></script>
+	<script type="text/javascript" src="//connect.facebook.net/en_US/sdk.js"></script>
+</head>
+<body>
+	<div id="vk_api_transport"></div>
+	<?=$this->partial('partials/metrics.phtml')?>
+	<?=$this->partial('partials/top-menu.phtml',
+					array(
+						'userdata' => $this->userdata,
+						'topMenuActiveItem' => $this->topMenuActiveItem,
+						'signs'=>$this->signs,
+						'searchQuery' =>$this->searchQuery,
+						'banners' => $this->banners,
+						'controllerName' =>$this->controllerName,
+						'bannerSubtype' => $this->bannerSubtype,
+						'paythemes' => $this->paythemes,
+						'paygates' => $this->paygates,
+						'twitterUrl' => $this->twitterUrl,
+						))?>
+    <div id="content<?php if(!in_array($this->controllerName,array('index','numerology','horoscope','divination','payservice'))):?>_white<?php endif;?>">
+    	<div id="content_wrap">
+    		<?php if($this->controllerName == 'index'
+				|| $this->controllerName == 'error'
+				|| ($this->controllerName == 'numerology' && !in_array($this->smallType,array('no-smalltype','list')) && $this->actionName != 'day-description' )):?>
+    			<?=$this->layout()->content; ?>
+    		<?php else:?>
+    			<?php if($this->controllerName == 'numerology' && in_array($this->smallType,array('no-smalltype','list')) ):?>
+    				<?=$this->partial('partials/numerology/menu.phtml',array('curType' => $this->curType))?>
+    			<?php endif;?>
+    			<?php if($this->controllerName == 'horoscope'):?>
+    				<?=$this->partial('partials/horoscope/sign-menu.phtml',array('signs' => $this->signs,'curSign' => $this->curSign))?>
+    			<?php endif;?>
+    			<?php if($this->controllerName == 'divination'):?>
+    				<?=$this->partial('partials/divination/divination-menu.phtml',array('divType' => $this->divType))?>
+    			<?php endif;?>
+    			<?php if($this->controllerName == 'payservice'):?>
+    				<?=$this->partial('partials/payservice/menu.phtml',array('serviceType' => $this->serviceType))?>
+    			<?php endif;?>
+    			<div id="white_space">
+    				<div id="deep_page">
+	                	<?=$this->navigation()->breadcrumbs()->setMinDepth(0)->setLinkLast(false)->setSeparator('<span class="span_arrow">→</span>'); ?>
+	                </div>
+	                <div class="tri_header"><?=$this->pageTitle;?></div>
+	                <?php if(isset($this->sliderExist) && $this->sliderExist):?>
+	                	<?=$this->partial('partials/slider.phtml',array('sliders' => $this->sliders))?>
+	                <?php endif;?>
+	                <?php if($this->controllerName == 'divination' && $this->actionName == 'divination'):?>
+						<?php if($this->divination['type'] == 'taro' || $this->divination['type'] == 'classic' || $this->divination['type'] == 'rune'):?>
+							<?=$this->partial('partials/divination/divination-block.phtml',
+												array(
+														'divination' => $this->divination,
+														'decks' => $this->decks,
+														'divinationNet' => $this->divinationNet,
+														'haveNotParticipatedCards' => $this->haveNotParticipatedCards,
+														'notParticipatedCards' => $this->notParticipatedCards
+												));?>
+						<?php elseif($this->divination['type'] == 'book'):?>
+							<?=$this->partial('partials/divination/divination-book.phtml',
+													array(
+														'divination' => $this->divination,
+														'decks' => $this->decks,
+														'divinationNet' => $this->divinationNet));?>
+						<?php elseif($this->divination['type'] == 'other'):?>
+							<?=$this->partial('partials/divination/divination-other.phtml',
+													array(
+														'divination' => $this->divination,
+													));?>									
+							<?php endif;?>																
+					<?php endif;?>
+	                <div id="columns">
+	                	<?php if($this->controllerName != 'user' && $this->controllerName != 'profile' && $this->controllerName != 'moon'):?>
+	                		<div id="column1">
+		                		<?=$this->partial('partials/left-column.phtml',array('categories' => $this->categories))?>
+		                	</div>
+		                	<div id="column2">
+		                		<?=$this->layout()->content; ?>
+		                	</div>
+		                	<div id="column3">
+		                		<?php if(isset($this->tags) && $this->controllerName == 'article'):?>
+		                			<?php if($this->actionName == 'list' || $this->actionName == 'tag' || $this->actionName == 'content'):?>
+		                				<?=$this->RandomTags($this->tags,$this->tag,'article')?>
+		                			<?php endif;?>
+		                			<?php if($this->actionName == 'newslist' || $this->actionName == 'newstag' || $this->actionName == 'newscontent'):?>
+		                				<?=$this->RandomTags($this->tags,$this->tag,'news')?>
+		                			<?php endif;?>
+		                		<?php endif;?>
+		                		<?php if(isset($this->tags) && $this->controllerName == 'magic'):?>
+		                			<?=$this->RandomTags($this->tags,$this->tag,'magic')?>
+		                		<?php endif;?>
+		                		<?php if($this->controllerName == 'horoscope' && $this->type != 'list'):?>
+		                			<?=$this->partial('partials/horoscope/right-block.phtml',array('horoscopeTypes' => $this->horoscopeTypes,'curType' => $this->type,'curSign' =>$this->curSign))?>
+		                		<?php endif;?>
+		                		<?php if($this->controllerName == 'divination' && $this->actionName == 'divination'):?>
+		                			<?=$this->partial('partials/divination/divination-right-block.phtml',array('divinationsList' => $this->divinationsList,'active' => $this->divination['id']))?>
+		                		<?php endif;?>
+		                		<?php if($this->controllerName == 'payservice' && isset($this->curPayserviceAlias)):?>
+				    				<?=$this->partial('partials/payservice/right-block.phtml',array('serviceType' => $this->serviceType,'payServices' => $this->payServices,'curServiceAlias' => $this->curPayserviceAlias))?>
+				    			<?php endif;?>
+		                		<?=$this->partial('partials/popular.phtml',array('ratingList' => $this->ratingList))?>
+		                		<?=$this->partial('partials/banner-right1.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype,))?>
+		                		<?php if($this->actionName != 'divination' 
+		                				&& $this->actionName != 'category-divinations'
+		                				&& (!in_array($this->curType,array('personal','forecast','compability')) )):?>
+		                			<?=$this->partial('partials/horoscopes-block.phtml')?>
+		                		<?php endif;?>
+		                		<?=$this->partial('partials/banner-right3.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+		                		<?=$this->partial('partials/banner-right2.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+		                	</div>
+		                	<?php if($this->controllerName == 'article' || $this->controllerName == 'magic'):?>
+		                		<div class="clear"></div>
+		                		<?=''//$this->partial('partials/article/articles-mini.phtml')?>
+		                	<?php endif;?>
+		                	<?=$this->partial('partials/bottom-text-and-banner.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	                	<?php else:?>
+	                		<?=$this->layout()->content; ?>
+	                	<?php endif;?>
+	                	<div class="clear"></div>
+	                </div><!-- end of columns -->
+    			</div><!-- end of whitespace -->	
+    		<?php endif;?>
+        </div><!-- end of content wrap -->
+     </div><!-- end of content -->   
+    <?=$this->partial('partials/footer.phtml')?>
+</body>
+</html>

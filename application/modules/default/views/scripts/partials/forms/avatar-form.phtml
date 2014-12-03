@@ -1,0 +1,18 @@
+<form id="avatar-form" action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>" 
+		>
+	<?=$this->element->img_note;?>
+	<div id="file"><img src="/files/images/papka.png">Выбрать файл</div>
+	<?=$this->element->image;?>
+	<span style="color:grey;font-size:13px">Не больше 140х140px</span>
+	<div class="change2">
+		<?=$this->element->cancel;?>
+	</div>
+	<div class="change3">
+		<div id="file-holder">
+			<?=$this->element->avatar_submit;?>
+		</div>
+	</div>
+	
+</form>				

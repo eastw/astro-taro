@@ -1,0 +1,125 @@
+	<div id="orange_menu">
+		<div class="menu_left_item">
+			<div id="horoscope-menu-block" class="menu_header">
+				Гороскопы<img alt="" src="/files/images/menu_arrow.png">
+			</div>
+			<div class="menu_content">
+				<div class="menu_content_item">
+					<a href="/horoscope/aries/today"><span>21.03-20.04 - </span>Овен</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/taurus/today"><span>21.04-20.05 - </span>Телец</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/gemini/today"><span>21.05-21.06 - </span>Близнецы</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/cancer/today"><span>22.06-22.07 - </span>Рак</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/leo/today"><span>23.07-23.08 - </span>Лев</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/virgo/today"><span>24.08-23.09 - </span>Дева</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/libra/today"><span>24.09-23.10 - </span>Весы</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/scorpio/today"><span>24.10-22.11 - </span>Скорпион</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/sagittarius/today"><span>23.11-21.12 - </span>Стрелец</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/capricorn/today"><span>22.12-20.01 - </span>Козерог</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/aquarius/today"><span>21.01-20.02 - </span>Водолей</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/horoscope/pisces/today"><span>21.02-20.03 - </span>Рыбы</a>
+				</div>
+			</div>
+		</div>
+		<?php foreach($this->categories as $category):?>
+			<div class="menu_left_item">
+				<?php if(isset($category['children'])):?>
+				<div id="<?=$category['metadata']['category_type']?>-menu-block" class="menu_header">
+					<?=$category['data']?><img alt="" src="/files/images/menu_arrow.png">
+				</div>
+				<div class="menu_content">
+					<?php if(isset($category['children'])):?>
+						<?php foreach($category['children'] as $child):?>
+							<div class="menu_content_item">
+								<a href="/gadaniya/<?=$child['metadata']['category_type']?>/<?=$child['metadata']['alias']?>"><?=$child['data']?></a>
+							</div>	
+							<?php endforeach;?>
+						<?php endif;?>
+				</div>
+				<?php endif;?>
+			</div>
+		<?php endforeach;?>
+		<div class="menu_left_item">
+			<div id="book-menu-block" class="menu_header">
+				Книга перемен<img alt="" src="/files/images/menu_arrow.png">
+			</div>
+			<div class="menu_content">
+				<div class="menu_content_item">
+					<a href="/gadaniya/book/kniga-peremen/26-kniga-peremen">Книга перемен</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/gadaniya/book/kniga-peremen/32-lyubovnaya-kniga-peremen">Любовная книга перемен</a>
+				</div>
+			</div>
+		</div>
+		<div class="menu_left_item">
+			<div id="other-menu-block" class="menu_header">
+				Другие гадания<img alt="" src="/files/images/menu_arrow.png">
+			</div>
+			<div class="menu_content">
+				<div class="menu_content_item">
+					<a href="/gadaniya/other/drugie-gadaniya/29-gadanie-po-tablitse">Гадание по таблице</a>
+				</div>
+			</div>
+		</div>
+		<div class="menu_left_item">
+			<div id="numerology-menu-block" class="menu_header">
+				Нумерология<img alt="" src="/files/images/menu_arrow.png">
+			</div>
+			<div class="menu_content">
+				<div class="menu_content_item">
+					<a href="/numerology/personal">Мои числа</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/numerology/forecast">Прогнозы</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/numerology/compability">Совместимость</a>
+				</div>
+			</div>
+		</div>
+		<div class="menu_left_item">
+			<div id="moon-menu-block" class="menu_header">
+				Лунный календарь<img alt="" src="/files/images/menu_arrow.png">
+			</div>
+			<div class="menu_content">
+				<div class="menu_content_item">
+					<a href="/moon/today">Луна сегодня</a>
+				</div>
+			</div>
+		</div>
+		<div class="menu_left_item">
+			<div id="service-menu-block" class="menu_header">
+				Заказать услугу<img alt="" src="/files/images/menu_arrow.png">
+			</div>
+			<div class="menu_content">
+				<div class="menu_content_item">
+					<a href="/service/horoscope">Индивидуальный гороскоп</a>
+				</div>
+				<div class="menu_content_item">
+					<a href="/service/divination">Индивидуальное гадание</a>
+				</div>
+			</div>
+		</div>
+	</div>

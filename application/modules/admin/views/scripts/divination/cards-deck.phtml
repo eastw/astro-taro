@@ -1,0 +1,83 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/plugins/jquery.form.min.js',
+				'text/javascript');
+?>
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	var options = {
+			success: function(data)
+		    {
+				data = jQuery.parseJSON(data);
+				if(data.result == 'success'){
+					var html = '';
+					for(var i in data.files){
+						//console.log()
+						html = '<a id="' + data.number + '_' + i + '_link" target="_blank" href="/files/decks/'+data.folder+'/'+data.files[i]+'">'
+							+'<img id="' + data.number + '_'+i+'_image" src="/files/decks/'+data.folder+'/'+data.files[i]+'" style="width:10%">'
+							+'</a>';
+						$('#' + data.number + '_' + i + '_div').html('');
+						$('#' + data.number + '_' + i + '_div').html(html);
+					}
+					 location.reload();
+				}
+				if(data.result == 'fail'){
+					if(data.hasOwnProperty('errors')){
+						if(data.errors.hasOwnProperty('empty')){
+							//console.log('empty');
+							$('#' + data.number + '_reverse_file').next().html('Ни один файл не выбран');
+						}
+						
+					}
+				}
+		    },
+		    error: function()
+		    {
+		        //console.log('error');
+		    }
+		};
+	$('form').ajaxForm(options);
+});
+//-->
+</script>
+<h1>Управление картами колоды <?=$this->deck['name']?></h1>
+<table style="width:100%">
+	<tr>
+		<td>
+			<div style="text-align:right;"><a href="/admin/divination/deck">Назад к колодам</a></div>
+		</td>
+	</tr>
+</table>
+<div class="card-container">
+<?php for($i = 0; $i < $this->cardsCount;$i++):?>
+	<div class="item">
+			<div>Номер карты: <?=$i?></div>
+			<form action="/admin/divination/save-deck-card" method="POST" enctype="multipart/form-data">
+				<div id="<?=$i?>_normal_div">
+					<?php if(isset($this->images[$i]['normal'])):?>
+						<a id="<?=$i?>_normal_link" target="_blank" href="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->images[$i]['normal']?>">
+							<img id="<?=$i?>_normal_image" src="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->images[$i]['normal']?>" style="width:10%">
+						</a>
+					<?php endif;?>
+				</div>
+				<input id="<?=$i?>_normal_file" name="normal" type="file">
+				<div class="errors"></div>
+				<div id="<?=$i?>_reverse_div">
+				<?php if(isset($this->images[$i]['reverse'])):?>
+					<a id="<?=$i?>_reverse_image" target="_blank" href="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->images[$i]['reverse']?>">
+						<img id="<?=$i?>_reverse_image" src="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->images[$i]['reverse']?>" style="width:10%">
+					</a>
+				<?php endif;?>
+				</div>
+				<input id="<?=$count?>_reverse_file" name="reverse" type="file">
+				<div class="errors"></div>
+				<div style="text-align: right;width:100%">
+					<input type="hidden" name="number" value="<?=$i?>">
+					<input type="hidden" name="id" value="<?=$this->deck['id']?>">
+					<input type="submit" value="Загрузить">
+				</div>
+			</form>
+	</div>
+<?php endfor;?>
+</div>

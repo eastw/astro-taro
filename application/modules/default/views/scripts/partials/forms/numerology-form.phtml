@@ -1,0 +1,52 @@
+<form id="numerology-form" action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>">
+		<div id="num_calc1">
+			<div>
+				<div class="num_calc1_form">
+					<span>Имя</span><br/>
+					<?=$this->element->fname?>
+				</div>
+				<div class="num_calc1_form" id="num_calc1_center">
+					<span>Фамилия</span><br/>
+					<?=$this->element->lname?>
+				</div>
+				<div class="num_calc1_form">
+					<span>Отчество</span><br/>
+					<?=$this->element->mname?>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="num_calc1_line">
+				<span>Дата рождения</span><br />
+				<div class="num_calc1_form">
+					<?=$this->element->byear?>
+				</div>
+				<div class="num_calc1_form" id="num_calc1_center2">
+					<?=$this->element->bmonth?>
+				</div>
+				<div class="num_calc1_form">
+					<?=$this->element->bday?>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<?php if(null === $this->userdata):?>
+				<div class="enter_reg"><a id="ident-enter" href="#">войти</a> или <a href="/user/registration">регистрация</a></div>
+			<?php endif;?>
+			<div class="clear"></div>
+		</div>
+		<?=$this->element->smalltype?>
+		<input id="send-personal-data" class="enter_calc" type="image" src="/files/images/num_calc_enter.png" />
+		<?php if(null === $this->userdata):?>
+			<div class="why_box">
+				<div class="why_need">
+					<span>Зачем мои личные данные</span>
+					 <img src="/files/images/mark.png" alt="" />
+				</div>
+				<div class="detail">
+					<div class="windows_closw"></div>
+					<div class="text">Составить нумерологический прогноз или карту личности невозможно без Ф.И.О. и полной даты рождения. Если вы планируете использовать данный раздел сайта регулярно, для удобства пройдите <a href="/user/registration">регистрацию</a></div>
+				</div>
+			</div>
+		<?php endif;?>
+</form>		

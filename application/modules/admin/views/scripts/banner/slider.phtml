@@ -1,0 +1,69 @@
+<script type="text/javascript">
+<!--
+function confirmation(id){
+	if(confirm('Вы действительно хотите удалить этот баннер?')){
+		window.location.href="/admin/banner/delete-slider/id/" + id;
+	}
+}
+//-->
+</script>
+<h1>Управление внутренними баннерами (слайдером)</h1>
+<table>
+	<tr>
+		<td>
+			<div style="text-align:left;"><a href="/admin/banner/add-slider">Добавить баннер.</a></div>
+		</td>
+	</tr>
+</table>
+<table class="admin-table" id="article-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:20%">
+			Изображение
+		</th>
+		<th style="width:20%">
+			Линк
+		</th>
+		<th style="width:20%">
+			Порядок
+		</th>
+		<th style="width:20%">
+			Сервис
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->paginator)):?>
+	<?php foreach($this->paginator as $item):?>
+	<tr>
+		<td>
+			<a href="/admin/banner/edit-slider/id/<?=$item['id'];?>">
+				<img style="width:80px" src="/files/slider/<?=$item['filename'];?>"/>
+			</a>
+		</td>
+		<td>
+			<a href="<?=$item['link']?>" target="_blank">
+				<?=$item['link']?>
+			</a>
+		</td>
+		<td>
+			<a href="/admin/banner/slider-reorder/id/<?=$item['id']?>/old_order/<?=$item['order']?>/direction/up" style="text-decoration:none" title="Поднять вверх">&uarr;</a>&nbsp;&nbsp;
+			<?=$item['order']?>
+			&nbsp;&nbsp;<a href="/admin/banner/slider-reorder/id/<?=$item['id']?>/old_order/<?=$item['order']?>/direction/down" style="text-decoration:none" title="Опустить вниз">&darr;</a>
+		</td>
+		<td>
+			<?=($item['pay_service']=='y')?'Да':'Нет'?>
+		</td>
+		<td>
+			<a href="/admin/banner/edit-slider/id/<?=$item['id']?>">Редактировать</a> / 
+			<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>')">Удалить</a>
+		</td>
+	</tr>
+	<?php endforeach;?>
+	<tr>
+		<td colspan="2">
+			<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray, 'funcName' => 'changeAgentListPage')) ?>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>

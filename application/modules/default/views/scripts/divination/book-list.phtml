@@ -1,0 +1,17 @@
+<?php if($this->data):?>
+	<div id="opisanie">
+		<div class="item_header"><?=$this->data['name']?></div>
+		<div class="text">
+			<?=$this->data['description'];?>
+			<div class="more">
+				<a href="/statyi/content/26-gadaniya/31-kniga-peremen">Что такое Книга Перемен И-цзин →</a>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="all_horo">
+		<?php foreach ($this->data['children'] as $item):?>
+			<?=$this->partial('partials/divination/book-list-item.phtml',array('item' => $item,'parent' => $this->data))?>
+		<?php endforeach;?>
+	</div>
+<?php endif;?>

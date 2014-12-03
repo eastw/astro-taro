@@ -1,0 +1,73 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/plugins/jquery.form.min.js',
+				'text/javascript')
+			->appendFile(
+				'/js/scripts/profile.js',
+				'text/javascript');
+?>
+<div id="column1">
+	<?=$this->partial('partials/profile/leftmenu.phtml',array('active' => '','userdata' => $this->userdata))?>
+</div>
+<div id="column2">
+	<div id="description2">
+		<div class="my_cab_item">
+			<img src="<?=$this->sign['image']?>" alt="" />
+			<div class="item_header"><?=$this->sign['pageTitle']?></div>
+			<div class="data">
+				<?=isset($this->sign['text_date_range'])?$this->sign['text_date_range']:''?>
+				<?=isset($this->sign['value'])?$this->sign['value']:''?>
+			</div>
+			<div class="opisanie">
+<!-- 				<a href="#">Все гороскопы для знака Рак →</a> -->
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="text">
+			<?=$this->sign['description']?>
+		</div>
+	</div>
+</div>
+<div id="column3">
+	<div id="cabinet_profile">
+		<div id="cabinet_profile_top"></div>
+		<div id="cabinet_profile_content">
+			<img
+				src="/files/avatar/<?=(isset($this->userdata->avatar) && !empty($this->userdata->avatar) )?$this->userdata->avatar:'cabinet_profile.png' ?>" />
+			<div class="cabinet_name"><?=(!empty($this->userdata->fullname))?str_replace(':',' ',$this->userdata->fullname):''?></div>
+			<div class="data">
+				<?php if(!empty($this->userdata->birthday)):?>
+					<?php $date = new Zend_Date($this->userdata->birthday);
+						echo $date->toString(Zend_Date::DATE_LONG);?>
+				<?php endif;?>
+			</div>
+			<div class="change">
+				<a href="/profile/edit">изменить профиль</a>
+			</div>
+		</div>
+		<div id="cabinet_profile_bottom"></div>
+	</div>
+	<div id="exit">
+		<a href="/user/logout"><img src="/files/images/exit.png" alt="" /></a>
+	</div>
+	<div id="activity">
+		<div class="item_header">Активность</div>
+		<span class="activity_header">Регистрация</span><br /> <span><?php $date = new Zend_Date($this->userdata->register_date);echo $date->toString(Zend_Date::DATE_LONG); ?></span>
+		<br /> <br /> <span class="activity_header">Последний вход</span><br />
+		<span>
+			<?php
+				if(date('Y-m-d') == date('Y-m-d',strtotime($this->userdata->last_login))){
+					echo 'Сегодня&nbsp;'.date('H:i',strtotime($this->userdata->last_login));
+				}else{
+					echo $date->toString(Zend_Date::DATE_LONG).'&nbsp;'.date('H:i',strtotime($this->userdata->last_login));
+				}
+			?>
+		</span><br /> <br /> <a id="remove-profile" href="javascript:void(0)">Удалить мою учетную запись</a>
+	</div>
+	<?=$this->partial('partials/banner-right1.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	<?=$this->partial('partials/banner-right3.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	<?=$this->partial('partials/banner-right2.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>
+	
+</div>
+<div class="clear"></div>
+<?=$this->partial('partials/bottom-text-and-banner.phtml',array('banners' => $this->banners,'controllerName' => $this->controllerName,'bannerSubtype' => $this->bannerSubtype))?>

@@ -1,0 +1,52 @@
+<script type="text/javascript">
+<!--
+function confirmation(id){
+	if(confirm('Вы действительно хотите удалить эту тему?')){
+		window.location.href="/admin/payservice/remove-theme/id/" + id;
+	}
+}
+//-->
+</script>
+<h1>Управление темами платного сервиса</h1>
+<table>
+	<tr>
+		<td>
+			<div style="text-align:left;"><a href="/admin/payservice/add-theme">Добавить тему</a></div>
+		</td>
+	</tr>
+</table>
+<table class="admin-table" id="article-table" style="">
+	<tr>
+		<th style="width:50%">
+			Тема
+		</th>
+		<th style="width:20%">
+			Тип
+		</th>
+		<th style="width:10%">
+			Цена
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+		<?php foreach($this->data as $item):?>
+		<tr>
+			<td>
+				<a href="/admin/payservice/edit-theme/id/<?=$item['id']?>"><?=$item['theme_name'];?></a>
+			</td>
+			<td>
+				<?=($item['theme_type'] == App_PayserviceService::HOROSCOPE_TYPE)?'Гороскоп':'Гадание'?>
+			</td>
+			<td>
+				<?=$item['cost']?>
+			</td>
+			<td>
+				<a href="/admin/payservice/edit-theme/id/<?=$item['id']?>">Редактировать</a> / 
+				<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>')">Удалить</a>
+			</td>
+		</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+</table>

@@ -1,0 +1,100 @@
+<?php
+$this->headScript()->appendFile(
+				'/js/scripts/horoscope_love_compability.js',
+				'text/javascript');
+?>
+<div id="all_horo">
+	<div class="sign_top">
+		<img src="/files/images/profile/sun/<?=$this->curSign?>.png" alt="" />
+		<div class="item_header"><span><?=$this->sign['sign_ru']?></span><br /><?=$this->sign['text_date_range']?></div>
+		<div class="feature">
+			<a href="/horoscope/<?=$this->sign['sign']?>/simple"><?=$this->sign['sign_ru']?> — характеристика знака  →</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="packs">
+		<div id="horo_pack">
+			<div class="item_header"><?=$this->sign['sign_ru']?> — любовная совместимость</div>
+			<div class="text"><?=$this->minidesc?></div>
+			<div id="comp">
+				<form>
+					<div class="left_block">
+						<img class="comp_sign" style="width:60px;" src="/files/images/profile/sun/<?=$this->sign['sign']?>.png" alt="" />
+						<span>
+							<?php if(isset($this->userdata) && !empty($this->userdata) && $this->userdata->gender == 'm'):?>
+								Мужчина
+							<?php else:?>
+								Женщина
+							<?php endif;?>
+						</span><br />
+						<select id="your_sign">
+							<?php foreach($this->signs as $sign):?>
+								<option value="<?=$sign['id']?>"
+									<?=(isset($this->sign) && $this->sign['sign'] == $sign['sign'])?'selected="selected"':''?>>
+									<?=$sign['sign_ru']?>
+								</option>
+							<?php endforeach;?>
+						</select>
+						<div class="clear"></div>
+					</div>
+					<div class="right_block">
+						<img class="comp_sign" style="width:60px;" src="/files/images/profile/sun/aries.png" alt="" />
+						<span>
+							<?php if(isset($this->userdata) && !empty($this->userdata) && $this->userdata->gender == 'm'):?>
+								Женщина
+							<?php else:?>
+								Мужчина
+							<?php endif;?>
+						</span><br />
+						<select id="partner_sign">
+							<?php foreach($this->signs as $sign):?>
+								<option value="<?=$sign['id']?>">
+									<?=$sign['sign_ru']?>
+								</option>
+							<?php endforeach;?>
+						</select>
+					</div>
+					<div class="clear"></div>
+					<input id="check" class="comp_send" type="image" src="/files/images/comp_send.png" />
+				</form>
+			</div>
+			<div id="comp_answer" style="display:none;">
+				<div class="comp_header">Совместимость</div>
+				<div class="otvet">
+					<div id="man">
+						<img id="my-sign" style="width:60px;" src="/files/images/profile/sun/<?=$this->curSign?>.png" alt="" /><br />
+						<span>
+							<?php if(isset($this->userdata) && !empty($this->userdata) && $this->userdata->gender == 'm'):?>
+								Мужчина
+							<?php else:?>
+								Женщина
+							<?php endif;?>
+						</span>
+					</div>
+					<div id="women">
+						<img id="partner-sign" style="width:60px;" src="/files/images/sign_middle7.png" alt="" /><br />
+						<span>
+							<?php if(isset($this->userdata) && !empty($this->userdata) && $this->userdata->gender == 'm'):?>
+								Женщина
+							<?php else:?>
+								Мужчина
+							<?php endif;?>
+						</span>
+					</div>
+				</div>
+				<div id="parametrs">
+					<div class="clear"></div>
+				</div>
+				<div class="item_header">Описание совместимости</div>
+				<div id="answer" class="text">
+					
+					<br />
+					<a id="another" class="another" onclick="another_compability()" style="cursor:pointer">Проверить другую совместимость →</a>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?=$this->partial('partials/also.phtml',array('type'=>$this->controllerName))?>
+	<?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>
+</div>	

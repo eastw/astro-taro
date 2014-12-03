@@ -1,0 +1,34 @@
+<div id="article_full">
+	<div class="article_full_item">
+		<div id="number" style="width:500px;">
+			<div class="left_block" >
+			<?php if(isset($this->userdata) && !empty($this->userdata)):?>
+					<?php if(isset($this->userdata->birthday) && !empty($this->userdata->birthday)):?>
+						<img src="/files/images/number_img<?=$this->numberDayData['number']?>.png" alt="" title=""/>
+					<?php else:?>
+						<img src="/files/images/num_what.png" alt="число не определено" title="число не определено"/>
+					<?php endif;?>
+				<?php else:?>
+					<img src="/files/images/num_what.png" alt="число не определено" title="число не определено"/>
+				<?php endif;?>
+			</div>
+			<div class="right_block" style="width: 335px">
+				<div class="number_header">Ваш персональный день</div>
+				<?php if(isset($this->userdata) && !empty($this->userdata)):?>
+					<?php if(isset($this->userdata->birthday) && !empty($this->userdata->birthday)):?>
+                    	<div class="number_item_header">Число <?=App_UtilsService::numberToString($this->numberDayData['number'])?></div>
+						<div class="sub_header">Ваше персональное число дня описывает тенденции и воздействия, которые оказывают на вас влияние в течение дня.</div>
+                        <div class="text"><?=$this->numberDayData['description']?></div>
+					<?php else:?>
+						<div class="sub_header">Ваше персональное число дня описывает тенденции и воздействия, которые оказывают на вас влияние в течение дня.</div>
+						<div class="text">Для отображения информации необходимо <a href="/profile">заполнить данные на сайте →</a></div>
+					<?php endif;?>
+				<?php else:?>
+						<div class="sub_header">Ваше персональное число дня описывает тенденции и воздействия, которые оказывают на вас влияние в течение дня.</div>
+						<div class="text">Для отображения информации необходимо <a href="/registration">зарегистрироваться на сайте →</a></div>
+				<?php endif;?>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
