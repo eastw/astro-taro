@@ -1,20 +1,4 @@
 			<?=$this->partial('partials/slider.phtml',array('sliders' => $this->sliders))?>
-			<?php if(!isset($this->userdata)):?>
-			<div id="cosmo">
-            	<div id="know_thyself">
-                	<img src="files/images/profile.jpg" alt="" />
-                    <div class="text">
-                    	<span>Узнай больше о себе!</span>
-                        <p>Вы не только Знак Зодиака! Пройдите регистрацию и получите бесплатно ваш Космический профиль. Раскройте для себя, Таро личности, Число жизненного пути, ваш Кармический гороскоп и другую персональную информацию.</p>
-                    </div>
-                </div>
-                <div class="button">
-                    <div class="button_left"></div>
-                    <div class="button_content"><a href="/user/registration">Регистрация</a></div>
-                    <div class="button_right"></div>
-                </div>
-            </div>
-            <?php endif;?>
             <?=$this->partial('partials/horoscope.phtml',array('horoscopeData' => $this->horoscopeData))?>
             <div id="divination">
             	<div id="divi_header">Предсказание дня</div>
@@ -218,6 +202,22 @@
                 </div>
                 <div class="clear"></div>
             </div>
+            <?php if(!isset($this->userdata)):?>
+			<div id="cosmo">
+            	<div id="know_thyself">
+                	<img src="files/images/profile.jpg" alt="" />
+                    <div class="text">
+                    	<span>Узнай больше о себе!</span>
+                        <p>Вы не только Знак Зодиака! Пройдите регистрацию и получите бесплатно ваш Космический профиль. Раскройте для себя, Таро личности, Число жизненного пути, ваш Кармический гороскоп и другую персональную информацию.</p>
+                    </div>
+                </div>
+                <div class="button">
+                    <div class="button_left"></div>
+                    <div class="button_content"><a href="/user/registration">Регистрация</a></div>
+                    <div class="button_right"></div>
+                </div>
+            </div>
+            <?php endif;?>
             <div id="magic">
             	<div class="header">Магия</div>
                 <div id="magic_slyder">

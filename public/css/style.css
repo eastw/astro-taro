@@ -24,7 +24,7 @@ textarea {resize:vertical;}
 .item_header {margin-bottom:5px;}
 .header {height:45px; margin-bottom:20px; padding-left:25px; background-color:#543076; line-height:45px; font-size:18px; color:#fff;}
 .header_min {font-size:19px; color:#000;}
-.tri_header {height:65px; margin-bottom:30px; padding-left:20px; background:url(/files/images/header_back.png) left no-repeat; font-size:30px; color:#000; line-height:65px;}
+.tri_header {height:65px; margin-bottom:15px; padding-left:20px; background:url(/files/images/header_back.png) left no-repeat; font-size:30px; color:#000; line-height:65px;}
 .data {margin-bottom:5px; margin-top:5px; font-size:15px; color:#a8a8a8;}
 .text {color:#434c5c;}
 .button {position:absolute; bottom:30px; right:20px; cursor:pointer;}
@@ -196,15 +196,15 @@ textarea {resize:vertical;}
 #know_thyself div.text span {font-size:28px; color:#fff;}
 #know_thyself div.text p {padding-top:5px;}
 
-#slyder {width:1016px; height:340px; overflow:hidden; position:relative;}
-#slyde1, #slyde2, #slyde3, #slyde4, #slyde5, #slyde6, #slyde7, #slyde8, #slyde9, #slyde10 {width:1016px; height:340px; position:absolute;}
+#slyder {width:1016px; height:200px; overflow:hidden; position:relative;}
+#slyde1, #slyde2, #slyde3, #slyde4, #slyde5, #slyde6, #slyde7, #slyde8, #slyde9, #slyde10 {width:1016px; height:240px; position:absolute;}
 .slyde_text {padding:15px; color:#fff; font-size:17px; background:url(/files/images/slyder_element_back.png) repeat; position:absolute; left:20px; top:20px;}
 .invis {visibility:hidden; position:relative; z-index:-1;}
 .vis {visibility:visible; position:relative; z-index:1;}
 .vis2 {visibility:visible; position:relative; z-index:2;}
-#slyder_element {width:971px; height:33px; margin-bottom:20px; margin-top:-50px; padding-left:45px; padding-top:17px; background:url(/files/images/slyder_element_back.png) repeat; position:relative; z-index:3;}
+#slyder_element {width:971px; height:23px; margin-bottom:20px; margin-top:-40px; padding-left:45px; padding-top:17px; background:url(/files/images/slyder_element_back.png) repeat; position:relative; z-index:3;}
 #slyder_element div {cursor:pointer;}
-.slyder_dot, .slyder_dot_on {width:15px; height:16px; margin-right:10px; background:url(/files/images/slyder_dot.png) no-repeat; float:left;}
+.slyder_dot, .slyder_dot_on {width:15px; height:16px; margin-right:10px; margin-top: -5px; background:url(/files/images/slyder_dot.png) no-repeat; float:left;}
 .slyder_dot_on {background:url(/files/images/slyder_dot_active.png) no-repeat;}
 
 #horoscope {height:355px; margin-bottom:20px; padding-bottom:20px; background:url(/files/images/triangle_white_back.png) top left no-repeat #fff;}
@@ -353,7 +353,7 @@ textarea {resize:vertical;}
 .you_here a {color:#323946;}
 #white_space {background-color:#fff; min-width:1016px;}
 #white_space div.bottom_text {padding-bottom:30px;}
-#deep_page {height:60px; padding-left:20px; color:#434c5d; line-height:60px; font-size:15px;}
+#deep_page {height:50px; padding-left:20px; color:#434c5d; line-height:60px; font-size:15px;}
 #deep_page a {color:#0075ff;}
 #deep_page span.span_arrow {margin:0 10px;}
 
