@@ -29,6 +29,12 @@ class App_HoroscopeService {
 	const HOROSCOPE_SIGN_TYPE_KELT = 2;
 	const HOROSCOPE_SIGN_TYPE_CHINA = 3;
 	
+	const IN_USE_YES = 'y';
+	const IN_USE_NO = 'n';
+	
+	const USED_YES = 'y';
+	const USED_NO = 'n';
+	
 	//const ETALON_YEAR = 2010;//?
 	
 	protected $horoscopeSign;
@@ -295,6 +301,7 @@ class App_HoroscopeService {
 		return $data;
 	}
 	
+	/*Using for admin part*/
 	public function getTodayData($startdate,$enddate,$sign){
 		$query = $this->horoscopeByTime->getAdapter()->select();
 		$query->from('horoscope_by_time')->where($this->horoscopeByTime->getAdapter()->quoteInto('startdate=?',$startdate))
@@ -320,56 +327,103 @@ class App_HoroscopeService {
 		return $horoscope;
 	}
 	
-	public function getTodayDataBySignAlias($startdate,$enddate,$sign){
-		$data = $this->getSignByAlias(self::HOROSCOPE_SIGN_TYPE_SUN, $sign);
-		$query = $this->horoscopeByTime->getAdapter()->select();
-		$query->from('horoscope_by_time')
-			->where($this->horoscopeByTime->getAdapter()->quoteInto('startdate>=?',$startdate))
-			->where($this->horoscopeByTime->getAdapter()->quoteInto('enddate<=?',$enddate))
-			->where($this->horoscopeByTime->getAdapter()->quoteInto('sign_id=?',$data['id']))
-			->order('startdate');
-		$stm = $query->query(Zend_Db::FETCH_ASSOC);
-		//var_dump($query->assemble()); die;
-		$horoscope = $stm->fetchAll();
-		//var_dump($horoscope); die;
-		if(!$horoscope){
-			$result = array();
-			$insertData = array(
-					'startdate' => $startdate,
-					'enddate' => $startdate,
-					'sign_id' => $data['id'],
-					'description' => '',
-					'love_desc' => '',
-					'business_desc' => '',
-					'is_day' => 'y',
-					'type_id' => self::HOROSCOPE_TIME_TODAY
-			);
-			$insertData['id'] = $this->horoscopeByTime->insert($insertData);
-			$insertData['sign'] = $data;
-			
-			$result[] = $insertData;
-			
-			$insertData = array(
-					'startdate' => $enddate,
-					'enddate' => $enddate,
-					'sign_id' => $data['id'],
-					'description' => '',
-					'love_desc' => '',
-					'business_desc' => '',
-					'is_day' => 'y',
-					'type_id' => self::HOROSCOPE_TIME_TODAY
-			);
-			$insertData['id'] = $this->horoscopeByTime->insert($insertData);
-			$insertData['sign'] = $data;
-			
-			$result[] = $insertData;
-			
-			return $result;
-		}
+	/*Using for frontend*/
+	public function getTodayDataBySignAlias($startdate, $enddate, $sign){
+		$horoscopeRow = $this->getSignByAlias(self::HOROSCOPE_SIGN_TYPE_SUN, $sign);
+		$horoscope = $this->getFrontendTodayDataBySignId($horoscopeRow['id']); 
 		foreach($horoscope as $index => $value){
-			$horoscope[$index]['sign'] = $data;
+			$horoscope[$index]['sign'] = $horoscopeRow;
 		}
 		return $horoscope;
+	}
+	
+	public function getFrontendTodayDataBySignId($signId){
+		$needUpdate = false;
+		$horoscope = $this->getWorkHoroscopeRows($signId);
+		if(count($horoscope)){
+			foreach($horoscope as $row){
+				if($row['in_use_date'] == date('Y-m-d', strtotime('-1 day'))){
+					$updateData = array(
+						'in_use' => self::IN_USE_NO,
+						'used' => self::USED_YES,
+						'in_use_date' => new Zend_Db_Expr('NULL')
+					);
+					$this->horoscopeByTime->update($updateData, 'id=' . $row['id']);
+					$this->setTomorrowRow($signId);
+					$needUpdate = true;
+				}
+			}
+		}else{
+			//initial set for horoscope rows
+			$needUpdate = true;
+			$indexes = $this->getUnusedHoroscopeRows($signId);
+			$firstRowIndex = mt_rand(0,(count($indexes)-1));
+			while(true){
+				$secondRowIndex = mt_rand(0,(count($indexes)-1));
+				if($secondRowIndex != $firstRowIndex){
+					break;
+				}
+			}
+			$todayUpdateData = array(
+				'in_use' => self::IN_USE_YES,
+				'in_use_date' => date('Y-m-d')
+			);
+			$this->horoscopeByTime->update($todayUpdateData, 'id=' . $indexes[$firstRowIndex]['id'] );
+			
+			$tomorrowUpdateData = array(
+				'in_use' => self::IN_USE_YES,
+				'in_use_date' => date('Y-m-d',strtotime('+1 day'))
+			);
+			$this->horoscopeByTime->update($tomorrowUpdateData, 'id=' . $indexes[$secondRowIndex]['id'] );
+		}
+		if($needUpdate){
+			$horoscope = $this->getWorkHoroscopeRows($signId);
+		}
+		
+		return $horoscope;
+	}
+	
+	private function getWorkHoroscopeRows($signId){
+		$query = $this->horoscopeByTime->getAdapter()->select();
+		$adapter = $this->horoscopeByTime->getAdapter();
+		$query->from('horoscope_by_time')
+			->where($adapter->quoteInto('in_use=?',self::IN_USE_YES))
+			->where($adapter->quoteInto('sign_id=?',$signId));
+			
+		$stm = $query->query(Zend_Db::FETCH_ASSOC);
+		return $stm->fetchAll();
+	}
+	
+	private function setTomorrowRow($signId){
+		$indexes = $this->getUnusedHoroscopeRows($signId);
+		if(count($indexes) <= 5){
+			$this->clearUsedTodayHoroscopes();
+		}
+		$rowId = mt_rand(0,(count($indexes)-1));
+		$updateData = array(
+			'in_use' => self::IN_USE_YES,
+			'in_use_date' => date('Y-m-d', strtotime('+1 day')) 
+		);
+		$this->horoscopeByTime->update($updateData, 'id=' . $indexes[$rowId]['id']);
+		return $id;
+	}
+	
+	private function getUnusedHoroscopeRows($signId){
+		$adapter = $this->horoscopeByTime->getAdapter();
+		$query = $adapter->select();
+		$query->from(array('horoscope_by_time'),array('id'))
+		->where($adapter->quoteInto('sign_id=?',$signId))
+		->where('used',self::USED_NO);
+		//var_dump($query->assemble());
+		$stm = $query->query(Zend_Db::FETCH_ASSOC);
+		return $stm->fetchAll();
+	}
+	
+	private function clearUsedTodayHoroscopes(){
+		$updateData = array(
+			'used' => self::USED_NO
+		);
+		$this->horoscopeByTime->update($updateData, 'type_id = ' . self::HOROSCOPE_TIME_TODAY);
 	}
 	
 	public function getWeekData($startdate,$enddate,$sign){
@@ -460,8 +514,6 @@ class App_HoroscopeService {
 			->where($this->horoscopeByTime->getAdapter()->quoteInto('sign_id=?',$data['id']));
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$horoscope = $stm->fetch();
-		//var_dump($horoscope); die;
-		//var_dump($query->assemble()); die;
 		if(!$horoscope){
 			$insertData = array(
 					'startdate' => $startdate,
@@ -701,14 +753,6 @@ class App_HoroscopeService {
 		$mainSignQuoted2 = $adapter->quoteInto('mainsign_id=?',$nestedSign);
 		$nestedSignQuoted2 = $adapter->quoteInto('nestedsign_id=?',$mainSign);
 		
-		/*
-		$mainGenderQuoted1 = $adapter->quoteInto('isman_mainsign=?',($mainGender=='man')?('y'):('n'));
-		$nestedGenderQuoted1 = $adapter->quoteInto('isman_nestedsign=?',($nestedGender=='man')?('y'):('n'));
-		
-		$mainGenderQuoted2 = $adapter->quoteInto('isman_mainsign=?',($nestedGender == 'man')?('y'):('n'));
-		$nestedGenderQuoted2 = $adapter->quoteInto('isman_nestedsign=?',($mainGender == 'man')?('y'):('n'));
-		*/
-		
 		$compIdQuoted = $adapter->quoteInto('compability_type_id=?',$compId);
 		$query->from('horoscope_compability')
 				->where('('.$mainSignQuoted1.' AND '.$nestedSignQuoted1.' AND '.$compIdQuoted.')')
@@ -766,13 +810,7 @@ class App_HoroscopeService {
 		}
 		$horoscope['attributes'] = $this->horoscopeCompabilityTypeAttributes->fetchAll($adapter->quoteInto('compability_type_id=?',$compId))->toArray();
 		$horoscope['attribute_values'] =  $this->horoscopeCompabilityTypeAttributeValue->fetchAll($adapter->quoteInto('compability_id=?',$horoscope['id']))->toArray();
-		/*
-		if($mainSign == $horoscope['nestedsign_id'] && $horoscope['nestedsign_id'] != $horoscope['mainsign_id']){
-			$tmp = $horoscope['mainsign_id'];
-			$horoscope['mainsign_id'] = $horoscope['nestedsign_id'];
-			$horoscope['nestedsign_id'] = $tmp;
-		}
-		*/
+		
 		return $horoscope;
 	}
 	
@@ -785,22 +823,6 @@ class App_HoroscopeService {
 		
 		$mainSignQuoted2 = $adapter->quoteInto('mainsign_id=?',$nestedsign);
 		$nestedSignQuoted2 = $adapter->quoteInto('nestedsign_id=?',$mainsign);
-		
-		/*
-		$mainGenderQuoted1 = $adapter->quoteInto('isman_mainsign=?',($maingender=='man')?('y'):('n'));
-		$nestedGenderQuoted1 = $adapter->quoteInto('isman_nestedsign=?',($nestedgender=='man')?('y'):('n'));
-		
-		$mainGenderQuoted2 = $adapter->quoteInto('isman_mainsign=?',($nestedgender == 'man')?('y'):('n'));
-		$nestedGenderQuoted2 = $adapter->quoteInto('isman_nestedsign=?',($maingender == 'man')?('y'):('n'));
-		*/
-		
-		/*
-		$query->from('horoscope_compability')->where($adapter->quoteInto('compability_type_id=?',$compability))
-				//->where('('.$mainSignQuoted1.' AND '.$nestedSignQuoted1.') OR ('.$mainSignQuoted2.' AND '.$nestedSignQuoted2.')')
-				//->where('('.$mainGenderQuoted1.' AND '.$nestedGenderQuoted1.') OR ('.$mainGenderQuoted2.' AND '.$nestedGenderQuoted2.')');
-				->where('('.$mainSignQuoted1.' AND '.$nestedSignQuoted1.') AND ('.$mainGenderQuoted1.' AND '.$nestedGenderQuoted1.')')
-				->orWhere('('.$mainSignQuoted2.' AND '.$nestedSignQuoted2.') AND ('.$mainGenderQuoted2.' AND '.$nestedGenderQuoted2.')');
-		*/
 				
 		//var_dump($query->assemble()); die;
 		$compIdQuoted = $adapter->quoteInto('compability_type_id=?',$compability);
@@ -1023,12 +1045,40 @@ class App_HoroscopeService {
 		$query = $adapter->select()->from(array('k'=>'horoscope_by_time'))
 		->joinLeft(array('s' => 'horoscope_sign'),'k.sign_id = s.id',array('sign','sign_ru','sign_startdate','sign_enddate'))
 		->where($adapter->quoteInto('k.sign_id in (?)',$signIds))
-		->where($adapter->quoteInto('k.startdate=?',$today))
-		->where($adapter->quoteInto('k.enddate=?',$today))
+		->where($adapter->quoteInto('k.in_use_date=?',$today))
 		->order('k.sign_id ASC');
-		//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
-		return $stm->fetchAll();
+		$horoscopes = $stm->fetchAll();
+		
+		if(count($horoscopes) < 12){
+			$signs = $this->getSunSigns();
+			foreach($signIds as $signId){
+				if(!$this->existSignInArray($horoscopes,$signId)){
+					$horoscope = $this->getFrontendTodayDataBySignId($signId);
+					$horoscopes[] = $horoscope[0];
+				}
+			}
+			foreach($horoscopes as $index => $item){
+				foreach($signs as $sign){
+					if($item['sign_id'] == $sign['id']){
+						$horoscopes[$index]['sign'] = $sign['sign'];
+						$horoscopes[$index]['sign_ru'] = $sign['sign_ru'];
+						$horoscopes[$index]['sign_startdate'] = $sign['sign_startdate'];
+						$horoscopes[$index]['sign_enddate'] = $sign['sign_enddate']; 
+					}
+				}
+			}
+		}
+		return $horoscopes;
+	}
+	
+	private function existSignInArray($horoscopes, $signId){
+		foreach($horoscopes as $item){
+			if(isset($item['sign_id']) && $item['sign_id'] == $signId){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static function imageBySign($sign){

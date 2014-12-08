@@ -11,12 +11,12 @@
 		<?php if(isset($this->data) && count($this->data)):?>
 			<?php foreach ($this->data as $index => $item):?>
 				<div id="horo_pack">
-					<?php if($item['startdate'] == date('Y-m-d')):?>
+					<?php if($item['in_use_date'] == date('Y-m-d')):?>
 						<div class="item_header">Гороскоп на сегодня</div>
 						<div class="data">
 							<?=(new Zend_Date(date('Y-m-d')))->toString(Zend_Date::DATE_LONG)?>
 						</div>
-					<?php elseif($item['startdate'] == date('Y-m-d',strtotime('+1 day'))):?>
+					<?php elseif($item['in_use_date'] == date('Y-m-d',strtotime('+1 day'))):?>
 						<div class="item_header">Гороскоп на завтра</div>
 						<div class="data">
 							<?=(new Zend_Date(date('Y-m-d',strtotime('+1 day'))))->toString(Zend_Date::DATE_LONG)?>
