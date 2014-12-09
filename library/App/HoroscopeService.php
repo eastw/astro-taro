@@ -388,7 +388,8 @@ class App_HoroscopeService {
 		$adapter = $this->horoscopeByTime->getAdapter();
 		$query->from('horoscope_by_time')
 			->where($adapter->quoteInto('in_use=?',self::IN_USE_YES))
-			->where($adapter->quoteInto('sign_id=?',$signId));
+			->where($adapter->quoteInto('sign_id=?',$signId))
+			->order('in_use_date');
 			
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
