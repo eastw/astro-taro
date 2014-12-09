@@ -1165,4 +1165,37 @@ class App_HoroscopeService {
 		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
 	}
+	
+	public function getTodayDataBySignId($signId){
+		return $this->horoscopeByTime->fetchAll('sign_id = ' . $signId . ' AND type_id = ' . self::HOROSCOPE_TIME_TODAY)->toArray();
+	}
+	
+	public function removeTodayRow($id){
+		$this->horoscopeByTime->delete('id=' . $id);
+	}
+	
+	public function getTodayDataById($id){
+		$query = $this->horoscopeByTime->getAdapter()->select();
+		$query->from('horoscope_by_time')
+			->where($this->horoscopeByTime->getAdapter()->quoteInto('id=?',$id));
+		$stm = $query->query(Zend_Db::FETCH_ASSOC);
+		return $stm->fetch();
+	}
+	//only for admin use
+	public function saveTodayRowData($data,$id){
+		$updateData = array(
+			'description' => $data['description'],
+			'sign_id' => $data['sign']
+		);
+		$this->horoscopeByTime->update($updateData, 'id=' . $id);
+	}
+	
+	public function addTodayRowData($data,$id){
+		$insertData = array(
+			'description' => $data['description'],
+			'sign_id' => $data['sign'],
+			'type_id' => self::HOROSCOPE_TIME_TODAY
+		);
+		$this->horoscopeByTime->insert($insertData);
+	}
 }

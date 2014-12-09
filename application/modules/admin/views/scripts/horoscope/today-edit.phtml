@@ -1,0 +1,16 @@
+<?=$this->headScript()->appendFile(
+				'/js/ckeditor/ckeditor.js',
+				'text/javascript');?>
+<script>
+	$(function(){
+		$('#cancel').click(function(){
+			window.location.href="/admin/horoscope/today/sign/<?=$this->sign?>";
+		});
+	});
+</script>				
+<?php if($this->actionType == 'add'):?>
+	<h1>Добавление новой записи</h1>
+<?php else:?>
+	<h1>Редактирование записи</h1>
+<?php endif;?>
+<?=$this->form;?>

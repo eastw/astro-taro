@@ -1,0 +1,63 @@
+<h1>Листинг гороскопов на сегодня</h1>
+<script>
+
+function confirmation(id,sign){
+	if(confirm('Вы действительно хотите удалить эту запись?')){
+		window.location.href="/admin/horoscope/today-delete/id/" + id + '/sign/' + sign;
+	}
+}
+</script>
+<div style="width:100%;">
+	Тип знака
+	<form action="" method="POSt">
+		<select id="signs" name="sign">
+			<option value=""></option>
+			<?php foreach ($this->signs as $sign):?>
+				<option value="<?=$sign['id']?>"
+					<?=($this->sign == $sign['id'])?'selected="selected"':''?>
+				><?=$sign['sign_ru']?></option>
+			<?php endforeach;?>
+		</select>
+		<input id="apply-filter" type="submit" value="Применить фильтр"/>
+	</form>
+</div>
+<br>
+<b>Всего записей: <?=count($this->data)?></b>
+<a href="/admin/horoscope/today-add/sign/<?=$this->sign?>">Добавить запись гороскопа для текущего знака</a>
+<table class="admin-table" id="article-table" style="width:950px;margin-left: 30px;">
+	<tr>
+		<th style="width:40%">
+			Начальный текст
+		</th>
+		<th style="width:20%">
+			Уже использовался
+		</th>
+		<th style="width:20%">
+			Исп. сейчас
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+		<?php foreach($this->data as $item):?>
+		<tr>
+			<td>
+				<a href="/admin/horoscope/today-edit/id/<?=$item['id']?>/sign/<?=$this->sign?>">
+					<?=iconv('windows-1251','utf-8',substr(iconv('utf-8','windows-1251',preg_replace('/<\/?[^>]+>/ims','',$item['description'])), 0,130))?> ...
+				</a>
+			</td>
+			<td>
+				<?=($item['used'] == 'y')?'Да':'Нет';?>
+			</td>
+			<td>
+				<?=($item['in_use'] == 'y')?'Да':'Нет';?>
+			</td>
+			<td>
+				<a href="/admin/horoscope/today-edit/id/<?=$item['id']?>/sign/<?=$this->sign;?>">Редактировать</a> / 
+				<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=$this->sign?>')">Удалить</a>
+			</td>
+		</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+</table>	

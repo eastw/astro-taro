@@ -57,7 +57,6 @@ class Admin_HoroscopeController extends Zend_Controller_Action{
 			$item = $this->service->getHoroscopeByTypeAndSign($type, $sign); 
 			echo Zend_Json::encode($item);
 		}
-		
 	}
 	
 	public function saveByTypeAndSignAction(){
@@ -373,5 +372,73 @@ class Admin_HoroscopeController extends Zend_Controller_Action{
 		$data = $this->service->searchPage($query);
 		$this->view->data = $data;
 		$this->render('search-page');
+	}
+	
+	public function todayAction(){
+		$this->view->signs = $this->service->getSunSigns();
+		$sign = $this->_getParam('sign');
+		if($this->getRequest()->isPost()){
+			$sign = $this->getRequest()->getPost('sign', null);
+		}
+		if(!empty($sign)){
+			$this->view->sign = $sign;
+			$this->view->data = $this->service->getTodayDataBySignId($sign);
+		}
+	}
+	
+	public function todayEditAction(){
+		$this->view->sign = $this->_getParam('sign');
+		$id = $this->_getParam('id');
+		
+		$data = $this->service->getTodayDataById($id);
+		$form = new Application_Form_HoroscopeTodayDataForm();
+		$this->view->form = $form;
+		
+		$this->view->actionType = 'edit';
+		$form->description->setValue($data['description']);
+		$form->fillSigns($this->service->getSunSigns());
+		$form->sign->setValue($this->view->sign);
+		
+		if($this->getRequest()->isPost()){
+			$formData = $this->_getAllParams();
+			if($form->isValid($formData)){
+				$validData = $form->getValidValues($formData);
+				$this->service->saveTodayRowData($validData,$id);
+				$this->redirect('/admin/horoscope/today/sign/' . $this->view->sign);
+			}else{
+				$form->populate($formData);
+			}
+		}
+	}
+	
+	public function todayAddAction(){
+		$this->view->sign = $this->_getParam('sign');
+		$this->view->actionType = 'add';
+		$form = new Application_Form_HoroscopeTodayDataForm();
+		$this->view->form = $form;
+		$form->fillSigns($this->service->getSunSigns());
+		$form->sign->setValue($this->view->sign);
+		
+		if($this->getRequest()->isPost()){
+			$formData = $this->_getAllParams();
+			if($form->isValid($formData)){
+				$validData = $form->getValidValues($formData);
+				$this->service->addTodayRowData($validData);
+				$this->redirect('/admin/horoscope/today/sign/' . $this->view->sign);
+			}else{
+				$form->populate($formData);
+			}
+		}
+		
+		$this->render('today-edit');
+	}
+	
+	public function todayDeleteAction(){
+		$sign = $this->_getParam('sign');
+		$id = $this->_getParam('id');
+		if(!empty($sign) && !empty($id) ){
+			$this->service->removeTodayRow($id);
+			$this->redirect('/admin/horoscope/today/sign/' . $sign);
+		}
 	}
 }
