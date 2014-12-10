@@ -341,46 +341,73 @@ class App_HoroscopeService {
 		$needUpdate = false;
 		$horoscope = $this->getWorkHoroscopeRows($signId);
 		if(count($horoscope)){
-			foreach($horoscope as $row){
-				if($row['in_use_date'] == date('Y-m-d', strtotime('-1 day'))){
+			$bothOutdate = false;
+			if( strtotime($horoscope[0]['in_use_date']) < strtotime(date('Y-m-d'))
+				&& (isset($horoscope[1]) && strtotime($horoscope[1]['in_use_date']) < strtotime(date('Y-m-d')))
+			){
+				$bothOutdate = true;
+			}
+			
+			if($bothOutdate){
+				foreach($horoscope as $row){
 					$updateData = array(
 						'in_use' => self::IN_USE_NO,
 						'used' => self::USED_YES,
 						'in_use_date' => new Zend_Db_Expr('NULL')
 					);
 					$this->horoscopeByTime->update($updateData, 'id=' . $row['id']);
-					$this->setTomorrowRow($signId);
-					$needUpdate = true;
+				}
+				$this->initTodayHoroscopeRows($signId);
+			}else{
+				foreach($horoscope as $row){
+					if(strtotime($row['in_use_date']) < strtotime(date('Y-m-d')) ){
+						$updateData = array(
+							'in_use' => self::IN_USE_NO,
+							'used' => self::USED_YES,
+							'in_use_date' => new Zend_Db_Expr('NULL')
+						);
+						$this->horoscopeByTime->update($updateData, 'id=' . $row['id']);
+						$this->setTomorrowRow($signId);
+						$needUpdate = true;
+					}
 				}
 			}
+			
 		}else{
 			//initial set for horoscope rows
 			$needUpdate = true;
-			$indexes = $this->getUnusedHoroscopeRows($signId);
-			$firstRowIndex = mt_rand(0,(count($indexes)-1));
-			while(true){
-				$secondRowIndex = mt_rand(0,(count($indexes)-1));
-				if($secondRowIndex != $firstRowIndex){
-					break;
-				}
-			}
-			$todayUpdateData = array(
-				'in_use' => self::IN_USE_YES,
-				'in_use_date' => date('Y-m-d')
-			);
-			$this->horoscopeByTime->update($todayUpdateData, 'id=' . $indexes[$firstRowIndex]['id'] );
-			
-			$tomorrowUpdateData = array(
-				'in_use' => self::IN_USE_YES,
-				'in_use_date' => date('Y-m-d',strtotime('+1 day'))
-			);
-			$this->horoscopeByTime->update($tomorrowUpdateData, 'id=' . $indexes[$secondRowIndex]['id'] );
+			$this->initTodayHoroscopeRows($signId);
 		}
 		if($needUpdate){
 			$horoscope = $this->getWorkHoroscopeRows($signId);
 		}
 		
 		return $horoscope;
+	}
+	
+	private function initTodayHoroscopeRows($signId){
+		$indexes = $this->getUnusedHoroscopeRows($signId);
+		if(count($indexes) <= 5){
+			$this->clearUsedTodayHoroscopes();
+		}
+		$firstRowIndex = mt_rand(0,(count($indexes)-1));
+		while(true){
+			$secondRowIndex = mt_rand(0,(count($indexes)-1));
+			if($secondRowIndex != $firstRowIndex){
+				break;
+			}
+		}
+		$todayUpdateData = array(
+			'in_use' => self::IN_USE_YES,
+			'in_use_date' => date('Y-m-d')
+		);
+		$this->horoscopeByTime->update($todayUpdateData, 'id=' . $indexes[$firstRowIndex]['id'] );
+		
+		$tomorrowUpdateData = array(
+			'in_use' => self::IN_USE_YES,
+			'in_use_date' => date('Y-m-d',strtotime('+1 day'))
+		);
+		$this->horoscopeByTime->update($tomorrowUpdateData, 'id=' . $indexes[$secondRowIndex]['id'] );
 	}
 	
 	private function getWorkHoroscopeRows($signId){
@@ -406,7 +433,6 @@ class App_HoroscopeService {
 			'in_use_date' => date('Y-m-d', strtotime('+1 day')) 
 		);
 		$this->horoscopeByTime->update($updateData, 'id=' . $indexes[$rowId]['id']);
-		return $id;
 	}
 	
 	private function getUnusedHoroscopeRows($signId){
@@ -414,8 +440,10 @@ class App_HoroscopeService {
 		$query = $adapter->select();
 		$query->from(array('horoscope_by_time'),array('id'))
 		->where($adapter->quoteInto('sign_id=?',$signId))
-		->where('used',self::USED_NO);
-		//var_dump($query->assemble());
+		->where($adapter->quoteInto('type_id=?',self::HOROSCOPE_TIME_TODAY))
+		->where('in_use<>?',self::USED_YES)
+		->where('used=?',self::USED_NO);
+		//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
 	}
@@ -424,7 +452,7 @@ class App_HoroscopeService {
 		$updateData = array(
 			'used' => self::USED_NO
 		);
-		$this->horoscopeByTime->update($updateData, 'type_id = ' . self::HOROSCOPE_TIME_TODAY);
+		$this->horoscopeByTime->update($updateData, "type_id = " . self::HOROSCOPE_TIME_TODAY . " AND in_use <> 'y'");
 	}
 	
 	public function getWeekData($startdate,$enddate,$sign){
