@@ -358,6 +358,7 @@ class App_HoroscopeService {
 					$this->horoscopeByTime->update($updateData, 'id=' . $row['id']);
 				}
 				$this->initTodayHoroscopeRows($signId);
+				$needUpdate = true;
 			}else{
 				foreach($horoscope as $row){
 					if(strtotime($row['in_use_date']) < strtotime(date('Y-m-d')) ){
