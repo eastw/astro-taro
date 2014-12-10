@@ -417,6 +417,7 @@ class App_HoroscopeService {
 		$query->from('horoscope_by_time')
 			->where($adapter->quoteInto('in_use=?',self::IN_USE_YES))
 			->where($adapter->quoteInto('sign_id=?',$signId))
+			->where($adapter->quoteInto('type_id=?',self::HOROSCOPE_TIME_TODAY))
 			->order('in_use_date');
 			
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
