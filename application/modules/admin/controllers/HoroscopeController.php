@@ -312,7 +312,6 @@ class Admin_HoroscopeController extends Zend_Controller_Action{
 		$this->view->form = $form;
 		$this->view->actionType = 'add';
 		
-		//var_dump($this->getRequest()->getRequestUri()); die;
 		if($this->getRequest()->isPost()){
 			$formData = $this->_getAllParams();
 			if($form->isValid($formData)){

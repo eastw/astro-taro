@@ -35,7 +35,6 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 								$this->view->pageTitle = $item['sign_ru'].' — гороскоп профессии';
 							}
 							if($type == 'karma'){
-								//$this->view->pageTitle = $item['sign_ru'].' — кармический гороскоп';
 								$this->view->pageTitle = 'Кармический гороскоп';
 							}
 							if($type == 'health'){
@@ -56,7 +55,9 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 							if($type == 'year'){
 								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на год';
 							}
-							//var_dump($this->view->pageTitle); die;
+							if($type == 'next-year'){
+								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на следующий год';
+							}
 						}
 					}
 					$this->view->attributes = array(
@@ -68,7 +69,6 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 					$this->view->comments = $this->commentsService->getComments('horoscope', $type, $sign, '');
 					
 					$navItem1 = $this->view->navigation()->findOneById('horoscope-'.$sign.'-today');
-					//var_dump($navItem1); die;
 					if($type != 'today'){
 						if($navItem1){
 							$navItem2 = $navItem1->findOneById('horoscope-'.$sign.'-'.$type);
@@ -95,8 +95,7 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 				$this->view->type = $type;
 				$this->view->topMenuActiveItem = 'horoscope';
 				
-				//var_dump($this->view->type); die;
-				$this->prepareData($type,$sign); 
+				$this->prepareData($type,$sign);
 				$this->render($type);
 			}else{
 				throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
@@ -127,6 +126,7 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 			case 'week': $this->prepareWeekData($sign); break;
 			case 'month': $this->prepareMonthData($sign); break;
 			case 'year': $this->prepareYearData($sign); break;
+			case 'next-year': $this->prepareNextYearData($sign); break;
 			case 'business': $this->prepareBusinessData($sign); break;
 			case 'child': $this->prepareChildData($sign); break;
 			case 'health': $this->prepareHealthData($sign); break;
@@ -158,7 +158,6 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 					$this->view->sign = $item;
 				}
 			}
-			//var_dump($this->view->userSign); die;
 		}else{
 			foreach($this->view->signs as $item){
 				if($item['sign'] == $sign){
@@ -191,8 +190,6 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 				$maingender = 'man';
 				$nestedgender = 'man';
 			}
-			//var_dump($maingender);
-			//var_dump($nestedgender);
 			$sign1 = $this->_getParam('sign1',false);
 			$sign2 = $this->_getParam('sign2',false);
 			echo Zend_Json::encode($this->service->getCompabilityItem($type_id,$sign1, $sign2, $maingender, $nestedgender));
@@ -201,21 +198,18 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 	
 	protected function prepareHealthData($sign){
 		$this->view->data = $this->service->getHoroscopeByTypeAndSignAlias(App_HoroscopeService::HOROSCOPE_TYPE_HEALTH, $sign);
-		//var_dump($this->view->data); die;
 	}
 	protected function prepareBusinessData($sign){
 		$this->view->data = $this->service->getHoroscopeByTypeAndSignAlias(App_HoroscopeService::HOROSCOPE_TYPE_BUSINESS, $sign);
 	}
 	protected function prepareChildData($sign){
 		$this->view->data = $this->service->getHoroscopeByTypeAndSignAlias(App_HoroscopeService::HOROSCOPE_TYPE_CHILD, $sign);
-		//var_dump($this->view->data); die;
 	}
 	protected function prepareProfessionData($sign){
 		$this->view->data = $this->service->getHoroscopeByTypeAndSignAlias(App_HoroscopeService::HOROSCOPE_TYPE_PROF, $sign);
 	}
 	
 	protected function prepareKarmaData($sign){
-		//$this->view->sign = $this->service->getSignByAlias(App_HoroscopeService::HOROSCOPE_SIGN_TYPE_SUN, $sign);
 		$this->view->form = new Application_Form_KarmaForm();
 		
 		if(isset($this->view->userdata->birthday) && !empty($this->view->userdata->birthday)){
@@ -260,7 +254,6 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 			}
 			$count ++;
 		}
-		//var_dump($types); die; 
 		$this->view->horoscopeListTypes = $types;
 		$this->view->horoscopeTypes = $horoscopeTypes;
 		 
@@ -272,12 +265,6 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 		$this->view->today = $date->toString(Zend_Date::DATE_LONG);
 		$this->view->tomorrow = (new Zend_Date($tomorrow))->toString(Zend_Date::DATE_LONG);
 		$this->view->data = $this->service->getTodayDataBySignAlias($today,$tomorrow,$sign);
-		
-		//var_dump($this->view->data); die;
-		//$this->view->pageTitle = 'Гороскопы для знака '.$this->view->signs[$this->view->curSign]['sign_ru'];
-		//var_dump($this->view->horoscopeTypes); die;
-		//echo '<pre>';
-		//var_dump($this->view->curType); die;
 	}
 	protected function prepareWeekData($sign){
 		$startdate = date('Y-m-d',strtotime('last monday'));
@@ -287,7 +274,6 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 		$date = new Zend_Date($enddate);
 		$this->view->enddate = $date->toString(Zend_Date::DATE_LONG);
 		$this->view->data = $this->service->getWeekDataBySignAlias($startdate,$enddate,$sign);
-		//var_dump($this->view->data); die;
 	}
 	protected function prepareMonthData($sign){
 		$startdate = date('Y-m').'-01';
@@ -305,6 +291,13 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 		$enddate = date('Y-m-d',strtotime($startdate.' +1 year -1 day'));
 		$this->view->data = $this->service->getYearDataBySignAlias($startdate,$enddate,$sign);
 	}
+
+	protected function prepareNextYearData($sign){
+		$startdate = date('Y',strtotime('+1 year')).'-01-01';
+		$enddate = date('Y-m-d',strtotime($startdate.' +1 year -1 day'));
+		$this->view->data = $this->service->getYearDataBySignAlias($startdate,$enddate,$sign);
+	}
+
 	public function postDispatch(){
 		
 	}

@@ -71,8 +71,7 @@ class App_DivinationService {
 		
 		$id = $this->divination->insert($insertData);
 		
-		//var_dump($id); die;
-		
+
 		$updateData = array(
 			'alias' => $id.'-'.App_UtilsService::generateTranslit($data['title']),
 		);
@@ -94,8 +93,7 @@ class App_DivinationService {
 				break;
 			}
 		}
-		//echo '<pre>';
-		//var_dump($data); 
+
 		$limit = 0;
 		switch($data['type']){
 			case 'taro': $limit = 78; break;
@@ -104,7 +102,7 @@ class App_DivinationService {
 			case 'book': $limit = 64; break;
 			case 'other': $limit = 100; break;
 		}
-		//var_dump($limit); die;
+
 		if($data['type'] != 'book' && $data['type'] != 'other'){
 			for($i = 0; $i < $limit; $i++ ){
 				$insertData = array(
@@ -168,7 +166,6 @@ class App_DivinationService {
 			'significators'	=> $data['significators'],
 			'type_id' => $data['type'],
 		);
-		//var_dump($updateData); die;
 		if(isset($data['background']) && !empty($data['background'])){
 			$updateData['background'] = $data['background'];
 		}

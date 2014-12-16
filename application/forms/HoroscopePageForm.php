@@ -113,6 +113,7 @@ class Application_Form_HoroscopePageForm extends Zend_Form{
 			'week' => 'Гороскоп на неделю',
 			'month' => 'Гороскоп на месяц',
 			'year' => 'Гороскоп на год',
+			'next-year' => 'Гороскоп на следующий год'
 		));
 	}
 }

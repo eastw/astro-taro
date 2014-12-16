@@ -83,6 +83,7 @@ class App_HoroscopeService {
 				'week'=>'Гороскоп на неделю',
 				'month' => 'Гороскоп на месяц',
 				'year' => 'Гороскоп на год',
+				'next-year' => 'Гороскоп на следующий год',
 				'list' => '',
 		);
 		
@@ -91,14 +92,12 @@ class App_HoroscopeService {
 				'libra','scorpio','sagittarius','capricorn',
 				'aquarius','pisces'
 		);
-		//$this->sun
 	}
 	
 	public function getSimpleSunSigns(){
 		return $this->sunSignsArray;
 	}
 	public function getFrontendHoroscopeTypes(){
-		//unset($this->types['list']);
 		return $this->types;
 	}
 	public function getSunSigns(){
@@ -109,8 +108,6 @@ class App_HoroscopeService {
 		}
 		return $signs;
 	}
-	
-	//public function getSun
 	
 	public function getKeltSigns(){
 		return $this->horoscopeSign->fetchAll($this->horoscopeSign->getAdapter()->quoteInto('sign_type=?',self::HOROSCOPE_SIGN_TYPE_KELT))->toArray();
