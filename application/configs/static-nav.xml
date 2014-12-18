@@ -85,6 +85,11 @@
 									<id>horoscope-aries-year</id>
 									<uri>/horoscope/aries/year</uri>
 								</horoscope-aries-year>
+								<horoscope-aries-next-year>
+									<label>Овен — гороскоп на год</label>
+									<id>horoscope-aries-next-year</id>
+									<uri>/horoscope/aries/next-year</uri>
+								</horoscope-aries-next-year>
 							</pages>
 						</horoscope-aries-today>
 						<horoscope-taurus-today>
@@ -147,6 +152,11 @@
 									<id>horoscope-taurus-year</id>
 									<uri>/horoscope/taurus/year</uri>
 								</horoscope-taurus-year>
+								<horoscope-taurus-next-year>
+									<label></label>
+									<id>horoscope-taurus-next-year</id>
+									<uri>/horoscope/taurus/next-year</uri>
+								</horoscope-taurus-next-year>
 							</pages>
 						</horoscope-taurus-today>
 						<horoscope-gemini-today>
@@ -209,6 +219,11 @@
 									<id>horoscope-gemini-year</id>
 									<uri>/horoscope/gemini/year</uri>
 								</horoscope-gemini-year>
+								<horoscope-gemini-next-year>
+									<label></label>
+									<id>horoscope-gemini-next-year</id>
+									<uri>/horoscope/gemini/next-year</uri>
+								</horoscope-gemini-next-year>
 							</pages>
 						</horoscope-gemini-today>
 						<horoscope-cancer-today>
@@ -271,6 +286,11 @@
 									<id>horoscope-cancer-year</id>
 									<uri>/horoscope/cancer/year</uri>
 								</horoscope-cancer-year>
+								<horoscope-cancer-next-year>
+									<label></label>
+									<id>horoscope-cancer-next-year</id>
+									<uri>/horoscope/cancer/next-year</uri>
+								</horoscope-cancer-next-year>
 							</pages>
 						</horoscope-cancer-today>
 						<horoscope-leo-today>
@@ -333,6 +353,11 @@
 									<id>horoscope-leo-year</id>
 									<uri>/horoscope/leo/year</uri>
 								</horoscope-leo-year>
+								<horoscope-leo-next-year>
+									<label></label>
+									<id>horoscope-leo-next-year</id>
+									<uri>/horoscope/leo/next-year</uri>
+								</horoscope-leo-next-year>
 							</pages>
 						</horoscope-leo-today>
 						<horoscope-virgo-today>
@@ -395,6 +420,11 @@
 									<id>horoscope-virgo-year</id>
 									<uri>/horoscope/virgo/year</uri>
 								</horoscope-virgo-year>
+								<horoscope-virgo-next-year>
+									<label></label>
+									<id>horoscope-virgo-next-year</id>
+									<uri>/horoscope/virgo/next-year</uri>
+								</horoscope-virgo-next-year>
 							</pages>
 						</horoscope-virgo-today>
 						<horoscope-libra-today>
@@ -457,6 +487,11 @@
 									<id>horoscope-libra-year</id>
 									<uri>/horoscope/libra/year</uri>
 								</horoscope-libra-year>
+								<horoscope-libra-next-year>
+									<label></label>
+									<id>horoscope-libra-next-year</id>
+									<uri>/horoscope/libra/next-year</uri>
+								</horoscope-libra-next-year>
 							</pages>
 						</horoscope-libra-today>
 						<horoscope-scorpio-today>
@@ -519,6 +554,11 @@
 									<id>horoscope-scorpio-year</id>
 									<uri>/horoscope/scorpio/year</uri>
 								</horoscope-scorpio-year>
+								<horoscope-scorpio-next-year>
+									<label></label>
+									<id>horoscope-scorpio-next-year</id>
+									<uri>/horoscope/scorpio/next-year</uri>
+								</horoscope-scorpio-next-year>
 							</pages>
 						</horoscope-scorpio-today>
 						<horoscope-sagittarius-today>
@@ -581,6 +621,11 @@
 									<id>horoscope-sagittarius-year</id>
 									<uri>/horoscope/sagittarius/year</uri>
 								</horoscope-sagittarius-year>
+								<horoscope-sagittarius-next-year>
+									<label></label>
+									<id>horoscope-sagittarius-next-year</id>
+									<uri>/horoscope/sagittarius/next-year</uri>
+								</horoscope-sagittarius-next-year>
 							</pages>
 						</horoscope-sagittarius-today>
 						<horoscope-capricorn-today>
@@ -643,6 +688,11 @@
 									<id>horoscope-capricorn-year</id>
 									<uri>/horoscope/capricorn/year</uri>
 								</horoscope-capricorn-year>
+								<horoscope-capricorn-next-year>
+									<label></label>
+									<id>horoscope-capricorn-next-year</id>
+									<uri>/horoscope/capricorn/next-year</uri>
+								</horoscope-capricorn-next-year>
 							</pages>
 						</horoscope-capricorn-today>
 						<horoscope-aquarius-today>
@@ -705,6 +755,11 @@
 									<id>horoscope-aquarius-year</id>
 									<uri>/horoscope/aquarius/year</uri>
 								</horoscope-aquarius-year>
+								<horoscope-aquarius-next-year>
+									<label></label>
+									<id>horoscope-aquarius-next-year</id>
+									<uri>/horoscope/aquarius/next-year</uri>
+								</horoscope-aquarius-next-year>
 							</pages>
 						</horoscope-aquarius-today>
 						<horoscope-pisces-today>
@@ -767,6 +822,11 @@
 									<id>horoscope-pisces-year</id>
 									<uri>/horoscope/pisces/year</uri>
 								</horoscope-pisces-year>
+								<horoscope-pisces-next-year>
+									<label></label>
+									<id>horoscope-pisces-next-year</id>
+									<uri>/horoscope/pisces/next-year</uri>
+								</horoscope-pisces-next-year>
 							</pages>
 						</horoscope-pisces-today>
 					</pages>

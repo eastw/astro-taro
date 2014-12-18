@@ -82,8 +82,8 @@ class App_HoroscopeService {
 				'business' => 'Бизнес гороскоп',
 				'week'=>'Гороскоп на неделю',
 				'month' => 'Гороскоп на месяц',
-				'year' => 'Гороскоп на год',
-				'next-year' => 'Гороскоп на следующий год',
+				'year' => 'Гороскоп на ' . date('Y') . ' год',
+				'next-year' => 'Гороскоп на ' . date('Y' , strtotime('+1 year')) . ' год',
 				'list' => '',
 		);
 		

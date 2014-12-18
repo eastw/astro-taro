@@ -15,7 +15,12 @@ class App_UtilsService {
 			'11' => 'Ноябрь',
 			'12' => 'Декабрь',
 	);
-	
+
+	public static $variables = array(
+		'@sign',
+		'@year',
+		'@next-year'
+	);
 	public static function generateTranslit($phrase){
 		//$phrase = preg_replace('/[^a-zA-ZА-Яа-я0-9\s]/ums', '', $phrase);
 		$phrase = preg_replace('/[^a-zA-ZА-Яа-я0-9\s]/ums', '', $phrase);
@@ -258,5 +263,11 @@ class App_UtilsService {
 		return '/'.implode('/',$tokens);
 		//var_dump(explode('/',$url)); die;
 		//return $url;
+	}
+
+	public static function replaceVariables($src, $sign){
+		$str = str_replace('@sign', $sign, $src);
+		$str = str_replace('@year', date('Y'), $str);
+		return str_replace('@next-year', date('Y',strtotime('+1 year')), $str);
 	}
 } 

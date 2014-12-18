@@ -53,10 +53,10 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на месяц';
 							}
 							if($type == 'year'){
-								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на год';
+								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на ' . date('Y') . ' год';
 							}
 							if($type == 'next-year'){
-								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на следующий год';
+								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на ' . date('Y', strtotime('+1 year')) . ' год';
 							}
 						}
 					}
@@ -74,6 +74,9 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 							$navItem2 = $navItem1->findOneById('horoscope-'.$sign.'-'.$type);
 							if($navItem2){
 								$navItem2->setActive('true');
+								if($type == 'next-year'){
+									$navItem2->setLabel($this->view->pageTitle);
+								}
 							}
 						}
 					}else{
@@ -109,11 +112,11 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 		$pages = $this->service->getAllPages();
 		foreach($pages as $page){
 			if($page['horoscope_type'] == $type){
-				$this->view->seotitle = str_replace('@sign',$sign,$page['title']);
-				$this->view->seokeywords = str_replace('@sign',$sign,$page['keywords']);
-				$this->view->seodescription = str_replace('@sign',$sign,$page['description']);
-				$this->view->minidesc = str_replace('@sign',$sign,$page['minidesc']);
-				$this->view->socialDescription = str_replace('@sign',$sign,$this->view->minidesc); 
+				$this->view->seotitle = App_UtilsService::replaceVariables($page['title'],$sign);//$title;
+				$this->view->seokeywords = App_UtilsService::replaceVariables($page['keywords'],$sign);//str_replace('@sign',$sign,$page['keywords']);
+				$this->view->seodescription = App_UtilsService::replaceVariables($page['description'],$sign);//str_replace('@sign',$sign,$page['description']);
+				$this->view->minidesc = App_UtilsService::replaceVariables($page['minidesc'],$sign);//str_replace('@sign',$sign,$page['minidesc']);
+				$this->view->socialDescription = $this->view->minidesc;//str_replace('@sign',$sign,$this->view->minidesc);
 			}
 		}
 	}

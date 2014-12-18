@@ -6,19 +6,9 @@ fonts
 .project
 BUGS.txt
 logs
-public/files/ad/
 db
 sphinx-commands.txt
 portal-configs
-public/files/articles
-public/files/avatar
-public/files/captcha
-public/files/decks
-public/files/divinations
-public/files/magic
-public/files/news
-public/files/slider
-public/files/uploads
 public/info.php
 public/work copy 301 redirect htaccess.txt
 public/files/moon-days
