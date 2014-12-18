@@ -385,7 +385,7 @@ class App_HoroscopeService {
 	
 	private function initTodayHoroscopeRows($signId){
 		$indexes = $this->getUnusedHoroscopeRows($signId);
-		if(count($indexes) <= 5){
+		if(count($indexes) <= 2){
 			$this->clearUsedTodayHoroscopes();
 		}
 		$firstRowIndex = mt_rand(0,(count($indexes)-1));
@@ -423,7 +423,7 @@ class App_HoroscopeService {
 	
 	private function setTomorrowRow($signId){
 		$indexes = $this->getUnusedHoroscopeRows($signId);
-		if(count($indexes) <= 5){
+		if(count($indexes) <= 2){
 			$this->clearUsedTodayHoroscopes();
 		}
 		$rowId = mt_rand(0,(count($indexes)-1));

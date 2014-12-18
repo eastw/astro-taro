@@ -53,10 +53,10 @@ class HoroscopeController extends App_Controller_Action_ParentController{
 								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на месяц';
 							}
 							if($type == 'year'){
-								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на ' . date('Y') . ' год';
+								$this->view->pageTitle = 'Гороскоп на ' . date('Y') . ' год ' . $item['sign_ru'];
 							}
 							if($type == 'next-year'){
-								$this->view->pageTitle = $item['sign_ru'].' — гороскоп на ' . date('Y', strtotime('+1 year')) . ' год';
+								$this->view->pageTitle = 'Гороскоп на ' . date('Y', strtotime('+1 year')) . ' год ' . $item['sign_ru'];
 							}
 						}
 					}
