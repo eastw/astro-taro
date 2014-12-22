@@ -26,7 +26,7 @@ $autoloader->registerNamespace('App_');
 /**
  * Include my complete Bootstrap
  */
-require '../application/Bootstrap.php';
+require APPLICATION_PATH. '/Bootstrap.php';
 
 // initialize Zend_Application
 $application = new Zend_Application (
@@ -58,7 +58,6 @@ if(isset($opts->help)) {
     echo $opts->getUsageMessage();
     exit;
 }
-
 /**
  * Action : refresh
  */
