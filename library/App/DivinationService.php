@@ -14,6 +14,7 @@ class App_DivinationService {
 	const RUNE_CATEGORY = 3;
 	const BOOK_CATEGORY = 4;
 	const OTHER_CATEGORY = 5;
+	const LENORMAN_CATEGORY = 5;
 	
 	public function __construct(){
 		$this->divination = new Application_Model_DbTable_DivinationTable();
@@ -36,7 +37,6 @@ class App_DivinationService {
 	public function addDivination($data){
 		$insertData = array(
 			'name' => $data['title'],
-			//'alias' => App_UtilsService::generateTranslit($data['title']),
 			'activity' => 'n',
 			'only_old_arkans' => $data['only_old_arkans'],
 			'category_id' => $data['category'],
@@ -48,8 +48,6 @@ class App_DivinationService {
 			'cards_in_alignment' => $data['cards'],
 			'significators'	=> $data['significators'],
 			'type_id' => $data['type'],
-			//'image' => $data['image'],
-			//'alignment_form' => $data['alignment_form']
 		);
 		
 		if(!empty($data['image'])){
@@ -73,7 +71,7 @@ class App_DivinationService {
 		
 
 		$updateData = array(
-			'alias' => $id.'-'.App_UtilsService::generateTranslit($data['title']),
+			'alias' => $id . '-' . App_UtilsService::generateTranslit($data['title']),
 		);
 		$this->divination->update($updateData, $this->divination->getAdapter()->quoteInto('id=?',$id));
 		
@@ -98,6 +96,7 @@ class App_DivinationService {
 		switch($data['type']){
 			case 'taro': $limit = 78; break;
 			case 'classic': $limit = 36; break;
+			case 'lenorman': $limit = 36; break;
 			case 'rune': $limit = 24; break;
 			case 'book': $limit = 64; break;
 			case 'other': $limit = 100; break;
@@ -156,7 +155,7 @@ class App_DivinationService {
 		$divination = $this->getDivinationById($id);
 		$updateData = array(
 			'name' => $data['title'],
-			'alias' => $id.'-'.App_UtilsService::generateTranslit($data['title']),
+			'alias' => $id . '-' . App_UtilsService::generateTranslit($data['title']),
 			'only_old_arkans' => $data['only_old_arkans'],
 			'category_id' => $data['category'],
 			'description' => $data['desc'],
@@ -178,8 +177,6 @@ class App_DivinationService {
 		if(isset($data['front_background']) && !empty($data['front_background'])){
 			$updateData['front_background'] = $data['front_background'];
 		}
-		//echo '<pre>';
-		//var_dump($updateData); die;
 		$this->divination->update($updateData, $this->divination->getAdapter()->quoteInto('id=?',$id));
 		
 		if($divination['type'] == 'taro' || $divination['type'] == 'classic' || $divination['type'] == 'rune'){
@@ -222,16 +219,14 @@ class App_DivinationService {
 			$cards = $this->divinationNet->fetchAll($this->divinationNet->getAdapter()->quoteInto('divination_id=?', $id))->toArray();
 			if(count($cards) > $data['cards']){
 				$must_delete = array();
-				//$count = 0;
 				foreach($cards as $index => $card){
 					if( ($index + 1) > $data['cards']){
 						$must_delete[] = $card;
 					}
-					//$count++;
 				}
 				if(count($must_delete)){
 					foreach ($must_delete as $item){
-						$cards = $this->divinationNet->delete($this->divinationNet->getAdapter()->quoteInto('id=?', $item['id']));
+						$this->divinationNet->delete($this->divinationNet->getAdapter()->quoteInto('id=?', $item['id']));
 					}
 				}
 			}else{
@@ -265,26 +260,22 @@ class App_DivinationService {
 		$query->from(array('d'=>'divination'))
 			->joinLeft(array('c' => 'category_types'), 'd.type_id = c.id','type')
 			->where($this->divination->getAdapter()->quoteInto('d.id=?',$id));
-			//->setIntegrityCheck(FALSE);
-		//var_dump($query->assemble()); die;
 		$stm = $query->query();
 		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
-		//$result = $stm->fetch(); 
 		return $stm->fetch();
-		//return $this->divination->fetchRow($this->divination->getAdapter()->quoteInto('id=?',$id))->toArray();
 	}
 	
 	public function deleteDivination($id){
 		$divination = $this->getDivinationById($id);
-		$realPath = realpath(dirname('.')).DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'divinations'.DIRECTORY_SEPARATOR.$divination['background'];
+		$realPath = realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'divinations' . DIRECTORY_SEPARATOR . $divination['background'];
 		if(file_exists($realPath)){
 			unlink($realPath);
 		}
-		$realPath = realpath(dirname('.')).DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'divinations'.DIRECTORY_SEPARATOR.$divination['image'];
+		$realPath = realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'divinations' . DIRECTORY_SEPARATOR . $divination['image'];
 		if(file_exists($realPath)){
 			unlink($realPath);
 		}
-		$realPath = realpath(dirname('.')).DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'divinations'.DIRECTORY_SEPARATOR.$divination['background'];
+		$realPath = realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'divinations' . DIRECTORY_SEPARATOR . $divination['background'];
 		if(file_exists($realPath)){
 			unlink($realPath);
 		}
@@ -336,8 +327,6 @@ class App_DivinationService {
 			if($data['participation'] == 'n'){
 				$updateData['alignment_position'] = -1;
 			}
-			//'is_significator' => $data['is_significator'],
-			//'significator_type' => $data['significator_type']
 		}else{
 			$updateData['is_significator'] = 'n';
 		}
@@ -377,10 +366,7 @@ class App_DivinationService {
 		}
 		$this->divination->update($updateData, $this->divination->getAdapter()->quoteInto('id=?',$id));
 		$cache = Zend_Registry::get('cache');
-		//$types = $this->categoryService->getCategoryTypes();
-		//foreach($types as $type){
 		$cache->remove($divination['type'].'_list_data');
-		//}
 		$result = array('errors' => array());
 		return $result;
 	}
@@ -405,10 +391,7 @@ class App_DivinationService {
 					$data = $this->getOtherData($divtype,$divId);
 					break;
 			}
-			
-			//$cache->save($data,$divtype.'_list_data');
 		}
-		//var_dump($data); die;
 		return $data;
 	}
 	
@@ -420,7 +403,6 @@ class App_DivinationService {
 		}
 		$cat_str = implode(',', $cat_ids);
 		$query = $this->divination->select();
-		//echo '!!!'; die;
 		$query->from('divination')->where('category_id in ('.$cat_str.') AND activity=\'y\'')->order('id DESC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$divinations = $stm->fetchAll();
@@ -450,19 +432,16 @@ class App_DivinationService {
 	protected function getClassicData($divtype,$divId){
 		$categories = $this->categoryService->getChildCategoriesByType($divId);
 		
-		
-		//var_dump($rootCategory->toArray()); die;
 		$cat_ids = array();
 		foreach ($categories as $category){
 			$cat_ids[] = $category['id'];
 		}
 		$cat_str = implode(',', $cat_ids);
 		$query = $this->divination->select();
-		$query->from('divination')->where('category_id in ('.$cat_str.') AND activity=\'y\' ')->order('id DESC');
+		$query->from('divination')->where('category_id in (' . $cat_str . ') AND activity=\'y\'')->order('id DESC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$divinations = $stm->fetchAll();
-		//echo '<pre>';
-		//var_dump($divinations); die;
+
 		foreach($categories as $catindex => &$category){
 			$children = array();
 			foreach($divinations as $div){
@@ -482,12 +461,10 @@ class App_DivinationService {
 			}
 		}
 		$categories['root-category'] = $this->categoryService->getCategory($categories[0]['parent_id'])->toArray(); 
-		//echo '<pre>';
-		//var_dump($categories); die;
 		return $categories;
 	}
 	
-	protected function getRuneData($divtype,$divId){
+	protected function getRuneData($divtype, $divId){
 		$categories = $this->categoryService->getChildCategoriesByType($divId);
 		$cat_ids = array();
 		foreach ($categories as $category){
@@ -498,7 +475,7 @@ class App_DivinationService {
 		$query->from('divination')->where('category_id in ('.$cat_str.') AND activity=\'y\' ')->order('id DESC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$divinations = $stm->fetchAll();
-		//var_dump($divinations); die;
+
 		foreach($categories as $catindex => &$category){
 			$children = array();
 			foreach($divinations as $div){
@@ -518,21 +495,17 @@ class App_DivinationService {
 			}
 		}
 		$categories['root-category'] = $this->categoryService->getCategory($categories[0]['parent_id'])->toArray();
-		//echo '<pre>';
-		//var_dump($categories); die;
 		return $categories;
 	}
 	
-	protected function getBookData($divtype,$divId){
+	protected function getBookData($divtype, $divId){
 		$categories = $this->categoryService->getRootCategoriesByType($divId);
 		
-		//var_dump($categories); die;
 		$query = $this->divination->select();
 		$query->from('divination')->where('type_id = ('.$divId.') AND activity=\'y\' ')->order('id DESC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$divinations = $stm->fetchAll();
-		//var_dump($divinations); die;
-		
+
 		foreach($categories as &$category){
 			$children = array();
 			foreach($divinations as $div){
@@ -542,21 +515,17 @@ class App_DivinationService {
 			}
 			$category['children'] = $children;
 		}
-		//echo '<pre>';
-		//var_dump($categories); die;
 		return $categories[0];
 	}
 	
 	protected function getOtherData($divtype,$divId){
 		$categories = $this->categoryService->getRootCategoriesByType($divId);
 		
-		//var_dump($categories); die;
 		$query = $this->divination->select();
 		$query->from('divination')->where('type_id = ('.$divId.') AND activity=\'y\' ')->order('id DESC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$divinations = $stm->fetchAll();
-		//var_dump($divinations); die;
-		
+
 		foreach($categories as &$category){
 			$children = array();
 			foreach($divinations as $div){
@@ -566,8 +535,6 @@ class App_DivinationService {
 			}
 			$category['children'] = $children;
 		}
-		//echo '<pre>';
-		//var_dump($categories); die;
 		return $categories[0];
 	}
 	
@@ -575,9 +542,7 @@ class App_DivinationService {
 		$aliasArray = explode('-',$alias);
 		if(count($aliasArray) >= 2 ){
 			$data = $this->getDivinationById($aliasArray[0]);
-			//$data = $this->divination->fetchRow($this->divination->getAdapter()->quoteInto('id=?', $aliasArray[0]));//->toArray();
 			if($data && $data['alias'] == $alias){
-				//$data = $data->toArray();
 				return $data;
 			}else{
 				throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
@@ -597,7 +562,6 @@ class App_DivinationService {
 		$query->from(array('d' => 'divination_book'))
 			->where($this->divinationBook->getAdapter()->quoteInto('d.divination_id =?',$divId))
 			->where($this->divinationBook->getAdapter()->quoteInto('d.order=?',$order));
-		//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetch();
 	}
@@ -606,7 +570,6 @@ class App_DivinationService {
 		$query->from(array('d' => 'divination_book'))
 		->where($this->divinationBook->getAdapter()->quoteInto('d.divination_id =?',$divId))
 		->where($this->divinationBook->getAdapter()->quoteInto('d.lines=?',$hex));
-		//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetch();
 	}
@@ -616,7 +579,6 @@ class App_DivinationService {
 		$query->from(array('d' => 'divination_book'))
 			->where($this->divinationBook->getAdapter()->quoteInto('d.divination_id =?',$divId))
 			->where($this->divinationBook->getAdapter()->quoteInto('d.order=?',$order));
-			//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetch();
 	}
@@ -627,7 +589,6 @@ class App_DivinationService {
 		$query->from(array('d' => 'divination_book'))
 			->where($this->divinationBook->getAdapter()->quoteInto('d.divination_id =?',$divId))
 			->where($this->divinationBook->getAdapter()->quoteInto('d.order=?',$order));
-			//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$data = $stm->fetch();
 		unset($data['id']);
@@ -687,26 +648,6 @@ class App_DivinationService {
 	}
 	
 	public function getDivinationByMask($mask){
-		/*
-		$query =$this->articles->getAdapter()->select();
-		$query->from(array('a' => 'article'),array('id','title'))
-			->where('show_in_list="y"');
-			if($type == 'article'){
-				$query->where('type="a"');
-			}
-			if($type == 'news'){
-				$query->where('type="n"');
-			}
-			if($type == 'magic'){
-				$query->where('type="m"');
-			}
-			
-			$query->where('title LIKE ?','%'.$mask.'%');
-		//var_dump($query->assemble()); die;
-		$stm = $query->query();
-		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
-		return $stm->fetchAll();
-		*/
 		$query =$this->divination->getAdapter()->select();
 		$query->from(array('d' => 'divination'),array('id','title'=>'name'))
 			->joinLeft(array('c' => 'category'), 'd.category_id = c.id',array('category_name'=>'name'))
@@ -714,7 +655,6 @@ class App_DivinationService {
 			->where('d.name LIKE ?','%'.$mask.'%');
 		//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
-		//return 
 		$result = $stm->fetchAll();
 		foreach($result as $index => $item){
 			$result[$index]['title'] = $item['name'].' \ '.$item['category_name'].' \ '.$item['title'];
@@ -729,6 +669,7 @@ class App_DivinationService {
 			case 'rune': return 'Руны';
 			case 'book': return 'Книга перемен';
 			case 'other': return 'Другие гадания';
+			case 'lenorman': return 'Гадания мадам Ленорман';
 		}
 	}
 	

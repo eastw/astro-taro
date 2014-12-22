@@ -19,7 +19,6 @@ class App_DeckService {
 		$query->from(array('d'=>'deck'))
 			->joinLeft(array('c' => 'category_types'), 'd.type_id = c.id','type')
 			->where($this->deck->getAdapter()->quoteInto('d.activity="y" AND c.type=?',$type));
-		//var_dump($query->assemble()); die;
 		$stm = $query->query();
 		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
@@ -34,7 +33,6 @@ class App_DeckService {
 				'back' => $data['back'],
 				'reshuffle' => $data['reshuffle'],
 				'type_id' => $data['type'],
-				//'removal' => $data['removal']
 		);
 		$this->deck->insert($insertData);
 	}
@@ -44,11 +42,7 @@ class App_DeckService {
 		$updateData = array(
 				'name' => $data['title'],
 				'folder_alias' => $folder,
-				//'activity' => 'n',
 				'type_id' => $data['type'],
-				//'back' => $data['back'],
-				//'reshuffle' => $data['reshuffle'],
-				//'removal' => $data['removal']
 		);
 		
 		if(isset($data['back'])){
@@ -57,18 +51,13 @@ class App_DeckService {
 		if(isset($data['reshuffle'])){
 			$updateData['reshuffle'] = $data['reshuffle'];
 		}
-		/*
-		if(isset($data['removal'])){
-			$updateData['removal'] = $data['removal'];
-		}
-		*/
 		$this->deck->update($updateData, $this->deck->getAdapter()->quoteInto('id=?',$id));
 	}
 	public function changeDeckActivity($id){
 		$deck = $this->getDeckById($id);
-		$path = realpath(dirname('.')).DIRECTORY_SEPARATOR.
-								'files'.DIRECTORY_SEPARATOR.'decks'.DIRECTORY_SEPARATOR.
-								$deck['folder_alias'].DIRECTORY_SEPARATOR;
+		$path = realpath(dirname('.')) . DIRECTORY_SEPARATOR .
+								'files' . DIRECTORY_SEPARATOR . 'decks' . DIRECTORY_SEPARATOR.
+								$deck['folder_alias'] . DIRECTORY_SEPARATOR;
 		$files = scandir($path);
 		$absent = true;
 		$filesCount = 0;
@@ -80,38 +69,37 @@ class App_DeckService {
 				$deck['type'] = $type['type'];
 			}
 		}
-		//var_dump($deck['type']); die;
 		switch($deck['type']){
 			case 'taro': $filesLimit = 78; break;
 			//in classic cards not all cards have reverse card
 			case 'classic': $filesLimit = 36; break;
+			case 'lenorman': $filesLimit = 36; break;
 			case 'rune': $filesLimit = 24; break;
 		}
 		$foundFiles = array();
-		//var_dump($filesLimit); die;
 		for($i = 0; $i < $filesLimit; $i++){
-			if(in_array($i.'.jpg',$files)){
+			if(in_array($i . '.jpg', $files)){
 				$absent = false;
 			}
-			if(in_array($i.'.png', $files)){
+			if(in_array($i . '.png', $files)){
 				$absent = false;
-				$foundFiles[] = $i.'.png';
+				$foundFiles[] = $i . '.png';
 			}
-			if(in_array($i.'.gif', $files)){
+			if(in_array($i . '.gif', $files)){
 				$absent = false;
 			}
 			if(!$absent){
 				++$filesCount;
 			}
 			$absent = true;
-			if(in_array($i.'_0.jpg',$files)){
+			if(in_array($i . '_0.jpg', $files)){
 				$absent = false;
 			}
-			if(in_array($i.'_0.png', $files)){
+			if(in_array($i . '_0.png', $files)){
 				$absent = false;
-				$foundFiles[] = $i.'_0.png';
+				$foundFiles[] = $i . '_0.png';
 			}
-			if(in_array($i.'_0.gif', $files)){
+			if(in_array($i . '_0.gif', $files)){
 				$absent = false;
 			}
 			if(!$absent){
@@ -121,12 +109,12 @@ class App_DeckService {
 		}
 		$result = array();
 		$result['id'] = $deck['id'];
-		//var_dump($foundFiles); 
-		//var_dump($filesCount); die;
+
 		switch($deck['type']){
 			case 'taro': $filesLimit *= 2; break;
 			//in classic cards not all cards have reverse card
 			case 'classic': $filesLimit = 48; break;
+			case 'lenorman': $filesLimit = 36; break;
 			case 'rune': $filesLimit *= 2; break;
 		}
 		if($filesCount != $filesLimit && $deck['activity'] == 'n'){
@@ -135,7 +123,6 @@ class App_DeckService {
 			$result['error'] = '';
 		}
 		if(empty($result['error'])){
-			//var_dump($filesCount); die;
 			$updateData = array(
 				'activity' => 'y'
 			);
@@ -145,7 +132,7 @@ class App_DeckService {
 			$this->deck->update($updateData, $this->deck->getAdapter()->quoteInto('id=?', $id));
 			$result['activity'] = $updateData['activity'];
 		}
-		return $result;//$updateData['activity'];
+		return $result;
 	}
 	
 	public function removeDeck($id){
@@ -159,13 +146,6 @@ class App_DeckService {
 		if(file_exists($deck['reshuffle'])){
 			unlink($path.$deck['reshuffle']);
 		}
-		/*
-		if(file_exists($deck['removal'])){
-			unlink($path.$deck['removal']);
-		}
-		*/
-		
-		//var_dump(glob($path."*")); die;
 		if ($objs = glob($path."*")) {
 			foreach($objs as $obj) {
 				unlink($obj);
@@ -177,15 +157,11 @@ class App_DeckService {
 	}
 	
 	public function getDeckById($id){
-		//return $this->deck->fetchRow($this->deck->getAdapter()->quoteInto('id=?', $id))->toArray();
 		$query = $this->deck->getAdapter()->select();
 		$query->from(array('d'=>'deck'))
 		->joinLeft(array('c' => 'category_types'), 'd.type_id = c.id','type')
 		->where($this->deck->getAdapter()->quoteInto('d.id=?',$id));
-		//->setIntegrityCheck(FALSE);
-		//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
-		//$stm->setFetchMode();
 		$result = $stm->fetchAll();
 		return $result[0];
 	}
@@ -200,8 +176,6 @@ class App_DeckService {
 				->where('d.activity = "y"')
 				->where('d.id IN ?',$subquery);
 				
-		//var_dump($query->assemble()); die;
-		
 		$stm = $query->query();
 		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
@@ -209,7 +183,8 @@ class App_DeckService {
 	
 	public function getDecksByType($typeId){
 		$query = $this->deck->getAdapter()->select();
-		$query->from('deck')->where($this->deck->getAdapter()->quoteInto('type_id=?', $typeId));
+		$query->from('deck')->where($this->deck->getAdapter()->quoteInto('type_id=?', $typeId))
+			->where("activity = 'y' ");
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
 	}

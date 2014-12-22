@@ -12,7 +12,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 	protected $profileService;
 	
 	public function preDispatch(){
-		//parent::preDispatch();
 		$this->service = new App_DivinationService();
 		$this->deckService = new App_DeckService();
 		$this->categoryService = new App_CategoryService();
@@ -37,7 +36,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 	public function addDeckAction(){
 		$this->view->actionType = 'add';
 		$form = new Application_Form_DeckForm();
-		//$types = $this->categoryService->getCategoryTypes();
 		$this->view->form = $form;
 		$form->fillTypes($this->categoryService->getCategoryTypes());
 		if($this->getRequest()->isPost()){
@@ -45,17 +43,17 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			if($form->isValid($data)){
 				$validValues = $form->getValidValues($data);
 				$deckFolder = App_UtilsService::generateTranslit($validValues['title']);
-				mkdir(realpath(dirname('.')).DIRECTORY_SEPARATOR.'files'.
-						DIRECTORY_SEPARATOR.'decks'.DIRECTORY_SEPARATOR.$deckFolder);
+				mkdir(realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' .
+						DIRECTORY_SEPARATOR . 'decks' . DIRECTORY_SEPARATOR . $deckFolder);
 				$adapter = $form->back->getTransferAdapter();
 				$files = array();
-				$path = realpath(dirname('.')).DIRECTORY_SEPARATOR.
-									'files'.DIRECTORY_SEPARATOR.'decks'.DIRECTORY_SEPARATOR.
-									$deckFolder.DIRECTORY_SEPARATOR;
+				$path = realpath(dirname('.')) . DIRECTORY_SEPARATOR.
+									'files' . DIRECTORY_SEPARATOR . 'decks' . DIRECTORY_SEPARATOR.
+									$deckFolder . DIRECTORY_SEPARATOR;
 				foreach ($adapter->getFileInfo() as $file) { 
 					$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-					$newName = uniqid().'.'.$ext;
-					$filepath = $path.$newName;
+					$newName = uniqid() . '.' . $ext;
+					$filepath = $path . $newName;
 					$files[] = $newName;
 					$adapter->addFilter('Rename', array(
 							'target' => $filepath,
@@ -65,7 +63,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 				}
 				$validValues['back'] = $files[0];
 				$validValues['reshuffle'] = $files[1];
-				//$validValues['removal'] = $files[2];
 				$this->deckService->addDeck($validValues);
 				$this->redirect('/admin/divination/deck');
 			}else{
@@ -83,26 +80,25 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			$deck = $this->deckService->getDeckById($id);
 			$form = new Application_Form_DeckForm();
 			$form->title->setValue($deck['name']);
-			$form->back_note->setValue('<img src="/files/decks/'.$deck['folder_alias'].'/'.$deck['back'].'">');
-			$form->reshuffle_note->setValue('<img src="/files/decks/'.$deck['folder_alias'].'/'.$deck['reshuffle'].'">');
+			$form->back_note->setValue('<img src="/files/decks/' . $deck['folder_alias'] . '/' . $deck['back'] . '">');
+			$form->reshuffle_note->setValue('<img src="/files/decks/' . $deck['folder_alias'] . '/' . $deck['reshuffle'] . '">');
 			$form->fillTypes($this->categoryService->getCategoryTypes());
 			$form->type->setValue($deck['type_id']);
-			//$form->removal_note->setValue('<img src="/files/decks/'.$deck['folder_alias'].'/'.$deck['removal'].'">');
 			$this->view->form = $form;
 			
 			if($this->getRequest()->isPost()){
 				$data = $this->_getAllParams();
 				if($form->isValid($data)){
 					$validData = $form->getValidValues($data);
-					$path = realpath(dirname('.')).DIRECTORY_SEPARATOR.
-									'files'.DIRECTORY_SEPARATOR.'decks'.DIRECTORY_SEPARATOR.
-									$deck['folder_alias'].DIRECTORY_SEPARATOR;
+					$path = realpath(dirname('.')) . DIRECTORY_SEPARATOR.
+									'files' . DIRECTORY_SEPARATOR . 'decks' . DIRECTORY_SEPARATOR.
+									$deck['folder_alias'] . DIRECTORY_SEPARATOR;
 					$files = array();
 					$adapter = $form->back->getTransferAdapter();
 					foreach ($adapter->getFileInfo() as $index => $file) {
 						if(!empty($file['name'])){
 							$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-							$newName = uniqid().'.'.$ext;
+							$newName = uniqid() . '.' . $ext;
 							$filepath = $path.$newName;
 							$files[$index] = $newName;
 							$adapter->addFilter('Rename', array(
@@ -112,7 +108,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 							$adapter->receive($file['name']);
 						}
 					}
-					//var_dump($files); die;
 					foreach($files as $index => $item){
 						if(isset($files[$index])){
 							if(file_exists($path.$deck[$index])){
@@ -121,20 +116,17 @@ class Admin_DivinationController extends Zend_Controller_Action{
 							$validData[$index] = $files[$index];
 						}
 					}
-					//echo '<pre>';
-					//var_dump($validData); die;
 					if($deck['name'] != $validData['title']){
-						rename($path,realpath(dirname('.')).DIRECTORY_SEPARATOR.
-									'files'.DIRECTORY_SEPARATOR.'decks'.DIRECTORY_SEPARATOR.
+						rename($path, realpath(dirname('.')) . DIRECTORY_SEPARATOR.
+									'files' . DIRECTORY_SEPARATOR . 'decks' . DIRECTORY_SEPARATOR.
 									App_UtilsService::generateTranslit($validData['title'])
 									.DIRECTORY_SEPARATOR);
 					}
 					$this->deckService->saveDeck($validData,$deck['id']);
-					$this->redirect((!empty($page))?'/admin/divination/deck/page/'.$page :'/admin/divination/deck');
+					$this->redirect((!empty($page)) ? '/admin/divination/deck/page/' . $page : '/admin/divination/deck');
 				}else{
-					$form->back_note->setValue('<img src="/files/decks/'.$deck['folder_alias'].'/'.$deck['back'].'">');
-					$form->reshuffle_note->setValue('<img src="/files/decks/'.$deck['folder_alias'].'/'.$deck['reshuffle'].'">');
-					//$form->removal_note->setValue('<img src="/files/decks/'.$deck['folder_alias'].'/'.$deck['removal'].'">');
+					$form->back_note->setValue('<img src="/files/decks/' . $deck['folder_alias'] . '/' . $deck['back'] . '">');
+					$form->reshuffle_note->setValue('<img src="/files/decks/' . $deck['folder_alias'] . '/' . $deck['reshuffle'] . '">');
 					$form->populate($data);
 				}
 			}
@@ -149,61 +141,53 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			$this->deckService->removeDeck($id);
 		}
 		$page = $this->_getParam('page','');
-		$this->redirect((!empty($page))?'/admin/divination/deck/page/'.$page :'/admin/divination/deck');
+		$this->redirect((!empty($page)) ? '/admin/divination/deck/page/' . $page : '/admin/divination/deck');
 	}
 	
 	public function cardsDeckAction(){
 		$id = $this->_getParam('id',false);
 		if($id){
 			$deck = $this->deckService->getDeckById($id);
-			//echo '<pre>';
-			//var_dump($deck); 
-			//die;
-			//$this->view->folder = $deck['folder_alias'];
-			//$this->view->deckname = $deck['name'];
-			$this->view->path = realpath(dirname('.')).DIRECTORY_SEPARATOR.
-									'files'.DIRECTORY_SEPARATOR.'decks'.DIRECTORY_SEPARATOR.
-									$deck['folder_alias'].DIRECTORY_SEPARATOR;
-			//$this->view->id = $deck['id'];
+			$this->view->path = realpath(dirname('.')) . DIRECTORY_SEPARATOR.
+									'files' . DIRECTORY_SEPARATOR . 'decks' . DIRECTORY_SEPARATOR.
+									$deck['folder_alias'] . DIRECTORY_SEPARATOR;
 			$this->view->deck =$deck;
 			$this->view->cardsCount = 0;
 			switch($deck['type']){
 				case 'taro': $this->view->cardsCount = 78; break;
 				case 'classic': $this->view->cardsCount = 36; break;
+				case 'lenorman': $this->view->cardsCount = 36; break;
 				case 'rune': $this->view->cardsCount = 24; break;
 			}
 			
-			//$this->view->form = new Application_Form_DeckImageForm();
-			//$this->view->form->id->setValue($deck['id']);
 			$images = array();
-			for($i = 0,$n = $this->view->cardsCount; $i < $n;$i++){
+			for($i = 0, $n = $this->view->cardsCount; $i < $n; $i++){
 				$item = array();
-				if(file_exists($this->view->path.$i.'.jpg')){
-					$item['normal'] = $i.'.jpg'; 
+				if(file_exists($this->view->path . $i . '.jpg')){
+					$item['normal'] = $i . '.jpg';
 				}
-				if(file_exists($this->view->path.$i.'.png')){
-					$item['normal'] = $i.'.png';
-				}
-				
-				if(file_exists($this->view->path.$i.'.gif')){
-					$item['normal'] = $i.'.gif';
+				if(file_exists($this->view->path . $i . '.png')){
+					$item['normal'] = $i . '.png';
 				}
 				
-				if(file_exists($this->view->path.$i.'_0.jpg')){
-					$item['reverse'] = $i.'_0.jpg';
+				if(file_exists($this->view->path . $i . '.gif')){
+					$item['normal'] = $i . '.gif';
 				}
 				
-				if(file_exists($this->view->path.$i.'_0.png')){
-					$item['reverse'] = $i.'_0.png';
+				if(file_exists($this->view->path . $i . '_0.jpg')){
+					$item['reverse'] = $i . '_0.jpg';
 				}
-				if(file_exists($this->view->path.$i.'_0.gif')){
-					$item['reverse'] = $i.'_0.gif';
+				
+				if(file_exists($this->view->path . $i . '_0.png')){
+					$item['reverse'] = $i . '_0.png';
+				}
+				if(file_exists($this->view->path . $i . '_0.gif')){
+					$item['reverse'] = $i . '_0.gif';
 				}
 				
 				$images[] = $item;
 			}
 			$this->view->images = $images;
-			//var_dump($images); die;
 		}
 	}
 	
@@ -221,7 +205,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 		$json = array();
 		if($this->getRequest()->isPost()){
 			$data = $this->_getAllParams();
-			//var_dump($data); die;
 			$number = $data['number'];
 			$id = $data['id'];
 			$deck = $this->deckService->getDeckById($id);
@@ -229,9 +212,9 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			$files = array();
 			$valid = true;
 			$errors = array();
-			$path = realpath(dirname('.')).DIRECTORY_SEPARATOR.
-								'files'.DIRECTORY_SEPARATOR.'decks'.DIRECTORY_SEPARATOR.
-								$deck['folder_alias'].DIRECTORY_SEPARATOR;
+			$path = realpath(dirname('.')) . DIRECTORY_SEPARATOR.
+								'files' . DIRECTORY_SEPARATOR . 'decks' . DIRECTORY_SEPARATOR.
+								$deck['folder_alias'] . DIRECTORY_SEPARATOR;
 			$json['id'] = $deck['id'];
 			$json['number'] = $number;
 			if(!count($_FILES)){

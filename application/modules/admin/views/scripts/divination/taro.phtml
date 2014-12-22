@@ -90,9 +90,9 @@ function changeActivity(id){
 			<a id="activity_<?=$item['id']?>" style="cursor:pointer" onclick="changeActivity('<?=$item['id']?>')"><?=($item['activity'] == 'y')?'Акт':'Неакт';?></a>
 		</td>
 		<td>
-			<?php if($item['type'] == 'taro' || $item['type'] == 'classic' || $item['type'] == 'rune'):?>
-			<a href="/admin/divination/data-taro/id/<?=$item['id']?>">Описание</a>
-			<a href="/admin/divination/net-taro/id/<?=$item['id']?>">Сетка</a>
+			<?php if($item['type'] != 'book' && $item['type'] != 'other' ):?>
+				<a href="/admin/divination/data-taro/id/<?=$item['id']?>">Описание</a>
+				<a href="/admin/divination/net-taro/id/<?=$item['id']?>">Сетка</a>
 			<?php elseif($item['type'] == 'book'):?>
 				<a href="/admin/divination/book-descriptions/id/<?=$item['id']?>">Описания</a>
 			<?php elseif($item['type'] == 'other'):?>

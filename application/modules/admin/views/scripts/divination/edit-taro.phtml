@@ -38,20 +38,19 @@
 						if(data.decks.length != 0 && data.categories.length != 0 ){
 							html = '<option value="">Выберите колоду</option>';
 							for(var i in data.decks){
-								html += '<option value="'+data.decks[i].id+'">'+data.decks[i].name+'</option>';
+								html += '<option value="' + data.decks[i].id + '">' + data.decks[i].name + '</option>';
 							}
 							$('#decks option:eq(0)').replaceWith(html);
 							html = '<option value="">Выберите категорию</option>';
 							for(var i in data.categories){
-								html += '<option value="'+data.categories[i].id+'">'+data.categories[i].name+'</option>';
+								html += '<option value="' + data.categories[i].id + '">' + data.categories[i].name + '</option>';
 							}
 							$('#category option:eq(0)').replaceWith(html);
 						}else{
-							//console.log($('#type option:selected').val());
 							html = '<option value="">Выберите категорию</option>';
 							if( $('#type option:selected').val() > 3){
 								for(var i in data.categories){
-									html += '<option value="'+data.categories[i].id+'">'+data.categories[i].name+'</option>';
+									html += '<option value="' + data.categories[i].id + '">' + data.categories[i].name + '</option>';
 								}
 								$('#category option:eq(0)').replaceWith(html);
 							}else{
@@ -66,13 +65,12 @@
 		
 	});
 	function toggleControlsBySelectedType(){
-		//console.log($('#type option:selected').val());
-		if($('#type option:selected').val() > 2){
+		if($('#type option:selected').val() > 1 ){
 			$('#only_old_arkans').parent().parent().hide();
 		}else{
 			$('#only_old_arkans').parent().parent().show();
 		}
-		if($('#type option:selected').val() > 3){
+		if($('#type option:selected').val() > 3 && $('#type option:selected').val() != 6){
 			$('#cards').parent().parent().hide();
 			$('#decks').parent().parent().hide();
 			$('#significators').parent().parent().hide();

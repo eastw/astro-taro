@@ -19,11 +19,10 @@
 						var normal = CKEDITOR.instances.normal_desc;
 						normal.setData(data.description);
 						var reverse = '';
-						//if(type != 'classic'){
-						reverse = CKEDITOR.instances.reverse_desc;
-						reverse.setData(data.description_reverse);
-							
-						//}
+						if(type != 'classic' && type != 'lenorman'){
+							reverse = CKEDITOR.instances.reverse_desc;
+							reverse.setData(data.description_reverse);
+						}
 
 						if($('#cards option:selected').val() != ''){
 							$('#normal_img').attr('src','/files/decks/' + folderAlias + '/' + $('#cards option:selected').val() + '.png');
@@ -39,9 +38,10 @@
 		$('#submit1,#submit2').click(function(){
 			var normal = CKEDITOR.instances.normal_desc.getData();
 			var reverse = '';
-			//if(type != 'classic'){
+			var title_reverse = '';
+			if(type != 'classic' && type != 'lenorman'){
 				reverse = CKEDITOR.instances.reverse_desc.getData();
-			//}
+			}
 			var title = $('#title').val();
 			var title_reverse = $('#title_reverse').val();
 			$.loading(true, {img: '/files/images/progress.gif', align:'center'});
@@ -64,7 +64,7 @@
 			if(type != ''){
 				$.post('/admin/divination/category-by-type',
 					{
-						'type_id': type,
+						'type_id': type
 					},
 						function(data){
 							var html = '<option value=""></option>';
@@ -81,7 +81,7 @@
 			if(category != ''){
 				$.post('/admin/divination/divinations-by-category',
 					{
-						'category_id': category,
+						'category_id': category
 					},
 						function(data){
 							var html = '<option value=""></option>';
@@ -98,7 +98,7 @@
 				$.post('/admin/divination/copy-divination-descriptions',
 						{
 							'from_divination': from_divination,
-							'to_divination': divination_id,
+							'to_divination': divination_id
 						},
 						function(data){
 							$('.errors').html('');
@@ -231,6 +231,7 @@
 				
 			</td>
 		</tr>
+		<?php if($this->divination['type'] != 'lenorman' && $this->divination['type'] != 'classic'): ?>
 		<tr>
 			<td>
 				<img id="reverse_img" src="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->deck['back']?>"/>
@@ -256,6 +257,7 @@
 				</table>
 			</td>
 		</tr>
+		<?php endif; ?>
 		<tr>
 			<td colspan="2" style="text-align:right;">
 				<input id="submit2" type="button" value="Сохранить"/>
@@ -273,6 +275,7 @@
 		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
 		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
 	} );
+<?php if($this->divination['type'] != 'lenorman' && $this->divination['type'] != 'classic'): ?>
 	CKEDITOR.replace( 'reverse_desc',	{
 		filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
 		filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
@@ -281,5 +284,6 @@
 		filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
 		filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
 	} );
+<?php endif; ?>
 //-->
 </script>
