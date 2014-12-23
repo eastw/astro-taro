@@ -44,7 +44,8 @@ $application->bootstrap();
 try {
     $opts = new Zend_Console_Getopt(
         array(
-            'help'      => 'Displays usage information.',
+            'help'      => 'Usage: php daily-horoscopes.php --refresh',
+
             'refresh'   => 'Refresh daily horoscopes',
         )
     );
