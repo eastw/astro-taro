@@ -53,7 +53,7 @@ class App_HoroscopeService {
 	
 	protected $types;
 	protected $sunSignsArray;
-	protected $sunSignImages;  
+	protected $sunSignImages;
 	
 	public function __construct(){
 		$this->horoscopeSign = new Application_Model_DbTable_HoroscopeSignTable();
@@ -306,7 +306,6 @@ class App_HoroscopeService {
 			->where($this->horoscopeByTime->getAdapter()->quoteInto('sign_id=?',$sign));
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$horoscope = $stm->fetch();
-		//var_dump($query->assemble()); die;
 		if(!$horoscope){
 			$insertData = array(
 				'startdate' => $startdate,
@@ -327,15 +326,14 @@ class App_HoroscopeService {
 	/*Using for frontend*/
 	public function getTodayDataBySignAlias($startdate, $enddate, $sign){
 		$horoscopeRow = $this->getSignByAlias(self::HOROSCOPE_SIGN_TYPE_SUN, $sign);
-		$horoscope = $this->getFrontendTodayDataBySignId($horoscopeRow['id']); 
+		$horoscope = $this->getWorkHoroscopeRows($horoscopeRow['id']);
 		foreach($horoscope as $index => $value){
 			$horoscope[$index]['sign'] = $horoscopeRow;
 		}
 		return $horoscope;
 	}
 	
-	public function getFrontendTodayDataBySignId($signId){
-		$needUpdate = false;
+	protected function getFrontendTodayDataBySignId($signId){
 		$horoscope = $this->getWorkHoroscopeRows($signId);
 		if(count($horoscope)){
 			$bothOutdate = false;
@@ -344,7 +342,6 @@ class App_HoroscopeService {
 			){
 				$bothOutdate = true;
 			}
-			
 			if($bothOutdate){
 				foreach($horoscope as $row){
 					$updateData = array(
@@ -355,7 +352,6 @@ class App_HoroscopeService {
 					$this->horoscopeByTime->update($updateData, 'id=' . $row['id']);
 				}
 				$this->initTodayHoroscopeRows($signId);
-				$needUpdate = true;
 			}else{
 				foreach($horoscope as $row){
 					if(strtotime($row['in_use_date']) < strtotime(date('Y-m-d')) ){
@@ -366,21 +362,14 @@ class App_HoroscopeService {
 						);
 						$this->horoscopeByTime->update($updateData, 'id=' . $row['id']);
 						$this->setTomorrowRow($signId);
-						$needUpdate = true;
 					}
 				}
 			}
 			
 		}else{
 			//initial set for horoscope rows
-			$needUpdate = true;
 			$this->initTodayHoroscopeRows($signId);
 		}
-		if($needUpdate){
-			$horoscope = $this->getWorkHoroscopeRows($signId);
-		}
-		
-		return $horoscope;
 	}
 	
 	private function initTodayHoroscopeRows($signId){
@@ -420,7 +409,7 @@ class App_HoroscopeService {
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
 	}
-	
+
 	private function setTomorrowRow($signId){
 		$indexes = $this->getUnusedHoroscopeRows($signId);
 		if(count($indexes) <= 2){
@@ -1012,49 +1001,6 @@ class App_HoroscopeService {
 	}
 	
 	public function getSunSignByBirthday($birthday){
-		/*
-		$date = new Zend_Date($birthday);
-		$month = $date->get(Zend_Date::MONTH);
-		$day = $date->get(Zend_Date::DAY);
-		$alias = '';
-		if( ($month == 3  && $day >= 21) || ($month == 4  && $day <= 20 ) ){
-			$alias = 'aries';
-		}
-		if( ($month == 4  && $day >= 21) || ($month == 5  && $day <= 20 ) ){
-			$alias = 'taurus';
-		}
-		if( ($month == 5  && $day >= 21) || ($month == 6  && $day <= 21 ) ){
-			$alias = 'gemini';
-		}
-		if( ($month == 6  && $day >= 22) || ($month == 7  && $day <= 22 ) ){
-			$alias = 'cancer';
-		}
-		if( ($month == 7  && $day >= 23) || ($month == 8  && $day <= 23 ) ){
-			$alias = 'leo';
-		}
-		if( ($month == 8  && $day >= 24) || ($month == 9  && $day <= 23 ) ){
-			$alias = 'virgo';
-		}
-		if( ($month == 9  && $day >= 24) || ($month == 10  && $day <= 23 ) ){
-			$alias = 'libra';
-		}
-		if( ($month == 10  && $day >= 24) || ($month == 11  && $day <= 22 ) ){
-			$alias = 'scorpio';
-		}
-		if( ($month == 11  && $day >= 23) || ($month == 12  && $day <= 21 ) ){
-			$alias = 'sagittarius';
-		}
-		if( ($month == 12  && $day >= 22) || ($month == 1  && $day <= 20 ) ){
-			$alias = 'capricorn';
-		}
-		if( ($month == 1  && $day >= 21) || ($month == 2  && $day <= 20 ) ){
-			$alias = 'aquarius';
-		}
-		if( ($month == 2  && $day >= 21) || ($month == 3  && $day <= 20 ) ){
-			$alias = 'pisces';
-		}
-		return $alias;
-		*/
 		$year = '2010';
 		$birthday = $year.'-'.date('m-d',strtotime($birthday));
 		
@@ -1065,41 +1011,26 @@ class App_HoroscopeService {
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetch();
 	}
+
+	public function cronDailyHoroscopesUpdate(){
+		$signIds = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+		foreach($signIds as $signId){
+			$this->getFrontendTodayDataBySignId($signId);
+		}
+	}
 	
 	public function getShortSunSignsToday(){
 		$today = date('Y-m-d');
 		$adapter = $this->horoscopeByTime->getAdapter();
-		$signIds = array(1,2,3,4,5,6,7,8,9,10,11,12);
 		$query = $adapter->select()->from(array('k'=>'horoscope_by_time'))
-		->joinLeft(array('s' => 'horoscope_sign'),'k.sign_id = s.id',array('sign','sign_ru','sign_startdate','sign_enddate'))
-		->where($adapter->quoteInto('k.sign_id in (?)',$signIds))
-		->where($adapter->quoteInto('k.in_use_date=?',$today))
-		->order('k.sign_id ASC');
+			->joinLeft(array('s' => 'horoscope_sign'),'k.sign_id = s.id',array('sign','sign_ru','sign_startdate','sign_enddate'))
+			->where($adapter->quoteInto('k.type_id =?', self::HOROSCOPE_TIME_TODAY))
+			->where($adapter->quoteInto('k.in_use_date=?', $today))
+			->order('k.sign_id ASC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
-		$horoscopes = $stm->fetchAll();
-		
-		if(count($horoscopes) < 12){
-			$signs = $this->getSunSigns();
-			foreach($signIds as $signId){
-				if(!$this->existSignInArray($horoscopes,$signId)){
-					$horoscope = $this->getFrontendTodayDataBySignId($signId);
-					$horoscopes[] = $horoscope[0];
-				}
-			}
-			foreach($horoscopes as $index => $item){
-				foreach($signs as $sign){
-					if($item['sign_id'] == $sign['id']){
-						$horoscopes[$index]['sign'] = $sign['sign'];
-						$horoscopes[$index]['sign_ru'] = $sign['sign_ru'];
-						$horoscopes[$index]['sign_startdate'] = $sign['sign_startdate'];
-						$horoscopes[$index]['sign_enddate'] = $sign['sign_enddate']; 
-					}
-				}
-			}
-		}
-		return $horoscopes;
+		return $stm->fetchAll();
 	}
-	
+	/*
 	private function existSignInArray($horoscopes, $signId){
 		foreach($horoscopes as $item){
 			if(isset($item['sign_id']) && $item['sign_id'] == $signId){
@@ -1108,6 +1039,7 @@ class App_HoroscopeService {
 		}
 		return false;
 	}
+	*/
 	
 	public static function imageBySign($sign){
 		switch($sign){

@@ -16,13 +16,7 @@ class App_UtilsService {
 			'12' => 'Декабрь',
 	);
 
-	public static $variables = array(
-		'@sign',
-		'@year',
-		'@next-year'
-	);
 	public static function generateTranslit($phrase){
-		//$phrase = preg_replace('/[^a-zA-ZА-Яа-я0-9\s]/ums', '', $phrase);
 		$phrase = preg_replace('/[^a-zA-ZА-Яа-я0-9\s]/ums', '', $phrase);
 		$tr = array(
                 "А"=>"A","Б"=>"B","В"=>"V","Г"=>"G",
@@ -43,8 +37,6 @@ class App_UtilsService {
             );
         $phrase = strtolower(strtr($phrase,$tr));
         $phrase = preg_replace('/[^a-zA-Z0-9\-]/ums', '', $phrase);
-        //var_dump($phrase); die;
-        //var_dump($phrase); die;
 		return  $phrase;
 	}
 
@@ -201,6 +193,7 @@ class App_UtilsService {
 			case 'day': return 'Персональный день';
 			case 'month': return 'Персональный месяц';
 			case 'year': return 'Персональный год';
+			case 'next-year': return 'Персональный следующий год';
 			case 'love': return 'Любовная совместимость';
 			case 'partner': return 'Партнерская совместимость';
 		}
@@ -253,7 +246,6 @@ class App_UtilsService {
 	}
 	
 	public static function cleanUrlLastSlash($url){
-		//TODO: отбрасывать слеш в конце урл
 		$tokens = explode('/',$url);
 		foreach($tokens as $index => $token){
 			if(empty($token)){
@@ -261,8 +253,6 @@ class App_UtilsService {
 			}
 		}
 		return '/'.implode('/',$tokens);
-		//var_dump(explode('/',$url)); die;
-		//return $url;
 	}
 
 	public static function replaceVariables($src, $sign){
