@@ -153,7 +153,7 @@
 									<uri>/horoscope/taurus/year</uri>
 								</horoscope-taurus-year>
 								<horoscope-taurus-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-taurus-next-year</id>
 									<uri>/horoscope/taurus/next-year</uri>
 								</horoscope-taurus-next-year>
@@ -220,7 +220,7 @@
 									<uri>/horoscope/gemini/year</uri>
 								</horoscope-gemini-year>
 								<horoscope-gemini-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-gemini-next-year</id>
 									<uri>/horoscope/gemini/next-year</uri>
 								</horoscope-gemini-next-year>
@@ -287,7 +287,7 @@
 									<uri>/horoscope/cancer/year</uri>
 								</horoscope-cancer-year>
 								<horoscope-cancer-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-cancer-next-year</id>
 									<uri>/horoscope/cancer/next-year</uri>
 								</horoscope-cancer-next-year>
@@ -354,7 +354,7 @@
 									<uri>/horoscope/leo/year</uri>
 								</horoscope-leo-year>
 								<horoscope-leo-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-leo-next-year</id>
 									<uri>/horoscope/leo/next-year</uri>
 								</horoscope-leo-next-year>
@@ -421,7 +421,7 @@
 									<uri>/horoscope/virgo/year</uri>
 								</horoscope-virgo-year>
 								<horoscope-virgo-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-virgo-next-year</id>
 									<uri>/horoscope/virgo/next-year</uri>
 								</horoscope-virgo-next-year>
@@ -488,7 +488,7 @@
 									<uri>/horoscope/libra/year</uri>
 								</horoscope-libra-year>
 								<horoscope-libra-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-libra-next-year</id>
 									<uri>/horoscope/libra/next-year</uri>
 								</horoscope-libra-next-year>
@@ -555,7 +555,7 @@
 									<uri>/horoscope/scorpio/year</uri>
 								</horoscope-scorpio-year>
 								<horoscope-scorpio-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-scorpio-next-year</id>
 									<uri>/horoscope/scorpio/next-year</uri>
 								</horoscope-scorpio-next-year>
@@ -622,7 +622,7 @@
 									<uri>/horoscope/sagittarius/year</uri>
 								</horoscope-sagittarius-year>
 								<horoscope-sagittarius-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-sagittarius-next-year</id>
 									<uri>/horoscope/sagittarius/next-year</uri>
 								</horoscope-sagittarius-next-year>
@@ -689,7 +689,7 @@
 									<uri>/horoscope/capricorn/year</uri>
 								</horoscope-capricorn-year>
 								<horoscope-capricorn-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-capricorn-next-year</id>
 									<uri>/horoscope/capricorn/next-year</uri>
 								</horoscope-capricorn-next-year>
@@ -756,7 +756,7 @@
 									<uri>/horoscope/aquarius/year</uri>
 								</horoscope-aquarius-year>
 								<horoscope-aquarius-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-aquarius-next-year</id>
 									<uri>/horoscope/aquarius/next-year</uri>
 								</horoscope-aquarius-next-year>
@@ -823,7 +823,7 @@
 									<uri>/horoscope/pisces/year</uri>
 								</horoscope-pisces-year>
 								<horoscope-pisces-next-year>
-									<label></label>
+									<label/>
 									<id>horoscope-pisces-next-year</id>
 									<uri>/horoscope/pisces/next-year</uri>
 								</horoscope-pisces-next-year>

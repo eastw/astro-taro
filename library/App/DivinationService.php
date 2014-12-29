@@ -152,7 +152,9 @@ class App_DivinationService {
 	}
 	
 	public function saveDivination($data,$id){
+
 		$divination = $this->getDivinationById($id);
+
 		$updateData = array(
 			'name' => $data['title'],
 			'alias' => $id . '-' . App_UtilsService::generateTranslit($data['title']),
@@ -165,6 +167,7 @@ class App_DivinationService {
 			'significators'	=> $data['significators'],
 			'type_id' => $data['type'],
 		);
+		/* update images*/
 		if(isset($data['background']) && !empty($data['background'])){
 			$updateData['background'] = $data['background'];
 		}
@@ -179,7 +182,9 @@ class App_DivinationService {
 		}
 		$this->divination->update($updateData, $this->divination->getAdapter()->quoteInto('id=?',$id));
 		
-		if($divination['type'] == 'taro' || $divination['type'] == 'classic' || $divination['type'] == 'rune'){
+		if( $divination['type'] == 'taro' || $divination['type'] == 'classic' || $divination['type'] == 'rune'
+			|| $divination['type'] == 'lenorman' ){
+			/*renew divination-decks links*/
 			$this->divinationDecks->delete($this->divination->getAdapter()->quoteInto('divination_id=?',$id));
 			foreach($data['decks'] as $index => $deck){
 				$insertData = array(
@@ -204,6 +209,7 @@ class App_DivinationService {
 				switch($data['type']){
 					case 'taro': $limit = 78; break;
 					case 'classic': $limit = 36; break;
+					case 'lenorman': $limit = 36; break;
 					case 'rune': $limit = 24; break;
 				}
 				for($i = 0; $i < $limit; $i++ ){
@@ -381,6 +387,9 @@ class App_DivinationService {
 				case 'classic':
 					$data = $this->getClassicData($divtype,$divId);
 					break;
+				case 'lenorman':
+					$data = $this->getLenormanData($divtype,$divId);
+					break;
 				case 'rune':
 					$data = $this->getRuneData($divtype,$divId);
 					break;
@@ -461,6 +470,41 @@ class App_DivinationService {
 			}
 		}
 		$categories['root-category'] = $this->categoryService->getCategory($categories[0]['parent_id'])->toArray(); 
+		return $categories;
+	}
+
+	protected function getLenormanData($divtype,$divId){
+		$categories = $this->categoryService->getChildCategoriesByType($divId);
+
+		$cat_ids = array();
+		foreach ($categories as $category){
+			$cat_ids[] = $category['id'];
+		}
+		$cat_str = implode(',', $cat_ids);
+		$query = $this->divination->select();
+		$query->from('divination')->where('category_id in (' . $cat_str . ') AND activity=\'y\'')->order('id DESC');
+		$stm = $query->query(Zend_Db::FETCH_ASSOC);
+		$divinations = $stm->fetchAll();
+
+		foreach($categories as $catindex => &$category){
+			$children = array();
+			foreach($divinations as $div){
+				if($div['category_id'] == $category['id']){
+					$children[] = $div;
+				}
+			}
+			$category['children'] = $children;
+			$category['children']['vis'] = array();
+			$category['children']['unvis'] = array();
+			foreach($children as $index => $child){
+				if($index < 3){
+					$categories[$catindex]['children']['vis'][] = $child;
+				}else{
+					$categories[$catindex]['children']['unvis'][] = $child;
+				}
+			}
+		}
+		$categories['root-category'] = $this->categoryService->getCategory($categories[0]['parent_id'])->toArray();
 		return $categories;
 	}
 	

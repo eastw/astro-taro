@@ -687,7 +687,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			$column = $this->_getParam('column',false);
 			$row = $this->_getParam('row',false);
 			$order = $this->_getParam('order',false);
-			//var_dump($order); die;
 			$json = array('errors' => array());
 			$participation = $this->_getParam('participation',false);
 			
@@ -714,7 +713,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 				}
 			}
 			if( $is_significator == 1){
-				$signFound = false;
 				foreach($cards as $index => $card){
 					if($card['significator_type'] == $significator_type && ($column != $card['net_column'] || $row != $card['net_row']) ){
 						$json['errors'][] = 'Сигнификатор такого типа уже есть в наборе';

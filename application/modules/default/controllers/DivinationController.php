@@ -35,12 +35,14 @@ class DivinationController extends App_Controller_Action_ParentController{
 			}
 			$this->view->divType = $divtype;
 			
-			$divTypeRu = '';
 			if($divtype == 'taro'){
 				$this->view->pageTitle = 'Гадания на картах Таро';
 			}
 			if($divtype == 'classic'){
 				$this->view->pageTitle = 'Гадания на класических картах';
+			}
+			if($divtype == 'lenorman'){
+				$this->view->pageTitle = 'Гадания мдам Ленорман';
 			}
 			if($divtype == 'rune'){
 				$this->view->pageTitle = 'Гадания на Рунах';
@@ -64,9 +66,6 @@ class DivinationController extends App_Controller_Action_ParentController{
 				$this->view->seokeywords = $this->view->data['seo-keywords'];
 				$this->view->seodescription = $this->view->data['seo-description'];
 			}
-			//$this->data['root-category']['description'];
-			//echo '<pre>';
-			//var_dump($this->view->data); die;
 			$this->render($divtype.'-list');
 		}else{
 			throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
@@ -120,18 +119,13 @@ class DivinationController extends App_Controller_Action_ParentController{
 				}
 			}
 		}
-		//var_dump($divtypeId); die;
 		if($divtype && $alias && $inArray){
 			$navItem = $this->view->navigation()->findOneById($divtype.'-'.$alias);
-			//var_dump($navItem); die;
 			if($navItem){
 				$navItem->setActive('true');
 			}
 			$this->view->divType = $divtype;
 			$this->prepareCategoryData($divtype,$divtypeId,$alias);
-			//echo '<pre>';
-			//var_dump($this->view->data);
-			//die;
 			$this->view->seotitle = 'Гадания::'.(App_DivinationService::getDivTypeRu($divtype)).'::'.$this->view->data['name'];
 			$this->view->seokeywords = $this->view->data['seo-keywords'];
 			$this->view->seodescription = $this->view->data['seo-description'];
@@ -145,9 +139,7 @@ class DivinationController extends App_Controller_Action_ParentController{
 	
 	protected function prepareCategoryData($divtype,$divId, $alias){
 		$data = $this->divinationService->getListDivinationsWithCategories($divtype,$divId);
-		//echo '<pre>';
-		//var_dump($data); die;
-		
+
 		$category = null;
 		foreach($data as $item){
 			if($item['alias'] == $alias){
@@ -158,8 +150,7 @@ class DivinationController extends App_Controller_Action_ParentController{
 			throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
 		}
 		$this->view->pageTitle = $category['name'];
-		$this->view->data = $category;//$this->divinationService->getListDivinationsWithCategories($divtype,$divId);
-		//var_dump($this->view->data); die;
+		$this->view->data = $category;
 	}
 	
 	//view single divination
@@ -179,7 +170,7 @@ class DivinationController extends App_Controller_Action_ParentController{
 			}
 		}
 		if($divtype && $divalias && $alias && $inArray){
-			$divination = $this->divinationService->getDivinationByAlias($divalias);//DivinationById($id);
+			$divination = $this->divinationService->getDivinationByAlias($divalias);
 			if($divination['activity'] == 'n'){
 				throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
 			}
@@ -188,7 +179,7 @@ class DivinationController extends App_Controller_Action_ParentController{
 			}else{
 				$divination['is_favorite'] = false;
 			}
-			//var_dump($this->view->userdata->id); die;
+
 			$this->view->divination = $divination;
 			$this->view->pageTitle = $divination['name'];
 			
@@ -200,10 +191,9 @@ class DivinationController extends App_Controller_Action_ParentController{
 			$this->view->decks = $decks;
 			$this->view->divinationNet = $this->divinationService->getCardsByDivinationId($divination['id']);
 			
-			//var_dump($this->view->divinationNet); die;
 			$haveNotParticipatedCards = 'false';
 			$notParticipatedCards = 0;
-			if($divination['type'] == 'classic'){
+			if($divination['type'] == 'classic' || $divination['type'] == 'lenorman'){
 				foreach ($this->view->divinationNet as $index => $card){
 					if($card['participation'] == 'n'){
 						$haveNotParticipatedCards = 'true';
@@ -213,25 +203,20 @@ class DivinationController extends App_Controller_Action_ParentController{
 			}
 			
 			$this->view->divinationsList = $this->divinationService->getOtherDivinationsInCategory($divination['category_id']);
-			//echo '<pre>';
-			//var_dump($this->view->divinaionsList); die;
-			
+
 			$this->view->haveNotParticipatedCards = $haveNotParticipatedCards;
 			$this->view->notParticipatedCards = $notParticipatedCards;
 			
 			if($divtype != 'book' && $divtype != 'other'){
 				$navItem1 = $this->view->navigation()->findOneById($divtype.'-'.$alias);
-				//$navItem1->setActive('true');
-				
+
 				if($navItem1){
 					$navItem2 = $navItem1->findOneById($divalias);
-					//var_dump($navItem2); die;
 					if($navItem2){
 						$navItem2->setActive('true');
 					}
 				}
 			}else{
-				//var_dump($divalias); die;
 				$navItem = $this->view->navigation()->findOneById($divalias);
 				if($navItem){
 					$navItem->setActive('true');

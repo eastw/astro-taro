@@ -115,7 +115,9 @@
 	                	<?=$this->partial('partials/slider.phtml',array('sliders' => $this->sliders))?>
 	                <?php endif;?>
 	                <?php if($this->controllerName == 'divination' && $this->actionName == 'divination'):?>
-						<?php if($this->divination['type'] == 'taro' || $this->divination['type'] == 'classic' || $this->divination['type'] == 'rune'):?>
+						<?php if($this->divination['type'] == 'taro' || $this->divination['type'] == 'classic' || $this->divination['type'] == 'rune'
+							|| $this->divination['type'] == 'lenorman'
+						):?>
 							<?=$this->partial('partials/divination/divination-block.phtml',
 												array(
 														'divination' => $this->divination,

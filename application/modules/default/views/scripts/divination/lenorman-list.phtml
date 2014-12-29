@@ -1,0 +1,17 @@
+<div id="opisanie">
+    <div class="item_header">Гадания на картах Ленорман</div>
+    <div class="text">
+        <?=$this->data['root-category']['description']?>
+        <div class="more">
+            <a href="">Что такое карты Ленорман →</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div id="all_horo">
+    <?php if($this->data):?>
+        <?php foreach ($this->data as $index => $item):?>
+            <?=$this->partial('partials/divination/lenorman-list-item.phtml',array('item' => $item))?>
+        <?php endforeach;?>
+    <?php endif;?>
+</div>

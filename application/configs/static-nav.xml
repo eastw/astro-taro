@@ -851,6 +851,14 @@
 						
 					</pages>
 				</gadaniya-classic>
+				<gadaniya-lenorman>
+					<label>Гадания мадам Ленорман</label>
+					<id>lenorman-list</id>
+					<uri>/gadaniya/lenorman</uri>
+					<pages>
+
+					</pages>
+				</gadaniya-lenorman>
 				<gadaniya-rune>
 					<label>Гадания на рунах</label>
 					<id>rune-list</id>

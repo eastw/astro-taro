@@ -87,7 +87,7 @@ $(document).ready(function(){
 				onlyOldArkans = $(this).val();
 			}
 		});
-		if(divinationType == 'classic'){
+		if(divinationType == 'classic' || divinationType == 'lenorman'){
 			var text = $('#classic-significator_1').prev().find('div.text').text();
 			$('#classic-significator_1 option').each(function(){
 				if($(this).text() == text){
@@ -117,6 +117,15 @@ $(document).ready(function(){
 			cardWidth = 58;
 			cardHeight =  105;
 		}
+		console.log('haveNotParticipatedCards:' + haveNotParticipatedCards);
+		if(divinationType == 'lenorman'){
+			cardWidth = 58;
+			cardHeight =  105;
+			if(haveNotParticipatedCards == 'true'){
+				cardLimit = cards.length;
+				cardLimit = cardLimit - notParticipatedCards;
+			}
+		}
 		if(divinationType == 'classic'){
 			cardWidth = 69;
 			cardHeight =  97;
@@ -140,7 +149,7 @@ $(document).ready(function(){
 		var horizontalCardMargin = 0;
 		var verticalCardMargin = 0;
 
-		if(divinationType == 'taro'){
+		if(divinationType == 'taro' || divinationType == 'lenorman'){
 			horizontalCardMargin = 4;
 			verticalCardMargin = 5;
 		}
@@ -173,6 +182,28 @@ $(document).ready(function(){
 				}
 				html += '</div>';
 			}
+			if(divinationType == 'lenorman'){
+				html += '<div class="taro-card-item" style="top:'+top+'px;left:'+left+'px;">';
+				if(cards[i].is_significator == 'n'){
+					html += '<img id="align_'+cards[i].alignment_position+'" style="width:59px" src="/files/images/card_place.png"/>';
+					html += '<div class="card_place_num">' + cards[i].alignment_position+'</div>';
+				}else{
+					/*
+					html += '<img id="align_' + cards[i].alignment_position + '" style="width:59px" src="/files/decks/' + selectedDeck + '/' + significators[significators_count] + '.png"/>';
+					significators_count ++;
+					html += '<div class="card_place_num">' + cards[i].significator_type + '</div>';
+					*/
+					if(cards[i].participation == 'y'){
+						html += '<img id="align_'+cards[i].alignment_position+'" style="width:59px" src="/files/images/card_place.png"/>';
+						html += '<div class="card_place_num">'+cards[i].significator_type+'</div>';
+					}else{
+						html += '<img id="align_'+cards[i].alignment_position+'" style="width:59px" src="/files/decks/'+selectedDeck+'/'+significators[significators_count]+'.png"/>';
+						significators_count ++;
+						html += '<div class="card_place_num">'+cards[i].significator_type+'</div>';
+					}
+				}
+				html += '</div>';
+			}
 			if(divinationType == 'classic'){
 				html += '<div class="classic-card-item" style="top:'+top+'px;left:'+left+'px;">';
 				if(cards[i].is_significator == 'n'){
@@ -185,7 +216,6 @@ $(document).ready(function(){
 					}else{
 						html += '<img id="align_'+cards[i].alignment_position+'" style="width:69px" src="/files/decks/'+selectedDeck+'/'+significators[significators_count]+'.png"/>';
 						significators_count ++;
-						//html += '<img id="align_'+cards[i].alignment_position+'" style="width:69px" src="/files/decks/'+selectedDeck+'/'++'"/>';
 						html += '<div class="card_place_num">'+cards[i].significator_type+'</div>';
 					}
 				}
@@ -207,7 +237,7 @@ $(document).ready(function(){
 		var cardsCount = 0;
 		var cardTop = 53;
 		//console.log(divinationType);
-		if(divinationType == 'taro'){
+		if(divinationType == 'taro' ){
 			if(onlyOldArkans == 'y'){
 				cardsCount = 11;
 			}else{
@@ -235,9 +265,20 @@ $(document).ready(function(){
 				cardTop += 14;
 			}
 		}
+		if(divinationType == 'lenorman'){
+			cardsCount = 18;
+			for(var i = 0; i < cardsCount; i++) {
+				html += '<div class="taro-back-card-item" style="top:' + cardTop + 'px;left: 727px;">'
+				+ '<img style="width:69px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+				+ '</div>';
+				html += '<div class="taro-back-card-item" style="top:' + cardTop + 'px;left: 822px;">'
+				+ '<img style="width:69px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+				+ '</div>';
+				cardTop += 14;
+			}
+		}
 		if(divinationType == 'classic'){
 			cardsCount = 18;
-			//cardTop = 20;
 			for(var i = 0; i < cardsCount; i++){
 				html += '<div class="classic-back-card-item" style="top:'+cardTop+'px;left: 727px;">'
 								+'<img style="width:69px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
@@ -271,7 +312,7 @@ $(document).ready(function(){
 		$('.intuit_header').after(html);
 
 		var backSelector = '';
-		if(divinationType == 'taro'){
+		if(divinationType == 'taro' || divinationType == 'lenorman'){
 			backSelector = '.taro-back-card-item';
 		}
 		if(divinationType == 'classic'){
@@ -290,6 +331,8 @@ $(document).ready(function(){
 		});
 
 		$(backSelector).click(function(e){
+			console.log('cardLimit:' + cardLimit);
+			console.log('currentCard:' + currentCard);
 			if(cardLimit > currentCard){
 				var item = null;
 				for(var i in cards){
@@ -305,14 +348,14 @@ $(document).ready(function(){
 				var cardName = '';
 				var cardItem = $(this);
 				if(card.side == 'normal'){
-					cardName = card.cardNumber+'.png';
+					cardName = card.cardNumber + '.png';
 				}else{
 					cardName = card.cardNumber+'_0.png';
 				}
 				if(divinationType == 'rune'){
 					top_animate += 40;
 				}
-				getCardDescription(divinationId,currentCard,card,selectedDeck);
+				getCardDescription(divinationId, currentCard, card, selectedDeck);
 				cardItem.animate({left:left_animate,top:top_animate},function(){
 					cardItem.remove();
 					$('#align_' + item.alignment_position).attr('src','/files/decks/'+selectedDeck+'/' + cardName);
@@ -329,7 +372,7 @@ $(document).ready(function(){
 						$(this).css('left',(pos.left-30)+'px');
 						$(this).find('div.card_place_num_active').hide();
 					}).mouseout(function(){
-						if(divinationType == 'taro'){
+						if(divinationType == 'taro' || divinationType == 'lenorman'){
 							$(this).find('img').css('width','58px');
 						}
 						if(divinationType == 'classic'){
@@ -359,7 +402,7 @@ $(document).ready(function(){
 		});
 	}
 
-	function getCardDescription(divId,curCard,generatedCard,curDeck){
+	function getCardDescription(divId, curCard, generatedCard, curDeck){
 		$.post(
 				'/divination/get-card-description',
 				{
@@ -371,65 +414,44 @@ $(document).ready(function(){
 				},
 				function(data){
 					$('#our-alignment').show();
-					$('#desc_wrapper_' + (curCard-1)).html(data);
+					$('#desc_wrapper_' + (curCard - 1)).html(data);
 				}
 			);
 	}
 
 	function generateCard(){
 		var cardNumber = -1;
-		var found = false;
 		var notFound = false;
 		var card = {cardNumber:-1,side: -1};
+
 		while(!notFound){
-			if(divinationType == 'taro'){
+			if(divinationType == 'taro' ){
 				if(onlyOldArkans == 'n'){
 					cardNumber = Math.floor(Math.random()*78);
 				}else{
 					cardNumber = Math.floor(Math.random()*22);
 				}
 			}
-			if(divinationType == 'classic'){
+			if(divinationType == 'classic' || divinationType == 'lenorman'){
 				cardNumber = Math.floor(Math.random()*36);
+				console.log(cardNumber);
 			}
 			if(divinationType == 'rune'){
 				cardNumber = Math.floor(Math.random()*24);
 			}
-			found = false;
-			for(var i in userCards){
-				if(userCards[i] == cardNumber){
-					found = true;
-					break;
-				}
-			}
-			if(found){
-				notFound = false;
-			}else{
+
+			if(jQuery.inArray(cardNumber, userCards) == -1){
 				notFound = true;
-				var userCardsLen = userCards.length-1;   
-				userCards[/*currentCard*/userCardsLen+1] = cardNumber;
+				userCards[userCards.length] = cardNumber;
 				card.cardNumber = cardNumber;
-				card.side = Math.floor(Math.random()*30);
-			
-				//card.side = 8;//test code	
-				if(card.side > 15){
+				if(divinationType == 'classic' || divinationType == 'lenorman'){
 					card.side = 'normal';
 				}else{
-					if(divinationType == 'classic'){
-						var haveReverse = false;
-						for(var i = 0; i < classicHaveReverseCards.length; i++){
-							if(card.cardNumber == classicHaveReverseCards[i]){
-								haveReverse = true;
-								break;
-							}
-						}
-						if(haveReverse){
-							card.side = 'reverse';
-						}else{
-							card.side = 'normal';
-						}
-					}
-					if(divinationType == 'taro' || divinationType == 'rune'){
+					card.side = Math.floor(Math.random()*30);
+					//card.side = 8;//test code
+					if(card.side > 15){
+						card.side = 'normal';
+					}else{
 						card.side = 'reverse';
 					}
 				}
@@ -451,6 +473,9 @@ $(document).ready(function(){
 		if(divinationType == 'taro'){
 			html += '<div id="other_divi_tarot"><a href="/gadaniya/taro">другие гадания на Таро →</a></div>';
 		}
+		if(divinationType == 'lenorman'){
+			html += '<div id="other_divi_tarot"><a href="/gadaniya/lenorman">другие гадания Ленорман →</a></div>';
+		}
 		if(divinationType == 'classic'){
 			html += '<div id="other_divi_tarot"><a href="/gadaniya/classic">другие гадания на Классике →</a></div>';
 		}
@@ -461,11 +486,10 @@ $(document).ready(function(){
 	}
 
 	function clearResults(){
-		console.log('clear results');
 		userCards = [];
 		checkSelects();
 		currentCard = 0;
-		<?php if($this->divination['type'] == 'classic' || $this->divination['type'] == 'taro'):?>
+		<?php if($this->divination['type'] == 'classic' || $this->divination['type'] == 'taro' || $this->divination['type'] == 'lenorman'):?>
 			$('#interactive_block_taro2').html('<div class="intuit_header">Выберите интуитивно карты</div>');
 		<?php endif;?>
 		<?php if($this->divination['type'] == 'rune'):?>
@@ -486,7 +510,7 @@ $(document).ready(function(){
 				cardsInDeck = 78;
 			}
 		}
-		if(divinationType == 'classic'){
+		if(divinationType == 'classic' || divinationType == 'lenorman'){
 			cardsInDeck = 36;
 		}
 		if(divinationType == 'rune'){
@@ -513,7 +537,7 @@ $(document).ready(function(){
 			found = true;
 		}
 		var backSelector = '';
-		if(divinationType == 'taro'){
+		if(divinationType == 'taro' || divinationType == 'lenorman'){
 			backSelector = '.taro-back-card-item';
 		}
 		if(divinationType == 'classic'){
@@ -697,11 +721,66 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
+	<?php elseif($this->divination['type'] == 'lenorman'):?>
+		<div id="inter_block4">
+			<div class="inter_header">Гадание</div>
+			<div class="inter_block3_content">
+				<?php if($this->divination['significators'] > 0):?>
+					<?php for($i = 0,$n = $this->divination['significators'];$i < $n; $i++):?>
+						<div class="signification">Сигнификатор<img src="/files/images/mark.png" alt="" /></div>
+						<div id="signification" class="signif">
+							<div class="signification_line">
+								<span>Карта сигнификатор</span>
+								<img class="signification_close" src="/files/images/windows_closw.png" alt="" />
+								<div class="clear"></div>
+							</div>
+							<div class="signification_line2">Обозначает вопрошающего или человека, на которого гадают</div>
+							<div class="signification_content">
+								<div class="signification_block2">
+									<div class="signification_item">
+										<div class="item_header">Мужчина</div>
+										<div class="text">Мужчина</div>
+									</div>
+									<div class="signification_item">
+										<div class="item_header">Женщина</div>
+										<div class="text">Женщина</div>
+									</div>
+								</div>
+							</div>
+							<div class="signification_bottom"></div>
+						</div>
+						<select id="classic-significator_<?=($i==0)?'1':'2'?>">
+							<option value="27">Мужчина</option>
+							<option value="28">Женщина</option>
+						</select>
+					<?php endfor;?>
+				<?php endif;?>
+				<div class="clear"></div>
+				<?php if($this->divination['significators'] == 0 ):?>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+				<?php endif;?>
+				<div class="first_time">
+					<a target="blank" href="/statyi/content/17-no-tag/45-kak-pravilno-gadat">Как правильно гадать →</a>
+				</div>
+				<div class="start_taro">Сосредоточьтесь на своем вопросе, нажмите и удерживайте кнопку “Тасовать колоду”</div>
+				<div id="reshuffle_holder" style="display:none;">
+					<img id="reshuffle_img" src=""/>
+				</div>
+				<div class="button" id="start-divination">
+					<div class="button_left"></div>
+					<div class="button_content"><a href="javascript:void(0)">Тасовать колоду</a></div>
+					<div class="button_right"></div>
+				</div>
+			</div>
+		</div>
 	<?php elseif($this->divination['type'] == 'rune'):?>
 	<?php endif;?>
 </div>
 <div id="interactive_block_taro2" style="display:none;<?=(!empty($this->divination['background']))?'background:url(/files/divinations/'.$this->divination['background'].')':'';?>">
-	<?php if($this->divination['type'] == 'classic' || $this->divination['type'] == 'taro'):?>
+	<?php if($this->divination['type'] == 'classic' || $this->divination['type'] == 'taro' || $this->divination['type'] == 'lenorman'):?>
 		<div class="intuit_header">Выберите интуитивно карты!!!</div>
 	<?php endif;?>
 	<?php if($this->divination['type'] == 'rune'):?>

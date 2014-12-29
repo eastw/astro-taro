@@ -13,6 +13,13 @@
 			<a href="/gadaniya/classic">Карты</a>
 		<?php endif;?>
 	</div>
+	<div class="orange_sign_item3" <?=($this->divType == 'lenorman')?'id="you_here"':''?>>
+		<?php if($this->divType == 'lenorman'):?>
+			Ленорман
+		<?php else:?>
+			<a href="/gadaniya/lenorman">Ленорман</a>
+		<?php endif;?>
+	</div>
 	<div class="orange_sign_item3" <?=($this->divType == 'rune')?'id="you_here"':''?>>
 		<?php if($this->divType == 'rune'):?>
 			Руны

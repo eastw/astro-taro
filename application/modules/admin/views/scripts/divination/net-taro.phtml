@@ -4,9 +4,10 @@
 <script type="text/javascript">
 <!--
 var cards = <?=Zend_Json::encode($this->cards)?>;
+console.log(cards);
 var count = <?=$this->cards_full;?>;
 var divination = <?=$this->divination['id']?>;
-var divination_type = '<?=$this->divination['type']?>'; 
+var divination_type = '<?=$this->divination['type']?>';
 
 $(document).ready(function(){
 	for(var i in cards){
@@ -15,7 +16,8 @@ $(document).ready(function(){
 			if(cards[i].is_significator == 'y'){
 				html = '<img src="/files/images/card_' + cards[i].significator_type + '.jpg"/>';
 			}else{
-				html = '<img src="/files/images/card_'+cards[i].alignment_position+'.jpg"/>';
+				html = '<img src="/files/images/card_' + cards[i].alignment_position + '.jpg"/>';
+				//console.log(cards[i].alignment_position);
 			}
 			$('#' + cards[i].net_row + '_' + cards[i].net_column).html(html);
 		}
@@ -75,7 +77,7 @@ function showCardDialog(column,row){
 						sign = '0';
 					}
 					var participation = 'y';
-					if(divination_type == 'classic' && $('#participation-container').is(':visible')){
+					if((divination_type == 'classic' || divination_type == 'lenorman') && $('#participation-container').is(':visible')){
 						participation = $('#participation option:selected').val();
 					}
 					
