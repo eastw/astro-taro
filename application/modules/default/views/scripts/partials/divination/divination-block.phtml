@@ -17,6 +17,7 @@ var significators_count = 0;
 var haveNotParticipatedCards = '<?=$this->haveNotParticipatedCards?>';
 var notParticipatedCards = '<?=$this->notParticipatedCards; ?>';
 var generatedCards = [];
+var alreadySent = false;
 //console.log(cards);
 
 $(document).ready(function(){
@@ -355,6 +356,7 @@ $(document).ready(function(){
 						$('#align_' + item.alignment_position).parent().css('top','+=20px');
 					}
 					$('#align_' + item.alignment_position).next().attr('class','card_place_num_active');
+
 					$('#align_' + item.alignment_position).parent().mouseover(function(){
 						$(this).css('z-index','99999');
 						$(this).find('img').css('width','120px');
@@ -379,17 +381,18 @@ $(document).ready(function(){
 						$(this).css('left',(pos.left+30)+'px');
 						$(this).find('div.card_place_num_active').show();
 					});
-					if(cardLimit == (currentCard) ){
+				});
+				if(cardLimit == (currentCard) ){
+					if(!alreadySent) {
 						$.post(
 							'/divination/get-card-description',
 							{
 								'data': JSON.stringify(generatedCards)
 							},
-							function(data){
-								//$('#our-alignment').show();
-								//$('#desc_wrapper_' + (curCard - 1)).html(data);
+							function (data) {
 								data = jQuery.parseJSON(data);
-								if(data.status == 'success'){
+								if (data.status == 'success') {
+									$('.tolk_item').remove();
 									$('.comp_header').after(data.response);
 									$('#tolk').show();
 									$('html, body').animate({
@@ -399,8 +402,9 @@ $(document).ready(function(){
 								}
 							}
 						);
+						alreadySent = true;
 					}
-				});
+				}
 			}
 		});
 	}
@@ -489,6 +493,7 @@ $(document).ready(function(){
 		if(divinationType == 'rune'){
 			html += '<div id="other_divi_tarot"><a href="/gadaniya/rune">другие гадания на Рунах →</a></div>';
 		}
+		alreadySent = false;
 		$('#interactive_block_taro2').after().html(html);
 	}
 
