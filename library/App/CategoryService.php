@@ -14,6 +14,7 @@ class App_CategoryService{
 	const RUNE_CATEGORY_TYPE = 3;
 	const BOOK_CATEGORY_TYPE = 4;
 	const OTHER_CATEGORY_TYPE = 5;
+	const LENORMAN_CATEGORY_TYPE = 6;
 	
 	public function __construct(){
 		$this->category = new Application_Model_DbTable_CategoryTable();

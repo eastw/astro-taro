@@ -97,7 +97,6 @@ class App_NavigationService {
 		$magic = $magic[0];
 		$magicPages = $magic->pages;
 		$tags = $this->getMagicTags();
-		//var_dump($tags); die;
 		foreach($tags as $tag){
 			$rootTag =  $magicPages->addChild('tag-'.$tag['alias'],'');
 			$rootTag->addChild('label',$tag['tagname']);
@@ -127,7 +126,6 @@ class App_NavigationService {
 		
 		//divinations taro
 		$categories = $this->getDivCategories();
-		//var_dump
 		foreach($categories as $rootCategory){
 			$item = null;
 			$type = '';
@@ -151,7 +149,10 @@ class App_NavigationService {
 				$item = $static->xpath('//gadaniya-other');
 				$type = 'other';
 			}
-			//var_dump($item); //die;
+			if($rootCategory['metadata']['cat_type'] == App_CategoryService::LENORMAN_CATEGORY_TYPE){
+				$item = $static->xpath('//gadaniya-lenorman');
+				$type = 'lenorman';
+			}
 			$item = $item[0];
 			if($item){
 				$itemPages = $item->pages;
@@ -159,7 +160,6 @@ class App_NavigationService {
 					|| $rootCategory['metadata']['cat_type'] == App_CategoryService::OTHER_CATEGORY_TYPE)
 				{
 					$divinations = $this->getDivinationsByCategory($rootCategory['attr']['id']);
-					//var_dump($divinations); die;
 					if(count($divinations)){
 						foreach($divinations as $divination){
 							$rootTag = $itemPages->addChild('divination-'.$divination['alias'],'');
@@ -170,13 +170,11 @@ class App_NavigationService {
 					}
 				}else{
 					foreach($rootCategory['children'] as $child){
-						//var_dump($child['data']);
 						$rootTag = $itemPages->addChild('gadaniya-'.$type.'-'.App_UtilsService::generateTranslit($child['data']),'');
 						$rootTag->addChild('label',$child['data']);
 						$rootTag->addChild('id',$type.'-'.App_UtilsService::generateTranslit($child['data']));
 						$rootTag->addChild('uri','/gadaniya/'.$type.'/'.App_UtilsService::generateTranslit($child['data']));
 						$divinations = $this->getDivinationsByCategory($child['attr']['id']);
-						//var_dump($divinations); die;
 						if(count($divinations)){
 							$pagesTag = $rootTag->addChild('pages');
 							foreach($divinations as $divination){
@@ -221,7 +219,6 @@ class App_NavigationService {
 		if(count($themes)){
 			$payPages = $divinationService->addChild('pages');
 			$themes = $this->themesService->getThemesByType('divination');
-			//var_dump($tags); die;
 			foreach($themes as $theme){
 				$rootTag =  $payPages->addChild('theme-'.$theme['theme_smalltype'],'');
 				$rootTag->addChild('label',$theme['theme_name']);
@@ -230,13 +227,6 @@ class App_NavigationService {
 			}
 		}
 		//-------------------------------------------------
-		
-		//die;
-		//$taro = $static->xpath('//hadaniya-taro');
-		//$taro = $taro[0];
-		//$taroPages = $taro->pages;
-		//$taroDivinations = $this->getTaroDivinations();
-		
 		$static->asXML($this->navigationPath);
 	}
 	

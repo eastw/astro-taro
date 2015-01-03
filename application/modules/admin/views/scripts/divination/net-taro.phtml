@@ -4,7 +4,6 @@
 <script type="text/javascript">
 <!--
 var cards = <?=Zend_Json::encode($this->cards)?>;
-console.log(cards);
 var count = <?=$this->cards_full;?>;
 var divination = <?=$this->divination['id']?>;
 var divination_type = '<?=$this->divination['type']?>';
@@ -17,7 +16,6 @@ $(document).ready(function(){
 				html = '<img src="/files/images/card_' + cards[i].significator_type + '.jpg"/>';
 			}else{
 				html = '<img src="/files/images/card_' + cards[i].alignment_position + '.jpg"/>';
-				//console.log(cards[i].alignment_position);
 			}
 			$('#' + cards[i].net_row + '_' + cards[i].net_column).html(html);
 		}
@@ -59,6 +57,7 @@ function showCardDialog(column,row){
 		'close': function(){
 			$('ul.errors').html('');
 			$('#desc').val('');
+			$('#participation-container').hide();
 			$('#is_significator').removeAttr('checked');
 			$('#significator_type option:selected').removeAttr('selected');
 			$('#significator_type').hide();
@@ -121,7 +120,6 @@ function showCardDialog(column,row){
 				
 			},
 			'Отмена': function(){
-				$('#participation-container').hide();
 				$(this).dialog('close');
 			}
 		}
@@ -148,6 +146,7 @@ function resetAlignment(div_id){
 //-->
 </script>
 <h1>Управление формой расклада</h1>
+<p>Если у вас есть сигнификаторы, которые не участвуют в гадании, необходимо чтобы карт с номером в раскладе было меньше на количество сигнификаторов, которые не участвуют в раскладе. Например, если у вас 10 карт в раскладе и один сигнификатор, который не участвует в гадании, то карт с номером должно быть 9. </p>
 <table style="width:100%">
 	<tr>
 		<td>

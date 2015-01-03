@@ -281,7 +281,11 @@ class App_DivinationService {
 		if(file_exists($realPath)){
 			unlink($realPath);
 		}
-		$realPath = realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'divinations' . DIRECTORY_SEPARATOR . $divination['background'];
+		$realPath = realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'divinations' . DIRECTORY_SEPARATOR . $divination['alignment_form'];
+		if(file_exists($realPath)){
+			unlink($realPath);
+		}
+		$realPath = realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'divinations' . DIRECTORY_SEPARATOR . $divination['front_background'];
 		if(file_exists($realPath)){
 			unlink($realPath);
 		}
@@ -315,9 +319,15 @@ class App_DivinationService {
 	}
 	
 	public function getCardsByDivinationId($id){
-		return $this->divinationNet->fetchAll($this->divinationNet->getAdapter()->quoteInto('divination_id=?', $id))->toArray();
+		//return $this->divinationNet->fetchAll($this->divinationNet->getAdapter()->quoteInto('divination_id=?', $id))->toArray();
+		$query = $this->divinationNet->getAdapter()->select();
+		$query->from('divination_net')
+			->where($this->divination->getAdapter()->quoteInto('divination_id=?',$id))
+			->order('alignment_position ASC');
+		$stm = $query->query();
+		return $stm->fetchAll();
 	}
-	
+
 	public function updateDivinationNetItemById($data,$id){
 		$updateData = array(
 			'net_column' => $data['column'],
@@ -347,6 +357,17 @@ class App_DivinationService {
 			->where($this->divination->getAdapter()->quoteInto('deck_position=?',$deckPosition));
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetch();
+	}
+
+	public function getDivinationDataItemByPositions($positions, $divId){
+		$query = $this->divination->getAdapter()->select();
+		$query->from('divination_data')
+			->where($this->divination->getAdapter()->quoteInto('deck_position IN (?)', $positions ))
+			->where($this->divination->getAdapter()->quoteInto('divination_id=?',$divId))
+			->order($this->divination->getAdapter()->quoteInto("FIELD(deck_position,?)",$positions));
+		$test = $query->assemble();
+		$stm = $query->query(Zend_Db::FETCH_ASSOC);
+		return $stm->fetchAll();
 	}
 	
 	public function resetDivinationNet($id){

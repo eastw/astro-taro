@@ -243,7 +243,61 @@ class DivinationController extends App_Controller_Action_ParentController{
 	public function getCardDescriptionAction(){
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender();
-		
+
+		$data = json_decode($this->_getParam('data',false));
+
+		$error = false;
+		if(is_array($data)) {
+			if(isset($data[0]->divination_id) && is_numeric($data[0]->divination_id)){
+				$positions = array();
+				foreach($data as $item){
+					if(isset($item->card_number) && is_numeric($item->card_number)){
+						$positions[] = $item->card_number;
+					}else{
+						$error = true;
+						break;
+					}
+				}
+				if(!$error) {
+					$cardsData = $this->divinationService->getCardsByDivinationId($data[0]->divination_id);
+					$divinationData = $this->divinationService->getDivinationDataItemByPositions($positions, $data[0]->divination_id);
+
+					//join with $divinationData with $cardsData
+					foreach($divinationData as $index => $item){
+						//card position and description
+						foreach($cardsData as $cardItem){
+							if( ($index + 1) == $cardItem['alignment_position']){
+								$divinationData[$index]['alignment_position'] = $index+1;//$cardItem['alignment_position'];
+								$divinationData[$index]['position_desc'] = $cardItem['position_desc'];
+								break;
+							}
+						}
+						//card side and deck
+						foreach($data as $dataItem){
+							if($dataItem->card_number == $item['deck_position']){
+								$divinationData[$index]['side'] = $dataItem->side;
+								$divinationData[$index]['deck'] = $dataItem->deck;
+							}
+						}
+					}
+				}
+			}else{
+				$error = true;
+			}
+		}else{
+			$error = true;
+		}
+		$json = array();
+		if(!$error){
+			$this->view->divinationData = $divinationData;
+			$json['status'] = 'success';
+			$json['response'] = $this->view->render('divination' . DIRECTORY_SEPARATOR . 'divination-description-items.phtml');
+		}else{
+			$json['status'] = 'fail';
+			$json['response'] = '';
+		}
+		echo Zend_Json::encode($json);
+		/*
 		$divId = $this->_getParam('divination_id',false);
 		$cardOrder = preg_replace('#(<.*?>)#ims','',$this->_getParam('card_order',false));
 		$cardNumber = preg_replace('#(<.*?>)#ims','',$this->_getParam('card_number',false));
@@ -255,10 +309,8 @@ class DivinationController extends App_Controller_Action_ParentController{
 			if($cardOrder && is_numeric($cardOrder)){
 				$this->view->cardOrder = $cardOrder;
 			}
-			$json = array();
-			$divination = $this->divinationService->getDivinationById($divId);
 			$cardsData = $this->divinationService->getCardsByDivinationId($divId);
-			$data = $this->divinationService->getDivinationDataItemByPosition($cardNumber, $divId);//ivinationDataById($dataid);
+			$data = $this->divinationService->getDivinationDataItemByPosition($cardNumber, $divId);
 			
 			if($cardSide == 'normal'){
 				$this->view->cardDescription = $data['description'];
@@ -272,13 +324,14 @@ class DivinationController extends App_Controller_Action_ParentController{
 				$this->view->cardHeader = $data['title_reverse'];
 			}
 			foreach($cardsData as $item){
-				if( ($cardOrder+1) == $item['alignment_position'] ){
+				if( ($cardOrder + 1) == $item['alignment_position'] ){
 					$this->view->orderDescription = $item['position_desc'];
 					break;
 				} 
 			}
 			$this->render('divination-description-item');
 		}
+		*/
 	}
 	public function getBookDescriptionAction(){
 		$this->_helper->layout->disableLayout();

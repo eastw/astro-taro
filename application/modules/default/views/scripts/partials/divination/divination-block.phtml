@@ -10,13 +10,14 @@ var decks = <?=Zend_Json::encode($this->decks); ?>;
 var back = '';
 var divinationType = '<?=$this->divination['type']?>';
 var divinationId = '<?=$this->divination['id']?>';
-var classicHaveReverseCards = [4,6,8,13,15,17,22,24,26,31,33,35];
 var selectedDeck = '';
 var use_sign = '<?=$this->divination['use_sign']?>';
 var significators = [];
 var significators_count = 0;
 var haveNotParticipatedCards = '<?=$this->haveNotParticipatedCards?>';
 var notParticipatedCards = '<?=$this->notParticipatedCards; ?>';
+var generatedCards = [];
+//console.log(cards);
 
 $(document).ready(function(){
 	checkSelects();
@@ -117,7 +118,6 @@ $(document).ready(function(){
 			cardWidth = 58;
 			cardHeight =  105;
 		}
-		console.log('haveNotParticipatedCards:' + haveNotParticipatedCards);
 		if(divinationType == 'lenorman'){
 			cardWidth = 58;
 			cardHeight =  105;
@@ -188,11 +188,6 @@ $(document).ready(function(){
 					html += '<img id="align_'+cards[i].alignment_position+'" style="width:59px" src="/files/images/card_place.png"/>';
 					html += '<div class="card_place_num">' + cards[i].alignment_position+'</div>';
 				}else{
-					/*
-					html += '<img id="align_' + cards[i].alignment_position + '" style="width:59px" src="/files/decks/' + selectedDeck + '/' + significators[significators_count] + '.png"/>';
-					significators_count ++;
-					html += '<div class="card_place_num">' + cards[i].significator_type + '</div>';
-					*/
 					if(cards[i].participation == 'y'){
 						html += '<img id="align_'+cards[i].alignment_position+'" style="width:59px" src="/files/images/card_place.png"/>';
 						html += '<div class="card_place_num">'+cards[i].significator_type+'</div>';
@@ -236,7 +231,6 @@ $(document).ready(function(){
 
 		var cardsCount = 0;
 		var cardTop = 53;
-		//console.log(divinationType);
 		if(divinationType == 'taro' ){
 			if(onlyOldArkans == 'y'){
 				cardsCount = 11;
@@ -245,22 +239,22 @@ $(document).ready(function(){
 			}
 			for(var i = 0; i < cardsCount; i++){
 				if(onlyOldArkans == 'y'){
-					html += '<div class="taro-back-card-item" style="top:'+cardTop+'px;left: 727px;">'
-									+'<img style="width:59px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
-							+'</div>';
-					html += '<div class="taro-back-card-item" style="top:'+cardTop+'px;left: 822px;">'
-								+'<img style="width:59px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
-							+'</div>';
+					html += '<div class="taro-back-card-item" style="top:' + cardTop + 'px;left: 727px;">'
+									+ '<img style="width:59px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+							+ '</div>';
+					html += '<div class="taro-back-card-item" style="top:' + cardTop + 'px;left: 822px;">'
+								+'<img style="width:59px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+							+ '</div>';
 				}else{
-					html += '<div class="taro-back-card-item" style="top:'+cardTop+'px;left: 727px;">'
-								+'<img style="width:59px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
-							+'</div>';
-					html += '<div class="taro-back-card-item" style="top:'+cardTop+'px;left: 822px;">'
-								+'<img style="width:59px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
-							+'</div>';
-					html += '<div class="taro-back-card-item" style="top:'+cardTop+'px;left: 917px;">'
-								+'<img style="width:59px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
-							+'</div>';
+					html += '<div class="taro-back-card-item" style="top:' + cardTop + 'px;left: 727px;">'
+								+ '<img style="width:59px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+							+ '</div>';
+					html += '<div class="taro-back-card-item" style="top:' + cardTop + 'px;left: 822px;">'
+								+ '<img style="width:59px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+							+ '</div>';
+					html += '<div class="taro-back-card-item" style="top:' + cardTop + 'px;left: 917px;">'
+								 + '<img style="width:59px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+							+ '</div>';
 				}
 				cardTop += 14;
 			}
@@ -280,12 +274,12 @@ $(document).ready(function(){
 		if(divinationType == 'classic'){
 			cardsCount = 18;
 			for(var i = 0; i < cardsCount; i++){
-				html += '<div class="classic-back-card-item" style="top:'+cardTop+'px;left: 727px;">'
-								+'<img style="width:69px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
-						+'</div>';
-				html += '<div class="classic-back-card-item" style="top:'+cardTop+'px;left: 822px;">'
-							+'<img style="width:69px" src="/files/decks/'+selectedDeck+'/'+back+'"/>'
-						+'</div>';
+				html += '<div class="classic-back-card-item" style="top:' + cardTop + 'px;left: 727px;">'
+								+ '<img style="width:69px" src="/files/decks/' + selectedDeck + '/'+back+'"/>'
+						+ '</div>';
+				html += '<div class="classic-back-card-item" style="top:' + cardTop + 'px;left: 822px;">'
+							+ '<img style="width:69px" src="/files/decks/' + selectedDeck + '/' + back + '"/>'
+						+ '</div>';
 				cardTop += 14;
 			}
 		}
@@ -331,8 +325,6 @@ $(document).ready(function(){
 		});
 
 		$(backSelector).click(function(e){
-			console.log('cardLimit:' + cardLimit);
-			console.log('currentCard:' + currentCard);
 			if(cardLimit > currentCard){
 				var item = null;
 				for(var i in cards){
@@ -350,7 +342,7 @@ $(document).ready(function(){
 				if(card.side == 'normal'){
 					cardName = card.cardNumber + '.png';
 				}else{
-					cardName = card.cardNumber+'_0.png';
+					cardName = card.cardNumber + '_0.png';
 				}
 				if(divinationType == 'rune'){
 					top_animate += 40;
@@ -388,21 +380,36 @@ $(document).ready(function(){
 						$(this).find('div.card_place_num_active').show();
 					});
 					if(cardLimit == (currentCard) ){
-						$('#tolk').show();
-						 $('html, body').animate({
-					        scrollTop: $("#tolk").offset().top
-					    }, 2000);
-						endDivination();
+						$.post(
+							'/divination/get-card-description',
+							{
+								'data': JSON.stringify(generatedCards)
+							},
+							function(data){
+								//$('#our-alignment').show();
+								//$('#desc_wrapper_' + (curCard - 1)).html(data);
+								data = jQuery.parseJSON(data);
+								if(data.status == 'success'){
+									$('.comp_header').after(data.response);
+									$('#tolk').show();
+									$('html, body').animate({
+										scrollTop: $("#tolk").offset().top
+									}, 2000);
+									endDivination();
+								}
+							}
+						);
 					}
 				});
-				
-			}else{
-				//divination end
 			}
 		});
 	}
 
 	function getCardDescription(divId, curCard, generatedCard, curDeck){
+		var card = {'divination_id':divId,'card_order': curCard-1,'card_number': generatedCard.cardNumber,'side': generatedCard.side,'deck': curDeck};
+		generatedCards[curCard-1] = card;
+		//console.log(generatedCards);
+		/*
 		$.post(
 				'/divination/get-card-description',
 				{
@@ -417,6 +424,7 @@ $(document).ready(function(){
 					$('#desc_wrapper_' + (curCard - 1)).html(data);
 				}
 			);
+		*/
 	}
 
 	function generateCard(){
@@ -434,7 +442,6 @@ $(document).ready(function(){
 			}
 			if(divinationType == 'classic' || divinationType == 'lenorman'){
 				cardNumber = Math.floor(Math.random()*36);
-				console.log(cardNumber);
 			}
 			if(divinationType == 'rune'){
 				cardNumber = Math.floor(Math.random()*24);
@@ -495,9 +502,7 @@ $(document).ready(function(){
 		<?php if($this->divination['type'] == 'rune'):?>
 			$('#interactive_block_taro2').html('<div class="intuit_header">Выберите интуитивно руны</div>');
 		<?php endif;?>
-		for(var i in cardLimit){
-			$('#desc_wrapper_'+i).html('');
-		}
+		$('.tolk_item').remove();
 		significators_count = 0;
 		$('#tolk').hide();
 	}

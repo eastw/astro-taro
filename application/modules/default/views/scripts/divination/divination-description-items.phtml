@@ -1,0 +1,13 @@
+<?php foreach($this->divinationData as $index => $item):?>
+    <div class="tolk_item" id="desc_wrapper_<?=$index?>">
+        <img style="width:120px;" src="/files/decks/<?=$item['deck']?>/<?=($item['side'] == 'normal')?$item['deck_position'].'.png':$item['deck_position'].'_0.png'?>" alt="" />
+        <div class="tolk_content">
+            <div class="tolk_content2">
+                <div class="tolk_num"><?=($item['alignment_position'])?></div>
+                <div class="tolk_num_text"><?=$item['position_desc'];?></div>
+            </div>
+            <div class="item_header"><?=($item['side'] == 'normal')?$item['title']:$item['title_reverse']?></div>
+            <div class="text"><?=($item['side'] == 'normal')?$item['description']:$item['description_reverse']?></div>
+        </div>
+    </div>
+<?php endforeach;?>

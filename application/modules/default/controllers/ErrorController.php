@@ -7,8 +7,6 @@ class ErrorController extends App_Controller_Action_ParentController
     {
         $errors = $this->_getParam('error_handler');
         
-        //echo 'here'; die;
-        //var_dump($errors->type); die;
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:

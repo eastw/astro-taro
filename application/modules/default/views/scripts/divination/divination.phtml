@@ -7,19 +7,6 @@
 </div>
 <div id="tolk" style="display:none;">
 	<div class="comp_header">Толкование расклада</div>
-	<?php if($this->haveNotParticipatedCards != 'true'):?>
-		<?php for($i = 0; $i < $this->divination['cards_in_alignment']; $i++):?>
-			<div id="desc_wrapper_<?=$i?>" class="tolk_item">
-				
-			</div>
-		<?php endfor;?>
-	<?php else:?>
-		<?php for($i = 0; $i < $this->divination['cards_in_alignment']-$this->divination['significators']; $i++):?>
-			<div id="desc_wrapper_<?=$i?>" class="tolk_item">
-				
-			</div>
-		<?php endfor;?>
-	<?php endif;?>
 </div>
 <?=$this->partial('partials/social.phtml',array())?>
 <div class="big_like"
