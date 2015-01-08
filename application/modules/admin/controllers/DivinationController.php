@@ -339,7 +339,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 				//var_dump($validData); die;
 				unset($session->decks);
 				$this->service->addDivination($validData);
-				//TODO: breadcrumbs
 				$this->navigation->refreshNavigation();
 				$this->redirect('/admin/divination/taro');
 			}else{
@@ -351,7 +350,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 				}
 				$form->populate($formData);
 				$form->fillDecksplace();
-				//var_dump($form->getMessages()); die;
 			}
 		}else{
 			$this->view->form->fillCategories($this->categoryService->getChildCategoriesByType($types[0]['id']));
@@ -458,9 +456,10 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			$form->seodescription->setValue($divination['seodescription']);
 			$form->cards->setValue($divination['cards_in_alignment']);
 			$form->significators->setValue($divination['significators']);
+			$form->matches->setValue($divination['matches']);
 			$form->image->setRequired(false);
 			$form->image2->setRequired(false);
-			
+
 			$form->alignment_form->setRequired(false);
 			$this->view->form = $form;
 			//$form->fillDecks($this->deckService->listDecks());
@@ -665,7 +664,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 	
 	public function netTaroAction(){
 		$id = $this->_getParam('id',false);
-		//var_dump(); die;
 		if($id){
 			$this->view->divination = $this->service->getDivinationById($id);
 			$this->view->cards = $this->service->getCardsByDivinationId($id);
@@ -869,5 +867,47 @@ class Admin_DivinationController extends Zend_Controller_Action{
 		
 	}
 	
-	
+	public function matchAction(){
+		$id =$this->_getParam('id',false);
+		if($id){
+			$this->view->divinationId = $id;
+			$divination = $this->service->getDivinationById($id);
+			$this->view->divinationType = $divination['type'];
+			$decks = $this->deckService->listDecks($divination['type']);
+			$this->view->deck = $decks[0];
+		}
+	}
+
+	public function getMatchAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+
+		$id = $this->_getParam('divination_id',false);
+		$card = $this->_getParam('card_num',false);
+		$nextCard = $this->_getParam('next_card_num',false);
+
+		if($id){
+			$data = $this->service->getMatchByCardsAndDivinationId($card, $nextCard, $id);
+			$json = array();
+			if($data){
+				$json['status'] = 'success';
+				$json['description'] = $data['description'];
+			}else{
+				$json['status'] = 'fail';
+				$json['description'] = '';
+			}
+			echo Zend_Json::encode($json);
+		}
+	}
+
+	public function saveMatchAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+
+		$id = $this->_getParam('divination_id',false);
+
+		if($id){
+			$this->service->saveMatch($this->_getAllParams());
+		}
+	}
 }

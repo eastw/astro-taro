@@ -98,6 +98,9 @@ function changeActivity(id){
 			<?php elseif($item['type'] == 'other'):?>
 				<a href="/admin/divination/other-descriptions/id/<?=$item['id']?>">Описания</a>	
 			<?php endif;?>
+			<?php if($item['type'] == 'lenorman' ||  $item['type'] == 'classic'):?>
+				<a href="/admin/divination/match/id/<?=$item['id']?>">Совпадения</a>
+			<?php endif;?>
 			<a href="/admin/divination/edit-taro/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Ред.</a> / 
 			<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
 		</td>

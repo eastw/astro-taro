@@ -8,6 +8,7 @@ class App_DivinationService {
 	protected $categoryService;
 	protected $divinationBook;
 	protected $bookAssosiateArray;
+	protected $match;
 	
 	const TARO_CATEGORY = 1;
 	const CLASSIC_CATEGORY = 2;
@@ -22,7 +23,9 @@ class App_DivinationService {
 		$this->divinationNet = new Application_Model_DbTable_DivinationNetTable();
 		$this->divinationDecks = new Application_Model_DbTable_DivinationDecksTable();
 		$this->divinationBook = new Application_Model_DbTable_DivinationBookTable();
+		$this->match = new Application_Model_DbTable_MatchTable();
 		$this->categoryService = new App_CategoryService();
+
 		$this->bookAssosiateArray = array(
 										'111111','000000','010001','100010','010111','111010','000010','010000','110111','111011',
 										'000111','111000','111101','101111','000100','001000','011001','100110','000011','110000',
@@ -48,6 +51,7 @@ class App_DivinationService {
 			'cards_in_alignment' => $data['cards'],
 			'significators'	=> $data['significators'],
 			'type_id' => $data['type'],
+			'matches' => $data['matches']
 		);
 		
 		if(!empty($data['image'])){
@@ -151,7 +155,7 @@ class App_DivinationService {
 		}
 	}
 	
-	public function saveDivination($data,$id){
+	public function saveDivination($data, $id){
 
 		$divination = $this->getDivinationById($id);
 
@@ -166,6 +170,7 @@ class App_DivinationService {
 			'cards_in_alignment' => $data['cards'],
 			'significators'	=> $data['significators'],
 			'type_id' => $data['type'],
+			'matches' => $data['matches']
 		);
 		/* update images*/
 		if(isset($data['background']) && !empty($data['background'])){
@@ -763,5 +768,77 @@ class App_DivinationService {
 			->where('d.activity = "y"')->order('id DESC');
 		$stm = $query->query();
 		return $stm->fetchAll();
+	}
+
+	public function getMatchByCardsAndDivinationId($card, $nextCard, $divinationId){
+		$query =$this->match->getAdapter()->select();
+		$query->from(array('d'=>'divination_match'))
+			->where($this->divination->getAdapter()->quoteInto('card_num=?',$card))
+			->where($this->divination->getAdapter()->quoteInto('next_card_num=?',$nextCard))
+			->where($this->divination->getAdapter()->quoteInto('divination_id=?',$divinationId));
+		$stm = $query->query();
+		return $stm->fetch();
+	}
+
+	public function saveMatch($data){
+		$match = $this->getMatchByCardsAndDivinationId($data['card_num'], $data['next_card_num'], $data['divination_id']);
+		if($match){
+			$updateData = array(
+				'description' => $data['description']
+			);
+			$this->match->update($updateData, $this->match->getAdapter()->quoteInto('id=?',$match['id']) );
+		}else{
+			$insertData = array(
+				'card_num' => $data['card_num'],
+				'next_card_num' => $data['next_card_num'],
+				'description' => $data['description'],
+				'divination_id' => $data['divination_id'],
+			);
+			$this->match->insert($insertData);
+		}
+	}
+
+	public function getMatchesByPositionsAndDivinationId($positions, $divinationId){
+		$query =$this->match->getAdapter()->select();
+		$query->from(array('d'=>'divination_match'))
+			->where($this->divination->getAdapter()->quoteInto('card_num in (?)',$positions))
+			->where($this->divination->getAdapter()->quoteInto('divination_id=?',$divinationId));
+		$stm = $query->query();
+		$rawMatches = $stm->fetchAll();
+
+		$cleanMatches = array();
+
+		$positionsCount = count($positions);
+		foreach($positions as $index => $position){
+			if($index != $positionsCount -1){
+				foreach($rawMatches as $item){
+					if($item['card_num'] == $position && $item['next_card_num'] == $positions[$index + 1]){
+						$cleanMatches[$index] = array(
+							'description' => $item['description']
+						);
+					}
+				}
+				if(!isset($cleanMatches[$index])){
+					$cleanMatches[$index] = array('description' => '');
+				}
+			}else{
+				$cleanMatches[] = array('description' => '');
+			}
+		}
+		return $cleanMatches;
+	}
+
+	public function fillMatches(){
+		for($i = 0; $i < 36; $i++){
+			for($j = 0; $j < 36; $j++){
+				$insertData = array(
+					'card_num' => $i,
+					'next_card_num' => $j,
+					'description' => $i . '=>' . $j,
+					'divination_id' => 37
+				);
+				$this->match->insert($insertData);
+			}
+		}
 	}
 }

@@ -8,6 +8,9 @@
             </div>
             <div class="item_header"><?=($item['side'] == 'normal')?$item['title']:$item['title_reverse']?></div>
             <div class="text"><?=($item['side'] == 'normal')?$item['description']:$item['description_reverse']?></div>
+            <?php if(isset($item['match']) && !empty($item['match'])): ?>
+                <div class="text"><?=$item['match']?></div>
+            <?php endif; ?>
         </div>
     </div>
 <?php endforeach;?>

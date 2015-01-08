@@ -65,12 +65,13 @@
 		
 	});
 	function toggleControlsBySelectedType(){
-		if($('#type option:selected').val() > 1 ){
+		var type = $('#type option:selected').val();
+		if(type > 1 ){
 			$('#only_old_arkans').parent().parent().hide();
 		}else{
 			$('#only_old_arkans').parent().parent().show();
 		}
-		if($('#type option:selected').val() > 3 && $('#type option:selected').val() != 6){
+		if(type > 3 && type != 6){
 			$('#cards').parent().parent().hide();
 			$('#decks').parent().parent().hide();
 			$('#significators').parent().parent().hide();
@@ -78,6 +79,11 @@
 			$('#cards').parent().parent().show();
 			$('#decks').parent().parent().show();
 			$('#significators').parent().parent().show();
+		}
+		if(type == 2 || type == 6){
+			$('#matches').parent().parent().show();
+		}else{
+			$('#matches').parent().parent().hide();
 		}
 	}
 	function delete_deck(id){

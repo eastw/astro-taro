@@ -1,0 +1,165 @@
+<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+<script>
+
+    var deck = '<?=$this->deck['folder_alias']?>';
+    var back = '<?=$this->deck['back']?>';
+    var divination_id = <?=$this->divinationId;?>;
+
+    $(document).ready(function(){
+
+        if($('#card option:selected').val() != ''){
+            $('#card-image').attr('src','/files/decks/' + deck + '/' + $('#card option:selected').val() + '.png');
+            var selected = $('#card option:selected').val();
+            $('#next-card-image').attr('src','/files/decks/' + deck + '/' + back);
+            if(selected != '') {
+                $('#next-card option').remove();
+                $('#card option').each(function (i) {
+                    if ($(this).val() != selected) {
+                        $('#next-card').append($('<option></option>').attr('value', $(this).val()).text($(this).text()));
+                    }
+                });
+            }
+        }
+
+        $('#card').change(function() {
+            $('#next-card option:selected').removeAttr('selected', 'selected');
+            if ($(this).val() != '') {
+                $('#card-image').attr('src', '/files/decks/' + deck + '/' + $(this).val() + '.png');
+            }else{
+                $('#card-image').attr('src', '/files/decks/' + deck + '/' + back);
+            }
+            CKEDITOR.instances.description.setData('');
+            var selected = $('#card option:selected').val();
+            $('#next-card-image').attr('src','/files/decks/' + deck + '/' + back);
+            if(selected != '') {
+                $('#next-card option').remove();
+                $('#card option').each(function (i) {
+                    if ($(this).val() != selected) {
+                        $('#next-card').append($('<option></option>').attr('value', $(this).val()).text($(this).text()));
+                    }
+                });
+            }
+            loadDescription();
+        });
+
+        $('#next-card').change(function(){
+            if ($(this).val() != '') {
+                $('#next-card-image').attr('src', '/files/decks/' + deck + '/' + $(this).val() + '.png');
+            }else{
+                $('#next-card-image').attr('src', '/files/decks/' + deck + '/' + back);
+            }
+            loadDescription();
+        });
+
+        $('#save').click(function(){
+            saveDescription();
+        });
+    });
+
+    function loadDescription(){
+        var card_number = $('#card option:selected').val();
+        var next_card_number = $('#next-card option:selected').val();
+        if(card_number != '' && next_card_number != ''){
+            $.post(
+                '/admin/divination/get-match',
+                {
+                    'divination_id'  : divination_id,
+                    'card_num'       : card_number,
+                    'next_card_num'  : next_card_number
+                },
+                function(data){
+                    if(data.status == 'success'){
+                        CKEDITOR.instances.description.setData(data.description);
+                    }else{
+                        CKEDITOR.instances.description.setData('');
+                    }
+                },'json'
+            );
+        }
+    }
+
+    function saveDescription(){
+        var card_number = $('#card option:selected').val();
+        var next_card_number = $('#next-card option:selected').val();
+        if(card_number != '' && next_card_number != ''){
+            $.post(
+                '/admin/divination/save-match',
+                {
+                    'divination_id'     : divination_id,
+                    'card_num'       : card_number,
+                    'next_card_num'  : next_card_number,
+                    'description'       : CKEDITOR.instances.description.getData()
+                },
+                function(data){
+                    $('#message').show();
+                    $('#message').delay(2000).fadeOut('slow');
+                },'json'
+            );
+        }else{
+            alert('Должны быть выбраны обе карты!');
+        }
+    }
+</script>
+<h1>Совпадения</h1>
+<table>
+
+</table>
+<div id="message" style="border: 1px solid green;display:none;">
+    <span style="color: #009900">Описание сохранено</span>
+</div>
+<table>
+    <tr>
+        <td style="width:20%">
+            Карта в раскладе
+            <select id="card">
+                <option value="">Выберите карту</option>
+                <?php for($i = 0; $i < 36; $i++):?>
+                    <option value="<?=$i?>"><?=$i?></option>
+                <?php endfor;?>
+            </select>
+
+        </td>
+        <td style="width:20%">
+            Следующая карта
+            <select id="next-card">
+                <option value="">Выберите карту</option>
+                <?php for($i = 0; $i < 36; $i++):?>
+                    <option value="<?=$i?>"><?=$i?></option>
+                <?php endfor;?>
+            </select>
+        </td>
+        <td style="width:60%;text-align: right;">
+<!--            <input type="button" id="up-save" value="Сохранить"/>-->
+            <a href="/admin/divination/taro">Назад к гаданиям</a>
+        </td>
+    </tr>
+    <tr>
+        <td >
+            <img id="card-image" src="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->deck['back']?>"/>
+        </td>
+        <td>
+            <img id="next-card-image" src="/files/decks/<?=$this->deck['folder_alias']?>/<?=$this->deck['back']?>"/>
+        </td>
+        <td>
+            <textarea id="description"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: right;">
+            <input type="button" id="save" value="Сохранить"/>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+
+        CKEDITOR.replace( 'description',	{
+            filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+            filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+            filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+            filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+            filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+            filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+        } );
+
+</script>

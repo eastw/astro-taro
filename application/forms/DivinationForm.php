@@ -252,6 +252,7 @@ class Application_Form_DivinationForm extends Zend_Form{
 						'17' => '17',
 				));
 				*/
+
 		$signs = new Zend_Form_Element_Select('significators');
 		$signs->setLabel('Количество сигнификаторов')
 				->setRequired(true)
@@ -262,6 +263,14 @@ class Application_Form_DivinationForm extends Zend_Form{
 						'1' => 'Один',
 						'2' => 'Два',
 				));
+
+		$matches = new Zend_Form_Element_Select('matches');
+		$matches->setLabel('Совпадения включены')
+			->setDecorators($decorators)
+			->setMultiOptions(array(
+				'n' => 'Нет',
+				'y' => 'Да',
+			));
 		/*		
 		$useSign = new Zend_Form_Element_Select('use_sign');
 		$useSign->setLabel('Вывод сигнификатора (только для классики)')
@@ -294,13 +303,11 @@ class Application_Form_DivinationForm extends Zend_Form{
 		
 		
 		
-		$this->addElements(array($title,$desc,$image,$imgNote,$image2,$imgNote2,$alignment,$imgNote3,$front_background,$imgNote4,$category,$type,$onlyOldArkans,/*$activity,*/$decks,$adddeck,$decksplace,$keywords,$seodesc,$cards,$signs/*,$useSign*/,$submit, $cancel,$page));
+		$this->addElements(array($title,$matches,$desc,$image,$imgNote,$image2,$imgNote2,$alignment,$imgNote3,$front_background,$imgNote4,$category,$type,$onlyOldArkans,/*$activity,*/$decks,$adddeck,$decksplace,$keywords,$seodesc,$cards,$signs/*,$useSign*/,$submit, $cancel,$page));
 		$this->fillCardsInAlignmnt();
 	}
 	
 	public function fillDecks($data){
-		//echo '<pre>';
-		//var_dump($data); die;
 		$decks = $this->getElement('decks');
 		$decks->addMultiOptions(array(
 				'' => 'Выберите колоду',
