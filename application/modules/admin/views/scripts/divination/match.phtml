@@ -54,6 +54,62 @@
         $('#save').click(function(){
             saveDescription();
         });
+
+        $('#type').change(function(){
+            var type = $(this).val();
+            if(type != ''){
+                $.post('/admin/divination/category-by-type',
+                    {
+                        'type_id': type
+                    },
+                    function(data){
+                        var html = '<option value=""></option>';
+                        for(var i in data){
+                            html += '<option value="'+data[i]['id']+'">'+data[i]['name']+'</option>';
+                        }
+                        $('#category').html(html);
+                    },'json');
+            }
+        });
+
+        $('#category').change(function(){
+            var category = $(this).val();
+            if(category != ''){
+                $.post('/admin/divination/divinations-by-category',
+                    {
+                        'category_id': category
+                    },
+                    function(data){
+                        var html = '<option value=""></option>';
+                        for(var i in data){
+                            html += '<option value="'+data[i]['id']+'">'+data[i]['name']+'</option>';
+                        }
+                        $('#divination').html(html);
+                    },'json');
+            }
+        });
+
+        $('#copy').click(function(){
+            var from_divination = $('#divination option:selected').val();
+            if(from_divination != ''){
+                $.post('/admin/divination/copy-divination-matches',
+                    {
+                        'from_divination': from_divination,
+                        'to_divination': divination_id
+                    },
+                    function(data){
+                        $('.errors').html('');
+                        if(data.result == 'fail'){
+                            var html = '';
+                            for(var i in data.errors){
+                                html += '<span>' + data.errors[i] + '</span><br/>';
+                            }
+                            $('.errors').html(html);
+                        }
+                    },'json');
+            }
+            return false;
+        });
     });
 
     function loadDescription(){
@@ -102,7 +158,73 @@
 </script>
 <h1>Совпадения</h1>
 <table>
-
+    <tr>
+        <td >
+            <div style="margin-left:100px;">
+                <form>
+                    <table style="border:1px solid black;">
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b>Скопировать совпадения из гадания</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Тип гадания
+                            </td>
+                            <td>
+                                <select id="type" >
+                                    <option value=""></option>
+                                    <?php foreach ($this->types as $type):?>
+                                        <?php if($type['id'] == 2 || $type['id']== 6): ?>
+                                            <option value="<?=$type['id']?>"><?=$type['name']?></option>
+                                        <?php endif; ?>
+                                    <?php endforeach;?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Категория гадания
+                            </td>
+                            <td>
+                                <select id="category" >
+                                    <option value=""></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Гадание
+                            </td>
+                            <td>
+                                <select id="divination" >
+                                    <option value=""></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="progress"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: right">
+                                <input id="copy" type="submit" value="Скопировать совпадения в это гадание"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="errors"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </td>
+    </tr>
 </table>
 <div id="message" style="border: 1px solid green;display:none;">
     <span style="color: #009900">Описание сохранено</span>

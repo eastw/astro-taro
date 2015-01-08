@@ -716,6 +716,36 @@ class App_DivinationService {
 		}
 		return $result;
 	}
+
+	public function copyDivinationMatches($fromDivId,$toDivId){
+		$result = array('result' => 'success','errors' => array());
+		$fromDiv = $this->getDivinationById($fromDivId);
+		$toDiv = $this->getDivinationById($toDivId);
+		if($fromDiv['type_id'] != $toDiv['type_id']){
+			$result['result'] = 'fail';
+			$result['errors'][] = 'Не совпадают типы гадания';
+			return $result;
+		}
+		$fromQuery = $this->match->select();
+		$fromQuery->from('divination_match')
+			->setIntegrityCheck(false)
+			->where($this->match->getAdapter()->quoteInto('divination_id=?', $fromDivId));
+		$stm = $fromQuery->query(Zend_Db::FETCH_ASSOC);
+		$fromData = $stm->fetchAll();
+
+		$this->match->delete($this->match->getAdapter()->quoteInto('id=?', $toDivId));
+
+		foreach($fromData as $index => $fromItem){
+			$insertData = array(
+				'card_num' => $fromItem['card_num'],
+				'next_card_num' => $fromItem['next_card_num'],
+				'description' => $fromItem['description'],
+				'divination_id' => $toDivId
+			);
+			$this->match->insert($insertData);
+		}
+		return $result;
+	}
 	
 	public function getDivinationByMask($mask){
 		$query =$this->divination->getAdapter()->select();

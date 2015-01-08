@@ -335,15 +335,13 @@ class Admin_DivinationController extends Zend_Controller_Action{
 				$validData['front_background'] = $files['front_background'];
 				
 				$validData['decks'] = $session->decks;
-				//echo '<pre>';
-				//var_dump($validData); die;
 				unset($session->decks);
 				$this->service->addDivination($validData);
 				$this->navigation->refreshNavigation();
 				$this->redirect('/admin/divination/taro');
 			}else{
 				$this->view->form->fillDecks($this->deckService->getDecksByType($formData['type']));
-				if($formData['type'] < 4){
+				if($formData['type'] < 4 || $formData['type'] == 6){
 					$this->view->form->fillCategories($this->categoryService->getChildCategoriesByType($formData['type']));
 				}else{
 					$this->view->form->fillCategories($this->categoryService->getRootCategoriesByType($formData['type']));
@@ -390,7 +388,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 				unset($decks[$index]);
 			}
 		}
-		//var_dump($tags);
 		$session->decks = $decks;
 	}
 	
@@ -400,7 +397,6 @@ class Admin_DivinationController extends Zend_Controller_Action{
 		
 		$typeId = $this->_getParam('type',false);
 		if($typeId){
-			//$this->deckService->getDecksByType($typeId);
 			$json = array('decks' => array(),'categories' => array());
 			$types = $this->categoryService->getCategoryTypes();
 			$type = '';
@@ -409,7 +405,7 @@ class Admin_DivinationController extends Zend_Controller_Action{
 					$type = $item['type'];
 				}
 			}
-			if($type == 'taro' || $type == 'classic' || $type == 'rune'){
+			if($type == 'taro' || $type == 'classic' || $type == 'rune' || $type == 'lenorman'){
 				$json['decks'] = $this->deckService->getDecksByType($typeId);
 				$json['categories'] = $this->categoryService->getChildCategoriesByType($typeId);
 				$session = new Zend_Session_Namespace('adddeck');
@@ -429,12 +425,9 @@ class Admin_DivinationController extends Zend_Controller_Action{
 		$id = $this->_getParam('id',false);
 		$page = $this->_getParam('page',false);
 		if($id){
-			//$form->fillCategories($this->categoryService->flatCategories());
 			$types = $this->categoryService->getCategoryTypes();
 			$form->fillTypes($types);
 			$divination = $this->service->getDivinationById($id);
-			//echo '<pre>';
-			//var_dump($divination); die;
 			$form->type->setValue($divination['type_id']);
 			
 			if($divination['type'] == 'book' || $divination['type'] == 'other'){
@@ -618,6 +611,15 @@ class Admin_DivinationController extends Zend_Controller_Action{
 		$toDivination = $this->_getParam('to_divination',false);
 		if($fromDivination && $toDivination){
 			echo Zend_Json::encode($this->service->copyDivinationDescriptions($fromDivination,$toDivination));
+		}
+	}
+	public function copyDivinationMatchesAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+		$fromDivination = $this->_getParam('from_divination',false);
+		$toDivination = $this->_getParam('to_divination',false);
+		if($fromDivination && $toDivination){
+			echo Zend_Json::encode($this->service->copyDivinationMatches($fromDivination,$toDivination));
 		}
 	}
 	
@@ -875,6 +877,7 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			$this->view->divinationType = $divination['type'];
 			$decks = $this->deckService->listDecks($divination['type']);
 			$this->view->deck = $decks[0];
+			$this->view->types = $this->categoryService->getCategoryTypes();
 		}
 	}
 
