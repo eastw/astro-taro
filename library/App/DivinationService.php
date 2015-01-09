@@ -753,7 +753,6 @@ class App_DivinationService {
 			->joinLeft(array('c' => 'category'), 'd.category_id = c.id',array('category_name'=>'name'))
 			->joinLeft(array('t' => 'category_types'), 'd.type_id = t.id','name')
 			->where('d.name LIKE ?','%'.$mask.'%');
-		//var_dump($query->assemble()); die;
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$result = $stm->fetchAll();
 		foreach($result as $index => $item){
