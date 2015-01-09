@@ -857,14 +857,14 @@ class App_DivinationService {
 		return $cleanMatches;
 	}
 
-	public function fillMatches(){
+	public function fillMatches($divintionId){
 		for($i = 0; $i < 36; $i++){
 			for($j = 0; $j < 36; $j++){
 				$insertData = array(
 					'card_num' => $i,
 					'next_card_num' => $j,
 					'description' => $i . '=>' . $j,
-					'divination_id' => 37
+					'divination_id' => $divinationId
 				);
 				$this->match->insert($insertData);
 			}
