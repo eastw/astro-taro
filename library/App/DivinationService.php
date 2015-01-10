@@ -506,9 +506,11 @@ class App_DivinationService {
 		foreach ($categories as $category){
 			$cat_ids[] = $category['id'];
 		}
-		$cat_str = implode(',', $cat_ids);
+		//$cat_str = implode(',', $cat_ids);
 		$query = $this->divination->select();
-		$query->from('divination')->where('category_id in (' . $cat_str . ') AND activity=\'y\'')->order('id DESC');
+		//$query->from('divination')->where('category_id in (' . $cat_str . ') AND activity=\'y\'')->order('id DESC');
+		$query->from('divination')->where($this->divination->getAdapter()->quoteInto('category_id IN (?) AND activity=\'y\' ',$cat_ids))
+			->order('id DESC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		$divinations = $stm->fetchAll();
 
@@ -857,7 +859,7 @@ class App_DivinationService {
 		return $cleanMatches;
 	}
 
-	public function fillMatches($divintionId){
+	public function fillMatches($divinationId){
 		for($i = 0; $i < 36; $i++){
 			for($j = 0; $j < 36; $j++){
 				$insertData = array(
