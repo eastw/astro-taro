@@ -39,10 +39,10 @@ class DivinationController extends App_Controller_Action_ParentController{
 				$this->view->pageTitle = 'Гадания на картах Таро';
 			}
 			if($divtype == 'classic'){
-				$this->view->pageTitle = 'Гадания на класических картах';
+				$this->view->pageTitle = 'Гадания на классических картах';
 			}
 			if($divtype == 'lenorman'){
-				$this->view->pageTitle = 'Гадания мдам Ленорман';
+				$this->view->pageTitle = 'Гадания мадам Ленорман';
 			}
 			if($divtype == 'rune'){
 				$this->view->pageTitle = 'Гадания на Рунах';
