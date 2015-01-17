@@ -1,0 +1,92 @@
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+        $('#seacrh-button').click(function(){
+            $.post('/admin/poll/search',
+                {'query':$('#query').val()},
+                function(data){
+                    $('#article-table').html(data);
+                }
+            );
+        });
+    });
+    function confirmation(id,page){
+        if(confirm('Вы действительно хотите удалить это голосование?')){
+            window.location.href="/admin/poll/remove/id/" + id + '/page/' + page;
+        }
+    }
+    function changeActivity(id, element){
+        $.post(
+            '/admin/poll/activity',
+            {
+                'id' : id
+            },
+            function(data){
+                $('span.active').text('Нет');
+                if(data.activity == 'true'){
+                    $(element).text('Да');
+                }
+            },
+            'json'
+        );
+    }
+    //-->
+</script>
+<h1>Управление голосованиями</h1>
+<table>
+    <tr>
+        <td>
+            <div style="text-align:left;"><a href="/admin/poll/add">Добавить голосование.</a></div>
+        </td>
+        <td>
+            <input id="query" type="text"/><input id="seacrh-button" type="button" value="Найти голосование"/>
+            <input type="button" id="clear-search" value="Очистить поиск" onclick='window.location.href="/admin/poll"'/>
+        </td>
+    </tr>
+</table>
+<table class="admin-table" id="article-table" style="width: 950px;margin-left: 30px;">
+    <tr>
+        <th style="width:60%">
+            Название
+        </th>
+        <th style="width:10%">
+            Опубликовано
+        </th>
+        <th style="width:10%">
+            Опции
+        </th>
+        <th style="width:10%">
+            Результат
+        </th>
+        <th style="width:10%">
+            Действия
+        </th>
+    </tr>
+    <?php if(count($this->paginator)):?>
+        <?php foreach($this->paginator as $item):?>
+            <tr>
+                <td>
+                    <a href="/admin/poll/edit/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><?=$item['name'];?></a>
+                </td>
+                <td>
+                    <span class="active" style="cursor:pointer" onclick="changeActivity('<?=$item['id']?>', this)"><?=($item['activity'] == 'y')?'Да':'Нет';?></span>
+                </td>
+                <td>
+                    <a href="/admin/poll/option-list/id/<?=$item['id'].(!empty($this->page)?'/page/'.$this->page:'');?>">Ред. опции</a>
+                </td>
+                <td>
+                    <a target="blank" href="/admin/poll/result/id/<?=$item['id']?>">Посмотреть</a>
+                </td>
+                <td>
+                    <a href="/admin/poll/edit/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Редактировать</a> /
+                    <a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+                </td>
+            </tr>
+        <?php endforeach;?>
+        <tr>
+            <td colspan="2">
+                <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml',array('requestQuery' => $this->requestQuery, 'requestQueryArray' => $this->requestQueryArray, 'funcName' => 'changeAgentListPage')) ?>
+            </td>
+        </tr>
+    <?php endif;?>
+</table>

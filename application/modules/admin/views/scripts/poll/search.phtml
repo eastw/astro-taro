@@ -1,0 +1,35 @@
+<table class="admin-table" id="article-table" style="width: 950px;margin-left: 30px;">
+	<tr>
+		<th style="width:60%">
+			Название
+		</th>
+		<th style="width:20%">
+			Опубликовано
+		</th>
+		<th style="width:20%">
+			Опции
+		</th>
+		<th style="width:20%">
+			Действия
+		</th>
+	</tr>
+	<?php if(count($this->data)):?>
+		<?php foreach($this->data as $item):?>
+			<tr>
+				<td>
+					<a href="/admin/poll/edit/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>"><?=$item['name'];?></a>
+				</td>
+				<td>
+					<span class="active"><?=($item['activity'] == 'y')?'Да':'Нет';?></span>
+				</td>
+				<td>
+					<a href="/admin/poll/option/id/<?=$item['id'].(!empty($this->page)?'/page/'.$this->page:'');?>">Ред. опции</a>
+				</td>
+				<td>
+					<a href="/admin/poll/edit/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Редактировать</a> /
+					<a style="cursor:pointer;" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
+				</td>
+			</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+</table>
