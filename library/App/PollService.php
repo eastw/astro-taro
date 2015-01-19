@@ -113,4 +113,59 @@ class App_PollService {
         return 'false';
     }
 
+    public function getActivePoll(){
+        //TODO: result must be cached
+        $query = $this->poll->getAdapter()->select();
+        $query->from(array('p'=>'poll'))
+            ->where("p.activity='y'");
+        $stm = $query->query();
+        $poll = $stm->fetch();
+
+        if($poll) {
+            $query = $this->pollOption->getAdapter()->select();
+            $query->from(array('poll_option'))
+                ->where($this->pollOption->getAdapter()->quoteInto('poll_id=?', $poll['id']))
+                ->order('id DESC');
+            $stm = $query->query();
+            $poll['options'] = $stm->fetchAll();
+        }
+        return $poll;
+    }
+
+    public function incrementValues($values){
+        $error = false;
+        $result = array('status' => 'fail', 'options' => array());
+        if($values && !empty($values)){
+            $values = explode(';', $values);
+            foreach($values as $index => $value){
+                if(!is_numeric($value)){
+                    unset($values[$index]);
+                }
+            }
+            $option = $this->getPollOptionById($values[0]);
+            if(isset($_COOKIE['poll_' . md5($option['poll_id'])])){
+                return $result;
+            }
+            $updateData = array(
+                'value' => new Zend_Db_Expr('value+1')
+            );
+            try {
+                $this->pollOption->update($updateData, $this->pollOption->getAdapter()->quoteInto('id IN (?)', $values));
+                if(!$error && !empty($values)){
+                    $result = array('status' => 'success');
+                    $query = $this->pollOption->getAdapter()->select();
+                    $query->from(array('poll_option'),array('name','value'))
+                        ->where($this->pollOption->getAdapter()->quoteInto('poll_id =?', $option['poll_id']))
+                        ->order('id DESC');
+                    $stm = $query->query();
+                    $result['options'] = $stm->fetchAll();
+                    setcookie('poll_'.md5($option['poll_id']), 'poll', time() + 3600*24*365, '/');
+                }
+            }catch(Exception $ex){
+                return $result;
+            }
+        }
+        return $result;
+    }
+
 }

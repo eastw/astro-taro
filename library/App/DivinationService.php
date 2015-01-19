@@ -161,7 +161,8 @@ class App_DivinationService {
 
 		$updateData = array(
 			'name' => $data['title'],
-			'alias' => $id . '-' . App_UtilsService::generateTranslit($data['title']),
+			/*link not changed by customer desire*/
+			/*'alias' => $id . '-' . App_UtilsService::generateTranslit($data['title']),*/
 			'only_old_arkans' => $data['only_old_arkans'],
 			'category_id' => $data['category'],
 			'description' => $data['desc'],

@@ -1181,3 +1181,17 @@ img.comp_sign {margin-top:10px; float:left;}
 #comments{
 	margin: 20px 0 0 0;
 }
+
+#etot_block_ne_kopirovat {width:230px; margin:0 auto;}
+.vote_ask, .vote_answer {margin-bottom:30px;}
+.vote_header {padding:10px 15px; background-color:#563072; border-bottom:1px solid #886e9c; font-family:'Trebuchet MS', sans-serif; font-size:16px; line-height:18px; color:#fff;}
+.vote_content {padding:15px 10px 20px 10px; background-color:#F7F8FA;}
+.vote_answer .vote_content {padding:15px 10px 10px 10px;}
+.vote_content form {text-align:center;}
+.vote_content input[type=submit] {margin-top:10px; padding:0 35px; background-color:#563072; border-left:none; border-top:1px solid #886e9c; border-right:none; border-bottom:1px solid #886e9c; font-family:'Trebuchet MS', sans-serif; font-size:16px; line-height:35px; color:#fff; cursor:pointer;}
+.vote_content label {display:block; margin-bottom:10px; position:relative;}
+.vote_content label input[type=checkbox] {position:absolute; left:0; top:-2px;}
+.vote_content label div {margin-left:25px; text-align:left; font-family:'Trebuchet MS', sans-serif; font-size:14px; line-height:16px; color:#1178f6;}
+
+.vote_content > div {margin-bottom:10px; font-family:'Trebuchet MS', sans-serif; font-size:14px; line-height:16px; color:#474747;}
+.vote_content > div span {font-weight:bold; color:#ff6022;}

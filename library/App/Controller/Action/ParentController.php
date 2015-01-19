@@ -20,6 +20,8 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 	protected $layoutService;
 	
 	protected $payservice;
+
+	protected $pollService;
 	
 	protected $auth;
 	
@@ -49,6 +51,8 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 		$this->layoutService = new App_LayoutService();
 		
 		$this->payservice = new App_PayserviceService();
+
+		$this->pollService = App_PollService::getInstance();
 		
 		$this->view->categories = $this->categoryService->structuredCategories();
 		
@@ -71,8 +75,7 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 		$this->view->magictags = $this->tagService->getCachedMagicTags();
 		
 		$this->view->signs = $this->horoscopeService->getSunSigns();
-		//var_dump($this->view->signs); die;
-		
+
 		$this->auth = Zend_Auth::getInstance();
 		if($this->auth->hasIdentity()){
 			$this->view->userdata = $this->auth->getIdentity();
@@ -86,10 +89,8 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 		
 		$pages = $this->pagesService->getAllPages();
 		$curUri = $this->getRequest()->getRequestUri();
-		//var_dump(App_UtilsService::cleanUrlLastSlash($curUri)); die;
 		foreach($pages as $page){
 			if(App_UtilsService::cleanUrlLastSlash($page['url']) == App_UtilsService::cleanUrlLastSlash($curUri)){
-				//$request = Zend_Controller_Front::getInstance()->getRequest();
 				$this->view->seotitle = $page['title'];
 				$this->view->seokeywords = $page['keywords'];
 				$this->view->seodescription = $page['description'];
@@ -104,21 +105,23 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 				$this->view->minidesc = $page['minidesc'];
 			}
 		}
-		
+
+		//TODO: need to cache this
 		$this->view->sliders = $this->bannerService->getSliderData();
+		//TODO: need to cache this
 		$this->view->banners = $this->bannerService->getBannersByController($this->view->controllerName);
 		
-		
+
+		//TODO: need to cache this + not show this on index page
 		$this->view->ratingList = $this->layoutService->getRaitingBlockData();
-		
-		$this->view->paythemes = $this->payservice->listThemes();
-		$this->view->paygates = $this->payservice->listGates();
 		
 		if(!$this->view->userdata){
 			$this->prepareTweeterData();
 		}
-		//echo '<pre>';
-		//var_dump($this->view->banners); die;
+
+		if($this->view->controllerName != 'index'){
+			$this->view->poll = $this->pollService->getActivePoll();
+		}
 	}
 	
 	protected function initDayCards(){
@@ -174,67 +177,11 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 		$this->view->runeDayState = $runeDayState;
 		$this->view->hexagrammDay = $hexagrammDay;
 		if(isset($this->view->userdata) && !empty($this->view->userdata)){
-			//$session->numberDay = mt_rand(1,9);
-			//$this->view->numberDay = $session->numberDay; 
 		}else{
 			$this->view->numberDay = '';
 		}
-		
-		/*
-		$session = new Zend_Session_Namespace('astroauth');
-		if(isset($session->dayStartTime) && !empty($session->dayStartTime)){
-			$startDayMillis = mktime(0,0,1,date('n'),date('j'),date('Y'));
-			//$resultTime = $startDayMillis - $session->dayCreateTime;
-			
-			$resultTime = time() - $session->dayStartTime;
-			if($resultTime > 86400 ){
-				
-				$session->taroDay = mt_rand(1,78);
-				$session->taroDayState = mt_rand(0, 1);
-				$session->runeDay = mt_rand(1,24);
-				$session->runeDayState = mt_rand(0, 1);
-				$session->hexagrammDay = mt_rand(1,64);
-				$session->dayStartTime = mktime(0,0,1,date('n'),date('j'),date('Y'));
-			}
-		}else{
-			$session->taroDay = mt_rand(1,78);
-			$session->taroDayState = mt_rand(0, 1);
-			$session->runeDay = mt_rand(1,24);
-			$session->runeDayState = mt_rand(0, 1);
-			$session->hexagrammDay = mt_rand(1,64);
-			$session->dayStartTime = mktime(0,0,1,date('n'),date('j'),date('Y'));
-		}
-		$this->view->taroDay = $session->taroDay;
-		$this->view->taroDayState = $session->taroDayState;
-		$this->view->runeDay = $session->runeDay;
-		$this->view->runeDayState = $session->runeDayState;
-		$this->view->hexagrammDay = $session->hexagrammDay;
-		if(isset($this->view->userdata) && !empty($this->view->userdata)){
-			//$session->numberDay = mt_rand(1,9);
-			//$this->view->numberDay = $session->numberDay; 
-		}else{
-			$this->view->numberDay = '';
-		}
-		*/
 	}
-	/*
-	protected function initRegisteredUserDayCards(){
-		$data = $this->view->userdata;
-		if(isset($data->taro_day)){
-			
-		}else{
-			$updateData = array(
-				'taro_day' => mt_rand(1,78),
-				'rune_day' => mt_rand(1,24),
-				'hexagramm_day' => mt_rand(1,64),
-				'taro_day_state' => mt_rand(0, 1),
-				'rune_day_state' =>mt_rand(0, 1)	
-			);
-			
-		}
-	}
-	*/
-	
+
 	protected function prepareTweeterData(){
 		$oauth_nonce = md5(uniqid(rand(), true));
 		$oauth_timestamp = time();
@@ -300,6 +247,7 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 	}
 	
 	public function postDispatch(){
+
 		/*
 		$db = $this->articleService->getDb();
 		
@@ -308,11 +256,11 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 		$profile = '';
 		if($profiler->getQueryProfiles()){
 			foreach($profiler->getQueryProfiles() as $query) {
-				$profile .= $query -> getQuery() . "\n"
-						. 'Time: ' . $query -> getElapsedSecs();
+				$profile .= "\n\n" . 'Time: ' . $query -> getElapsedSecs() . ' ' . $query -> getQuery();
 			}
 		}
 		echo $profile;
 		*/
+
 	}
 }

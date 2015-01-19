@@ -1,0 +1,25 @@
+<?php if(isset($_COOKIE['poll_' . md5($this->poll['id'])])):?>
+    <div class="vote_answer">
+        <div class="vote_header"><?=$this->poll['name']?></div>
+        <div class="vote_content">
+            <?php foreach($this->poll['options'] as $item):?>
+                <div><span><?=$item['value'];?></span> - <?=$item['name'];?></div>
+            <?php endforeach;?>
+        </div>
+    </div>
+<?php else:?>
+    <div class="vote_ask">
+        <div class="vote_header"><?=$this->poll['name']?></div>
+        <div class="vote_content">
+            <form>
+                <?php foreach($this->poll['options'] as $item):?>
+                    <label>
+                        <input name="<?=$item['id'];?>" type="checkbox">
+                        <div><?=$item['name'];?></div>
+                    </label>
+                <?php endforeach;?>
+                <input id="poll" type="submit" value="Голосовать">
+            </form>
+        </div>
+    </div>
+<?php endif?>

@@ -608,18 +608,20 @@ $(document).ready(function() {
 	var valueTemp = '';
 	$('input').on('focusin', function() {
 		valueTemp = $(this).attr('value');
-		$(this).attr('value', '');
+		if($(this).attr('id') != 'poll') {
+			$(this).attr('value', '');
+		}
 	});
 	$('input').on('focusout', function() {
 		if (valueTemp = 'undifined') {
-                    if($(this).attr('value') == ''){
+			if($(this).attr('value') == ''){
 				$(this).css('background-color','background-color: rgb(255, 253, 214)');
 			}else{
 				$(this).removeClass('sure');
 			}
                 }
 		else {
-		$(this).attr('value', valueTemp);
+			$(this).attr('value', valueTemp);
 		};
 	});
 	
@@ -763,11 +765,11 @@ $(document).ready(function() {
 		};		
 	});
 	
-	$('input:not(#input, .check), textarea').on('focusin', function() {
+	$('input:not(#input, .check, #poll), textarea').on('focusin', function() {
 		$(this).css({"background-color" : "#fffdd6"});
 		//$(this).val();
 	});
-	$('input:not(#input, .check), textarea').on('focusout', function() {
+	$('input:not(#input, .check, #poll), textarea').on('focusout', function() {
 	        if($(this).val() == ''){
 			$(this).css({"background-color" : "#fffdd6"});
 		}else{

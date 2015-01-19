@@ -142,6 +142,9 @@
 	                <div id="columns">
 	                	<?php if($this->controllerName != 'user' && $this->controllerName != 'profile' && $this->controllerName != 'moon'):?>
 	                		<div id="column1">
+								<?php if($this->poll):?>
+									<?=$this->partial('partials/poll.phtml',array('poll' => $this->poll))?>
+								<?php endif;?>
 		                		<?=$this->partial('partials/left-column.phtml',array('categories' => $this->categories))?>
 		                	</div>
 		                	<div id="column2">

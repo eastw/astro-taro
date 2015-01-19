@@ -1,6 +1,6 @@
 <?php
 
-class ErrorController extends App_Controller_Action_ParentController
+class ErrorController extends Zend_Controller_Action//App_Controller_Action_ParentController
 {
 
     public function errorAction()

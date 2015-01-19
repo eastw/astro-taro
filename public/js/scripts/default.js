@@ -25,6 +25,39 @@ $(document).ready(function(){
 				);
 		return false;
 	});
+
+	$('#poll').click(function(){
+		var values = '';
+		$('.vote_content input[type="checkbox"]').each(function(i){
+			if($(this).is(':checked')){
+				values += $(this).attr('name') + ';';
+			}
+		});
+		if(values != '') {
+			$.post(
+				'/common/poll-result',
+				{
+					'values': values
+				},function(data){
+					if(data.status == 'success'){
+						var poll_header = $('.vote_header').text();
+						var html = '<div class="vote_header">' + poll_header + '</div>';
+						$('.vote_header, .vote_content').remove();
+						html += '<div class="vote_content">'
+						for (var i in data.options){
+							html += '<div><span>' + data.options[i]['value'] + '</span> - ' +
+							data.options[i]['name'] + '</div>'
+						}
+						html += '</div>';
+						$('.vote_ask').attr('class','vote_answer');
+						$('.vote_answer').html(html);
+						//$.cook
+					}
+				},'json'
+			);
+		}
+		return false;
+	});
 	
 	$('a.ident-enter').click(function(){
 		$('#enter_form').stop().fadeToggle(200,function(){
