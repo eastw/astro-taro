@@ -352,12 +352,15 @@ class App_ArticleService {
 	public function getArticleByAlias($alias){
 		$aliasParts = explode('-',$alias);
 		$id = $aliasParts[0];
-		$article = $this->articles->fetchRow($this->articles->getAdapter()->quoteInto('id=?', $id))->toArray();
-		
-		if($article['alias'] !== $alias){
-			throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
+		$article = $this->articles->fetchRow($this->articles->getAdapter()->quoteInto('id=?', $id));
+		if($article){
+			$article = $article->toArray();
+			if($article['alias'] !== $alias){
+				throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
+			}
+			return $article;
 		}
-		return $article;
+		throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
 	}
 	
 	public function deleteArticle($id){
