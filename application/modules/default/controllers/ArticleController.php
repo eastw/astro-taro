@@ -6,6 +6,23 @@ class ArticleController extends App_Controller_Action_ParentController{
 	
 	
 	public function init(){
+		/*Article service*/
+		$this->articleService = new App_ArticleService();
+
+		/*Tags*/
+		$this->tagService = new App_TagService();
+		$tags = $this->tagService->getCachedTags();
+		if(!$tags){
+			$this->tagService->recacheArticleTags();
+		}
+		$this->view->tags = $this->tagService->getCachedTags();
+		$newstags = $this->tagService->getCachedNewsTags();
+		if(!$newstags){
+			$this->tagService->recacheNewsTags();
+		}
+		$this->view->newstags = $this->tagService->getCachedNewsTags();
+
+		/*Profile*/
 		$this->profileService = new App_ProfileService($this->view->userdata);
 	}
 	

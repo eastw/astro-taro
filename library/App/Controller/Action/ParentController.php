@@ -38,41 +38,24 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 	protected $oauthTokenSecret = '';
 	
 	public function preDispatch(){
-		$this->tagService = new App_TagService();
-		$this->articleService = new App_ArticleService();
-		$this->categoryService = new App_CategoryService();
-		$this->divinationService = new App_DivinationService();
-		$this->numerologyService = new App_NumerologyService();
+		$start = App_UtilsService::microtime_float();
+
+		if($this->view->controllerName != 'index'){
+			/*Polls*/
+			$this->pollService = App_PollService::getInstance();
+			$this->view->poll = $this->pollService->getActivePoll();
+
+
+			/*Categories*/
+			$this->categoryService = new App_CategoryService();
+			$this->view->categories = $this->categoryService->structuredCategories();
+		}
+
 		$this->horoscopeService = new App_HoroscopeService();
 		$this->pagesService = new App_PagesService();
 		$this->commentsService = new App_CommentsService();
 		$this->bannerService = new App_BannerService();
-		
 		$this->layoutService = new App_LayoutService();
-		
-		$this->payservice = new App_PayserviceService();
-
-		$this->pollService = App_PollService::getInstance();
-		
-		$this->view->categories = $this->categoryService->structuredCategories();
-		
-		$tags = $this->tagService->getCachedTags();
-		if(!$tags){
-			$this->tagService->recacheArticleTags();
-		}
-		$this->view->tags = $this->tagService->getCachedTags();
-		
-		$newstags = $this->tagService->getCachedNewsTags();
-		if(!$newstags){
-			$this->tagService->recacheNewsTags();
-		}
-		$this->view->newstags = $this->tagService->getCachedNewsTags();
-		
-		$magictags = $this->tagService->getCachedMagicTags();
-		if(!$magictags){
-			$this->tagService->recacheMagicTags();
-		}
-		$this->view->magictags = $this->tagService->getCachedMagicTags();
 		
 		$this->view->signs = $this->horoscopeService->getSunSigns();
 
@@ -82,11 +65,12 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 		}else{
 			$this->view->userdata = null;
 		}
+
 		$this->initDayCards();
 		
 		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->actionName = $this->getRequest()->getActionName();
-		
+
 		$pages = $this->pagesService->getAllPages();
 		$curUri = $this->getRequest()->getRequestUri();
 		foreach($pages as $page){
@@ -106,22 +90,24 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 			}
 		}
 
+
 		//TODO: need to cache this
 		$this->view->sliders = $this->bannerService->getSliderData();
+
 		//TODO: need to cache this
 		$this->view->banners = $this->bannerService->getBannersByController($this->view->controllerName);
-		
 
-		//TODO: need to cache this + not show this on index page
+		//TODO: need to cache this + not show this on index page (slow query)
 		$this->view->ratingList = $this->layoutService->getRaitingBlockData();
-		
+
+
 		if(!$this->view->userdata){
 			$this->prepareTweeterData();
 		}
+		//$end = App_UtilsService::microtime_float();
+		//echo "\npreDispatch() time: " . ($end - $start);
+		//echo "\nmemory usage: " . memory_get_usage();
 
-		if($this->view->controllerName != 'index'){
-			$this->view->poll = $this->pollService->getActivePoll();
-		}
 	}
 	
 	protected function initDayCards(){
@@ -195,7 +181,7 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 		$oauth_base_text .= urlencode("oauth_timestamp=".$oauth_timestamp."&");
 		$oauth_base_text .= urlencode("oauth_version=1.0");
 		
-		$key = $this->consumerSecret."&";
+		$key = $this->consumerSecret . "&";
 		
 		$oauth_signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
 		
@@ -247,6 +233,7 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 	}
 	
 	public function postDispatch(){
+		/*
 		$db = $this->articleService->getDb();
 		$profiler = $db->getProfiler();
 		$profile = '';
@@ -256,5 +243,6 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 			}
 		}
 		echo $profile;
+		*/
 	}
 }

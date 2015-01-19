@@ -11,6 +11,7 @@ class IndexController extends App_Controller_Action_ParentController
     
     public function indexAction()
     {
+		$start = App_UtilsService::microtime_float();
     	$this->view->moonData = $this->service->getTodayMoonData();
     	$this->view->magicData = $this->service->getMagicData();
     	$this->view->articleData = $this->service->getArticleData();
@@ -26,6 +27,8 @@ class IndexController extends App_Controller_Action_ParentController
     			$this->view->numberDayData = $this->service->numberDayData($this->view->userdata->birthday);
     		}
     	}
+		$end = App_UtilsService::microtime_float();
+		echo "\nindex time: \n" . ($end - $start);
     }
     
     /*

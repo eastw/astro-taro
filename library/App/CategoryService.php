@@ -40,7 +40,6 @@ class App_CategoryService{
 						->order('c.cat_order');
 			//var_dump($query->assemble()); die;		
 			$stm = $query->query();
-			$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
 			$categories = $stm->fetchAll();
 			$cache->save($categories,'raw_categories');
 		}else{

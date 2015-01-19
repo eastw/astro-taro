@@ -260,4 +260,10 @@ class App_UtilsService {
 		$str = str_replace('@year', date('Y'), $str);
 		return str_replace('@next-year', date('Y',strtotime('+1 year')), $str);
 	}
+
+	public static function microtime_float()
+	{
+		list($usec, $sec) = explode(" ", microtime());
+		return ((float)$usec + (float)$sec);
+	}
 } 

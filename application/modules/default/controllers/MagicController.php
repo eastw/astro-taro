@@ -6,8 +6,29 @@ class MagicController extends App_Controller_Action_ParentController{
 	protected $commentsService;
 	
 	public function init(){
+		/*Article service*/
+		$this->articleService = new App_ArticleService();
+
+		/*Tags*/
+		$this->tagService = new App_TagService();
+		$tags = $this->tagService->getCachedTags();
+		if(!$tags){
+			$this->tagService->recacheArticleTags();
+		}
+		$this->view->tags = $this->tagService->getCachedTags();
+		$newstags = $this->tagService->getCachedNewsTags();
+		if(!$newstags){
+			$this->tagService->recacheNewsTags();
+		}
+		$this->view->newstags = $this->tagService->getCachedNewsTags();
+
+		$magictags = $this->tagService->getCachedMagicTags();
+		if(!$magictags){
+			$this->tagService->recacheMagicTags();
+		}
+		$this->view->magictags = $this->tagService->getCachedMagicTags();
+
 		$this->profileService = new App_ProfileService($this->view->userdata);
-		$this->commentsService = new App_CommentsService();
 	}
 	
 	public function listAction(){
