@@ -247,12 +247,8 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 	}
 	
 	public function postDispatch(){
-
-		/*
 		$db = $this->articleService->getDb();
-		
 		$profiler = $db->getProfiler();
-		
 		$profile = '';
 		if($profiler->getQueryProfiles()){
 			foreach($profiler->getQueryProfiles() as $query) {
@@ -260,7 +256,5 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 			}
 		}
 		echo $profile;
-		*/
-
 	}
 }

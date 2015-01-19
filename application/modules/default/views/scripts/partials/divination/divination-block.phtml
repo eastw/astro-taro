@@ -385,7 +385,7 @@ $(document).ready(function(){
 				if(cardLimit == (currentCard) ){
 					if(!alreadySent) {
 						$.post(
-							'/divination/get-card-description',
+							'/common/get-card-description',
 							{
 								'data': JSON.stringify(generatedCards)
 							},
@@ -412,23 +412,6 @@ $(document).ready(function(){
 	function getCardDescription(divId, curCard, generatedCard, curDeck){
 		var card = {'divination_id':divId,'card_order': curCard-1,'card_number': generatedCard.cardNumber,'side': generatedCard.side,'deck': curDeck};
 		generatedCards[curCard-1] = card;
-		//console.log(generatedCards);
-		/*
-		$.post(
-				'/divination/get-card-description',
-				{
-					'divination_id': divId,
-					'card_order': curCard-1,
-					'card_number': generatedCard.cardNumber,
-					'side': generatedCard.side,
-					'deck': curDeck
-				},
-				function(data){
-					$('#our-alignment').show();
-					$('#desc_wrapper_' + (curCard - 1)).html(data);
-				}
-			);
-		*/
 	}
 
 	function generateCard(){
