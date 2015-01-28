@@ -12,7 +12,7 @@ class DivinationController extends App_Controller_Action_ParentController{
 	public function init(){
 		$this->divinationService = new App_DivinationService();
 		$this->deckService = new App_DeckService();
-		$this->categoryService = new App_CategoryService();
+		$this->categoryService = App_CategoryService::getInstance();
 		$this->profileService = new App_ProfileService($this->view->userdata);
 	}
 	

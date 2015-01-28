@@ -6,7 +6,7 @@ class Admin_CommentsController extends Zend_Controller_Action{
 	protected $payserviceService;
 	
 	public function preDispatch(){
-		$this->service = new App_CommentsService();
+		$this->service = App_CommentsService::getInstance();
 		$this->userService = new App_UserService();
 		$this->payserviceService = new App_PayserviceService();
 	}

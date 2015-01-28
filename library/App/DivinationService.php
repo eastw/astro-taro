@@ -24,7 +24,7 @@ class App_DivinationService {
 		$this->divinationDecks = new Application_Model_DbTable_DivinationDecksTable();
 		$this->divinationBook = new Application_Model_DbTable_DivinationBookTable();
 		$this->match = new Application_Model_DbTable_MatchTable();
-		$this->categoryService = new App_CategoryService();
+		$this->categoryService = App_CategoryService::getInstance();
 
 		$this->bookAssosiateArray = array(
 										'111111','000000','010001','100010','010111','111010','000010','010000','110111','111011',
@@ -72,7 +72,6 @@ class App_DivinationService {
 		}
 		
 		$id = $this->divination->insert($insertData);
-		
 
 		$updateData = array(
 			'alias' => $id . '-' . App_UtilsService::generateTranslit($data['title']),
@@ -187,6 +186,9 @@ class App_DivinationService {
 			$updateData['front_background'] = $data['front_background'];
 		}
 		$this->divination->update($updateData, $this->divination->getAdapter()->quoteInto('id=?',$id));
+
+		$cache = Zend_Registry::get('cache');
+		$cache->remove(str_replace('.','_', $_SERVER['HTTP_HOST']) . '_' . $divination['type'] . '_list_data' );
 		
 		if( $divination['type'] == 'taro' || $divination['type'] == 'classic' || $divination['type'] == 'rune'
 			|| $divination['type'] == 'lenorman' ){
@@ -203,7 +205,7 @@ class App_DivinationService {
 			//remove card descriptions if type is changed
 			if($divination['type_id'] != $data['type']){
 				$this->divinationData->delete($this->divinationData->getAdapter()->quoteInto('divination_id=?',$id));
-				$categoryService = new App_CategoryService();
+				$categoryService = App_CategoryService::getInstance();
 				$types = $categoryService->getCategoryTypes();
 				foreach($types as $type){
 					if($data['type'] == $type['id']){
@@ -279,6 +281,8 @@ class App_DivinationService {
 	
 	public function deleteDivination($id){
 		$divination = $this->getDivinationById($id);
+		$cache = Zend_Registry::get('cache');
+		$cache->remove(str_replace('.','_', $_SERVER['HTTP_HOST']) . '_' . $divination['type'] . '_list_data' );
 		$realPath = realpath(dirname('.')) . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'divinations' . DIRECTORY_SEPARATOR . $divination['background'];
 		if(file_exists($realPath)){
 			unlink($realPath);
@@ -325,7 +329,6 @@ class App_DivinationService {
 	}
 	
 	public function getCardsByDivinationId($id){
-		//return $this->divinationNet->fetchAll($this->divinationNet->getAdapter()->quoteInto('divination_id=?', $id))->toArray();
 		$query = $this->divinationNet->getAdapter()->select();
 		$query->from('divination_net')
 			->where($this->divination->getAdapter()->quoteInto('divination_id=?',$id))
@@ -371,7 +374,6 @@ class App_DivinationService {
 			->where($this->divination->getAdapter()->quoteInto('deck_position IN (?)', $positions ))
 			->where($this->divination->getAdapter()->quoteInto('divination_id=?',$divId))
 			->order($this->divination->getAdapter()->quoteInto("FIELD(deck_position,?)",$positions));
-		$test = $query->assemble();
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
 		return $stm->fetchAll();
 	}
@@ -399,14 +401,14 @@ class App_DivinationService {
 		}
 		$this->divination->update($updateData, $this->divination->getAdapter()->quoteInto('id=?',$id));
 		$cache = Zend_Registry::get('cache');
-		$cache->remove($divination['type'].'_list_data');
+		$cache->remove(str_replace('.','_', $_SERVER['HTTP_HOST']) . '_' . $divination['type'] . '_list_data');
 		$result = array('errors' => array());
 		return $result;
 	}
 	
 	public function getListDivinationsWithCategories($divtype,$divId){
 		$cache = Zend_Registry::get('cache');
-		if(!$data = $cache->load($divtype.'_list_data',true)){
+		if(!$data = $cache->load(str_replace('.','_', $_SERVER['HTTP_HOST']) . '_'  . $divtype . '_list_data')){
 			switch($divtype){
 				case 'taro': 
 					$data = $this->getTaroData($divtype,$divId);
@@ -427,11 +429,12 @@ class App_DivinationService {
 					$data = $this->getOtherData($divtype,$divId);
 					break;
 			}
+			$cache->save($data, str_replace('.','_', $_SERVER['HTTP_HOST']) . '_'  . $divtype . '_list_data');
 		}
 		return $data;
 	}
 	
-	protected function getTaroData($divtype,$divId){
+	protected function getTaroData($divtype, $divId){
 		$categories = $this->categoryService->getChildCategoriesByType($divId);
 		$cat_ids = array();
 		foreach ($categories as $category){
@@ -507,9 +510,7 @@ class App_DivinationService {
 		foreach ($categories as $category){
 			$cat_ids[] = $category['id'];
 		}
-		//$cat_str = implode(',', $cat_ids);
 		$query = $this->divination->select();
-		//$query->from('divination')->where('category_id in (' . $cat_str . ') AND activity=\'y\'')->order('id DESC');
 		$query->from('divination')->where($this->divination->getAdapter()->quoteInto('category_id IN (?) AND activity=\'y\' ',$cat_ids))
 			->order('id DESC');
 		$stm = $query->query(Zend_Db::FETCH_ASSOC);
@@ -620,7 +621,6 @@ class App_DivinationService {
 			}else{
 				throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
 			}
-			
 		}else{
 			throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
 		}

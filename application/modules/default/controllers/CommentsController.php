@@ -4,7 +4,7 @@ class CommentsController extends App_Controller_Action_ParentController{
 	protected $service;
 	
 	public function init(){
-		$this->service = new App_CommentsService();
+		$this->service = App_CommentsService::getInstance();
 	}
 	
 	public function addAction(){

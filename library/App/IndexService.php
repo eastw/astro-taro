@@ -19,10 +19,10 @@ class App_IndexService{
 	
 	public function __construct(){
 		$this->moonService = new App_MoonService();
-		$this->articleService = new App_ArticleService();
+		$this->articleService = App_ArticleService::getInstance();
 		$this->numerologyService = new App_NumerologyService();
 		$this->horoscopeService = new App_HoroscopeService();
-		$this->tagService = new App_TagService();
+		$this->tagService = App_TagService::getInstance();
 		$this->divinationService = new App_DivinationService();
 		$this->deckService = new App_DeckService();
 	}
@@ -38,7 +38,6 @@ class App_IndexService{
 			$data['second_day_time'] = '';
 			if(count($data['moonDays']) > 1){
 				$data['second_day_time'] = $data['moonDays'][1]['day_start'];
-				 
 			}
 			if(isset($data['in_signs']) && count($data['in_signs']) > 1){
 				$data['second_sign_time'] = $data['in_signs'][1]['signstart']; 
@@ -46,10 +45,6 @@ class App_IndexService{
 			$tmp = iconv('utf-8','windows-1251',preg_replace('/<\/?[^>]+>/ims','',$data['moonDays'][0]['day_detail']['description']));
 			$data['moonDays'][0]['day_detail']['short_day_desc'] = iconv('windows-1251','utf-8',substr($tmp, 0,130));
 		}
-		/*
-		echo '<pre>';
-		var_dump($data); die;
-		*/
 		return $data;
 	}
 	
@@ -69,7 +64,7 @@ class App_IndexService{
 				}
 			}
 			
-			$tags = $this->tagService->getCachedMagicTags();
+			$tags = $this->tagService->getMagicTags();
 			foreach($data as $index => $magic){
 				foreach($tags as $tag){
 					if($magic['tag_id'] == $tag['id']){
@@ -78,10 +73,6 @@ class App_IndexService{
 				}
 			}
 		}
-		/*
-		echo '<pre>';
-		var_dump($data); die;
-		*/
 		return $data;
 	}
 	
@@ -101,7 +92,7 @@ class App_IndexService{
 				}
 			}
 				
-			$tags = $this->tagService->getCachedTags();
+			$tags = $this->tagService->getTags();
 			foreach($data as $index => $article){
 				foreach($tags as $tag){
 					if($article['tag_id'] == $tag['id']){
@@ -140,7 +131,7 @@ class App_IndexService{
 				}
 			}
 		
-			$tags = $this->tagService->getCachedNewsTags();
+			$tags = $this->tagService->getNewsTags();
 			foreach($data as $index => $news){
 				foreach($tags as $tag){
 					if($news['tag_id'] == $tag['id']){
@@ -180,7 +171,6 @@ class App_IndexService{
 			$data['taroTitle'] = $data['title_reverse'];
 		}
 		$data['state'] = $taroDayState;
-		//var_dump($taroDayState); die;
 		$data['taroDay'] = iconv('windows-1251','utf-8',substr($tmp, 0,357));
 		$data['taroDayImage'] = '/files/decks/'.$deck['folder_alias'].'/'.$data['deck_position'].$card;
 		
@@ -188,7 +178,6 @@ class App_IndexService{
 	}
 	
 	public function runeDay($runeDay,$runeDayState){
-		//var_dump($runeDayState); die;
 		$data = $this->divinationService->getDivinationDataItemByPosition($runeDay-1, self::RUNE_ETALON_DIVINATION);
 		$deck = $this->deckService->getDeckById(self::RUNE_ETALON_DECK);
 		
@@ -199,7 +188,6 @@ class App_IndexService{
 			$card = '.png';
 			$data['runeTitle'] = $data['title'];
 		}else{
-			//echo 'reverce'; die;
 			$tmp = iconv('utf-8','windows-1251',preg_replace('/<\/?[^>]+>/ims','',$data['description_reverse']));
 			$card = '_0.png';
 			$data['runeTitle'] = $data['title_reverse'];
@@ -221,10 +209,8 @@ class App_IndexService{
 	
 	public function numberDayData($birthday){
 		$data = $this->numerologyService->calcTodayNumber($birthday);
-		//var_dump($birthday); die;
 		$tmp = iconv('utf-8','windows-1251',preg_replace('/<\/?[^>]+>/ims','',$data['description']));
 		$data['short_desc'] = iconv('windows-1251','utf-8',substr($tmp, 0,400));
-		//var_dump($data); die;
 		return $data;
 	}
 	/*

@@ -4,9 +4,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	protected function _initCaching(){
 		//memcache
-		/*
+
 		$frontend= array(
-	    	'lifetime' => 86400 * 5,
+	    	'lifetime' => 3600 * 3,
 	    	'automatic_serialization' => true
 	    );
 	
@@ -18,7 +18,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			        'weight' => 1
 		        )
 		    ),
-		    'compression' => false
+		    'compression' => true
 	    );
 	
 	    $cache = Zend_Cache::factory(
@@ -29,8 +29,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	    );
 	    
 	    //var_dump($cache); die;
-    	Zend_Registry::set('cache',$cache);
-    	*/
+		Zend_Db_Table_Abstract::setDefaultMetadataCache($cache);
+    	Zend_Registry::set('cache', $cache);
+
+		/*
 		$frontend= array(
 	    	'lifetime' => 86400 * 5,
 	    	'automatic_serialization' => true
@@ -48,6 +50,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	    );
 	    Zend_Db_Table_Abstract::setDefaultMetadataCache($cache);
     	Zend_Registry::set('cache',$cache);
+		*/
 	}
 	
 	protected function _initViewHelpers(){

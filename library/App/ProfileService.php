@@ -900,7 +900,7 @@ class App_ProfileService{
 			if($type == 'divination' && is_numeric($id)){
 				$divinationService = new App_DivinationService();
 				$divination = $divinationService->getDivinationById($id);
-				$categoryService = new App_CategoryService();
+				$categoryService = App_CategoryService::getInstance();
 				$category = $categoryService->getCategory($divination['category_id'])->toArray();
 				$insertData['favorite_type'] = 'divination';
 				$insertData['favorite_name'] = $divination['name'];
@@ -908,9 +908,9 @@ class App_ProfileService{
 				$insertData['favorite_category_name'] = $category['name'];
 			}
 			if($type == 'article' && is_numeric($id)){
-				$articleService = new App_ArticleService();
+				$articleService = App_ArticleService::getInstance();
 				$article = $articleService->getArticleById($id);
-				$tagService = new App_TagService();
+				$tagService = App_TagService::getInstance();
 				$quicktags = explode(';',$article['quicktag']);
 				$tag = $tagService->getTagById($quicktags[0]);
 				$insertData['favorite_type'] = 'article';
@@ -920,9 +920,9 @@ class App_ProfileService{
 				//var_dump($insertData); die;
 			}
 			if($type == 'news'){
-				$articleService = new App_ArticleService();
+				$articleService = App_ArticleService::getInstance();
 				$article = $articleService->getArticleById($id);
-				$tagService = new App_TagService();
+				$tagService = App_TagService::getInstance();
 				$quicktags = explode(';',$article['quicktag']);
 				$tag = $tagService->getTagById($quicktags[0]);
 				$insertData['favorite_type'] = 'news';
@@ -932,9 +932,9 @@ class App_ProfileService{
 				//var_dump($insertData); die;
 			}
 			if($type == 'magic'){
-				$articleService = new App_ArticleService();
+				$articleService = App_ArticleService::getInstance();
 				$article = $articleService->getArticleById($id);
-				$tagService = new App_TagService();
+				$tagService = App_TagService::getInstance();
 				$quicktags = explode(';',$article['quicktag']);
 				$tag = $tagService->getTagById($quicktags[0]);
 				$insertData['favorite_type'] = 'magic';
@@ -1019,7 +1019,7 @@ class App_ProfileService{
 		if($type == 'divination'){
 			$divinationService = new App_DivinationService();
 			$divination = $divinationService->getDivinationById($id);
-			$categoryService = new App_CategoryService();
+			$categoryService = App_CategoryService::getInstance();
 			$category = $categoryService->getCategory($divination['category_id'])->toArray();
 			$updateData['favorite_type'] = 'divination';
 			$updateData['favorite_name'] = $divination['name'];
@@ -1027,9 +1027,9 @@ class App_ProfileService{
 			$updateData['favorite_category_name'] = $category['name'];
 		}
 		if($type == 'article'){
-			$articleService = new App_ArticleService();
+			$articleService = App_ArticleService::getInstance();
 			$article = $articleService->getArticleById($id);
-			$tagService = new App_TagService();
+			$tagService = App_TagService::getInstance();
 			$quicktags = explode(';',$article['quicktag']);
 			$tag = $tagService->getTagById($quicktags[0]);
 			$updateData['favorite_type'] = 'article';
@@ -1038,9 +1038,9 @@ class App_ProfileService{
 			$updateData['favorite_category_name'] = $tag['tagname'];
 		}
 		if($type == 'news'){
-			$articleService = new App_ArticleService();
+			$articleService = App_ArticleService::getInstance();
 			$article = $articleService->getArticleById($id);
-			$tagService = new App_TagService();
+			$tagService = App_TagService::getInstance();
 			$quicktags = explode(';',$article['quicktag']);
 			$tag = $tagService->getTagById($quicktags[0]);
 			$updateData['favorite_type'] = 'news';
@@ -1049,9 +1049,9 @@ class App_ProfileService{
 			$updateData['favorite_category_name'] = $tag['tagname'];
 		}
 		if($type == 'magic'){
-			$articleService = new App_ArticleService();
+			$articleService = App_ArticleService::getInstance();
 			$article = $articleService->getArticleById($id);
-			$tagService = new App_TagService();
+			$tagService = App_TagService::getInstance();
 			$quicktags = explode(';',$article['quicktag']);
 			$tag = $tagService->getTagById($quicktags[0]);
 			$updateData['favorite_type'] = 'magic';

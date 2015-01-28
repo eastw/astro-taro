@@ -31,16 +31,11 @@ class App_SearchService {
 		$this->article = new Application_Model_DbTable_ArticleTable();
 		$this->divination = new Application_Model_DbTable_DivinationTable();
 		
-		$this->tagService = new App_TagService();
+		$this->tagService = App_TagService::getInstance();
 	}
 	
 	protected function prepareData($page){
-		/*
-		if(!$page){
-			$this->curPage = 1;
-		}
-		*/
-		if(is_numeric($page)){	
+		if(is_numeric($page)){
 			if($page < 0){
 				$this->curPage = 1;
 			}else{
@@ -60,7 +55,7 @@ class App_SearchService {
 		
 		$tokens = explode(' ',$query);
 		foreach($tokens as $index => $token){
-			$tokens[$index] = "(".$token." | *".$token."*)";//$token.'*';
+			$tokens[$index] = "(".$token." | *".$token."*)";
 		}
 		$query = implode(' ', $tokens);
 		
@@ -71,7 +66,6 @@ class App_SearchService {
 		if($rawData && $rawData['total_found'] > 0){
 			if(isset($rawData['matches'])){
 				$ids = array_keys($rawData['matches']);
-				//var_dump($ids); //die;
 				$articleIds = array();
 				$newsIds = array();
 				$magicIds = array();
@@ -107,7 +101,7 @@ class App_SearchService {
 							$articleData[$index]['tag_id'] = 17;
 						}
 					}
-					$tags = $this->tagService->getCachedTags();
+					$tags = $this->tagService->getTags();
 					foreach($articleData as $index => $article){
 						foreach($tags as $tag){
 							if($article['tag_id'] == $tag['id']){
@@ -130,7 +124,7 @@ class App_SearchService {
 							$newsData[$index]['tag_id'] = 17;
 						}
 					}
-					$tags = $this->tagService->getCachedNewsTags();
+					$tags = $this->tagService->getNewsTags();
 					foreach($newsData as $index => $news){
 						foreach($tags as $tag){
 							if($news['tag_id'] == $tag['id']){
@@ -154,7 +148,7 @@ class App_SearchService {
 							$magicData[$index]['tag_id'] = 17;
 						}
 					}
-					$tags = $this->tagService->getCachedMagicTags();
+					$tags = $this->tagService->getMagicTags();
 					foreach($magicData as $index => $magic){
 						foreach($tags as $tag){
 							if($magic['tag_id'] == $tag['id']){
@@ -167,9 +161,9 @@ class App_SearchService {
 					$query = $this->divination->select();
 					$query->setIntegrityCheck(false);
 					$query->from(array('d' =>'divination'))
-					->joinLeft(array('c' => 'category'), 'c.id = d.category_id',array('category_alias'=>'alias'))
-					->joinLeft(array('ct' => 'category_types'), 'ct.id = d.type_id',array('type'))
-					->where($adapter->quoteInto('d.id in (?)',$divinationIds));
+						->joinLeft(array('c' => 'category'), 'c.id = d.category_id',array('category_alias'=>'alias'))
+						->joinLeft(array('ct' => 'category_types'), 'ct.id = d.type_id',array('type'))
+						->where($adapter->quoteInto('d.id in (?)',$divinationIds));
 					$stm = $query->query(Zend_Db::FETCH_ASSOC);
 					$divinationData = $stm->fetchAll();
 				}
@@ -219,7 +213,6 @@ class App_SearchService {
 				}else{
 					$pagesCount = (int)$pagesCount + 1;
 				}
-				//var_dump($pagesCount); die;
 				$this->getPagination($pagesCount, $this->curPage);
 			}
 		}else{
@@ -233,9 +226,6 @@ class App_SearchService {
 	}
 	
 	protected function getPagination($countPage, $actPage){
-		//var_dump($countPage);
-		//var_dump($actPage); 
-		//die;
 		//если страниц 0 или 1, вернём пустой массив (переключатели не выводятся)
 		if ($countPage == 0 || $countPage == 1) return array();
 		if ($countPage > 6) //если страниц больше 10, заполним массив pageArray переключателями в зависимости от активной страницы
@@ -244,19 +234,12 @@ class App_SearchService {
 			//то запишем в массив первые 5 и последние 5 переключателей, разделив их многоточием
 			if($actPage <= 4 && $actPage != $countPage/*|| $actPage + 3 >= $countPage*/)
 			{
-				//echo 'here'; die;
 				for($i = 0; $i <= 4; $i++)
 				{
 					$this->pageArray[$i] = $i + 1;
 				}
 				$this->pageArray[5] = "...";
 				$this->pageArray[6] = $countPage;
-						/*
-						for($j = 6, $k = 4; $j <= 10; $j++, $k--)
-						 {
-						$this->pageArray[$j] = $countPage - $k;
-						}
-						*/
 			}elseif($actPage == $countPage){
 				$this->pageArray[0] = 1;
 				$this->pageArray[1] = "...";
@@ -266,56 +249,18 @@ class App_SearchService {
 				$this->pageArray[5] = $actPage - 1;
 				$this->pageArray[6] = $actPage;
 			}elseif($actPage + 3 >= $countPage){
-				//echo 'here'; die;
 				$this->pageArray[0] = 1;
 				$this->pageArray[1] = "...";
 				for($j = 2, $k = 4; $j <= 6; $j++, $k--)
 				{
 					$this->pageArray[$j] = $countPage - $k;
 				}
-				/*
-				$this->pageArray[0] = 1;
-					$this->pageArray[1] = "...";
-				$this->pageArray[2] = $actPage - 4;
-				$this->pageArray[3] = $actPage - 3;
-				$this->pageArray[4] = $actPage - 2;
-				$this->pageArray[5] = $actPage;
-				$this->pageArray[6] = $countPage;
-				for($j = 6, $k = 4; $j <= 10; $j++, $k--)
-				{
-				$this->pageArray[$j] = $countPage - $k;
-				}
-				*/
-				}
+			}
 				//в противном случае в массив запишем первые и последние две страницы
 				//а посередине - пять страниц, с обоих сторон обрамлённых многоточием.
 				//активная страница, таким образом, окажется в центре переключателей.
 				else
 				{
-				/*
-				$this->pageArray[0] = 1;
-					$this->pageArray[1] = 2;
-					$this->pageArray[2] = "...";
-					$this->pageArray[3] = $actPage - 2;
-					$this->pageArray[4] = $actPage - 1;
-					$this->pageArray[5] = $actPage;
-					$this->pageArray[6] = $actPage + 1;
-					$this->pageArray[7] = $actPage + 2;
-					$this->pageArray[8] = "...";
-					$this->pageArray[9] = $countPage - 1;
-					$this->pageArray[10] = $countPage;
-					*/
-					/*
-					$this->pageArray[0] = 1;
-					$this->pageArray[1] = "...";
-					$this->pageArray[2] = $actPage - 2;
-					$this->pageArray[3] = $actPage - 1;
-					$this->pageArray[4] = $actPage;
-					$this->pageArray[5] = $actPage + 1;
-					$this->pageArray[6] = $actPage + 2;
-					$this->pageArray[7] = "...";
-					$this->pageArray[8] = $countPage;
-					*/
 					$this->pageArray[0] = 1;
 					$this->pageArray[1] = "...";
 					$this->pageArray[2] = $actPage - 1;//$actPage - 2;
@@ -333,6 +278,5 @@ class App_SearchService {
 						$this->pageArray[$n] = $n + 1;
 					}
 				}
-					//return $this->pageArray;
 	}
 }

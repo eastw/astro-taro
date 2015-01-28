@@ -4,7 +4,7 @@ class Admin_CategoryController extends Zend_Controller_Action{
 	protected $service;
 	
 	public function preDispatch(){
-		$this->service = new App_CategoryService();
+		$this->service = App_CategoryService::getInstance();
 	}
 	
 	public function indexAction(){

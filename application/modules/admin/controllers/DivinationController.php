@@ -14,7 +14,7 @@ class Admin_DivinationController extends Zend_Controller_Action{
 	public function preDispatch(){
 		$this->service = new App_DivinationService();
 		$this->deckService = new App_DeckService();
-		$this->categoryService = new App_CategoryService();
+		$this->categoryService = App_CategoryService::getInstance();
 		$this->navigation = new App_NavigationService();
 		$this->profileService = new App_ProfileService($this->view->userdata);
 	}

@@ -10,8 +10,8 @@ class Admin_ArticleController extends Zend_Controller_Action{
 	protected $profileService;
 	
 	public function preDispatch(){
-		$this->service = new App_ArticleService();
-		$this->tags = new App_TagService();
+		$this->service = App_ArticleService::getInstance();
+		$this->tags = App_TagService::getInstance();
 		$this->navigation = new App_NavigationService();
 		$this->profileService = new App_ProfileService($this->view->userdata);
 		//$this->navigation->refreshNavigation();

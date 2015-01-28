@@ -74,12 +74,11 @@ $(document).ready(function(){
 		$('#book_text').show();
 		$('#book_answer').hide();
 		$('#result_content').html('');
+		$('#desc_wrapper_0').html('');
 		$('#again').hide();
 		$('#drop-coins').show();
 		$('.intuit_header_book').html('Подбросьте монеты <span id="current-time">6</span>');
 		$('#auto_book').show();
-		//$('#current-time').text('6');
-		
 	});
 });
 function getHexagrammDescription(divId,hex){
@@ -87,16 +86,13 @@ function getHexagrammDescription(divId,hex){
 			'/divination/get-book-description',
 			{
 				'divination_id': divId,
-				'hexagramm': hex,
+				'hexagramm': hex
 			},
 			function(data){
 				$('#tolk').show();
 				$('#desc_wrapper_0').html(data);
-				//$('#explain_diagramm').text();
 				$('.red_circle').text($('#hex_order').text());
 				$('#book_answer').find('span').text($('#hex_name').text());
-				//$('#diagamm-text').html($('#explain_diagramm').text());
-				//console.log($('#explain_diagramm').text());
 				$('#book_answer').show();
 				 $('html, body').animate({
 				        scrollTop: $("#tolk").offset().top

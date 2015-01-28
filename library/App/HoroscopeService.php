@@ -54,6 +54,9 @@ class App_HoroscopeService {
 	protected $types;
 	protected $sunSignsArray;
 	protected $sunSignImages;
+
+	protected $sunSignsCacheName;
+	protected $horoscopePagesCacheName;
 	
 	public function __construct(){
 		$this->horoscopeSign = new Application_Model_DbTable_HoroscopeSignTable();
@@ -69,6 +72,9 @@ class App_HoroscopeService {
 		$this->horoscopeSignChina = new Application_Model_DbTable_HoroscopeSignChinaTable();
 		$this->horoscopeSignChinaType = new Application_Model_DbTable_HoroscopeSignChinaTypeTable();
 		$this->horoscopePages = new Application_Model_DbTable_HoroscopePagesTable();
+
+		$this->sunSignsCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . '_sun_signs';
+		$this->horoscopePagesCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . '_horoscope_pages';
 		
 		$this->types = array(
 				'today' => 'Гороскоп на сегодня и завтра',
@@ -102,9 +108,9 @@ class App_HoroscopeService {
 	}
 	public function getSunSigns(){
 		$cache = Zend_Registry::get('cache');
-		if(!$signs = $cache->load('sun_signs',true)){
+		if(!$signs = $cache->load($this->sunSignsCacheName,true)){
 			$signs = $this->horoscopeSign->fetchAll($this->horoscopeSign->getAdapter()->quoteInto('sign_type=?',self::HOROSCOPE_SIGN_TYPE_SUN))->toArray();
-			$cache->save($signs,'sun_signs');
+			$cache->save($signs, $this->sunSignsCacheName);
 		}
 		return $signs;
 	}
@@ -1075,7 +1081,7 @@ class App_HoroscopeService {
 		);
 		$this->horoscopePages->insert($insertData);
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('horoscope_pages');
+		$cache->remove($this->horoscopePagesCacheName);
 	}
 	
 	public function savePage($data,$id){
@@ -1090,13 +1096,13 @@ class App_HoroscopeService {
 		//var_dump($updateData); die;
 		$this->horoscopePages->update($updateData,$this->horoscopePages->getAdapter()->quoteInto('id=?', $id));
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('horoscope_pages');
+		$cache->remove($this->horoscopePagesCacheName);
 	}
 	
 	public function deletePage($id){
 		$this->horoscopePages->delete($this->horoscopePages->getAdapter()->quoteInto('id=?', $id));
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('horoscope_pages');
+		$cache->remove($this->horoscopePagesCacheName);
 	}
 	
 	public function getPageById($id){
@@ -1105,10 +1111,9 @@ class App_HoroscopeService {
 	
 	public function getAllPages(){
 		$cache = Zend_Registry::get('cache');
-		$pages = array();
-		if(!$pages = $cache->load('horoscope_pages',true)){
+		if(!$pages = $cache->load($this->horoscopePagesCacheName, true)){
 			$pages = $this->horoscopePages->fetchAll(true)->toArray();
-			$cache->save($pages,'horoscope_pages');
+			$cache->save($pages,$this->horoscopePagesCacheName);
 		}
 		return $pages;
 	}

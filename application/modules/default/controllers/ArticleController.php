@@ -3,24 +3,15 @@ class ArticleController extends App_Controller_Action_ParentController{
 	
 	protected $profileService;
 	
-	
-	
 	public function init(){
 		/*Article service*/
-		$this->articleService = new App_ArticleService();
+		$this->articleService = App_ArticleService::getInstance();
 
 		/*Tags*/
-		$this->tagService = new App_TagService();
-		$tags = $this->tagService->getCachedTags();
-		if(!$tags){
-			$this->tagService->recacheArticleTags();
-		}
-		$this->view->tags = $this->tagService->getCachedTags();
-		$newstags = $this->tagService->getCachedNewsTags();
-		if(!$newstags){
-			$this->tagService->recacheNewsTags();
-		}
-		$this->view->newstags = $this->tagService->getCachedNewsTags();
+		$this->tagService = App_TagService::getInstance();
+		$this->view->tags = $this->tagService->getTags();
+
+		$this->view->newstags = $this->tagService->getNewsTags();
 
 		/*Profile*/
 		$this->profileService = new App_ProfileService($this->view->userdata);
@@ -95,7 +86,7 @@ class ArticleController extends App_Controller_Action_ParentController{
 		
 			$this->view->pageTitle = 'Новости';
 			
-			$this->view->tags = $this->tagService->getCachedNewsTags();
+			$this->view->tags = $this->tagService->getNewsTags();
 			
 			$this->view->topMenuActiveItem = 'news';
 		
@@ -189,7 +180,7 @@ class ArticleController extends App_Controller_Action_ParentController{
 			$curpage->setActive(true);
 		}
 		$this->view->tag = $tag;
-		$this->view->tags = $this->tagService->getCachedNewsTags();
+		$this->view->tags = $this->tagService->getNewsTags();
 		
 		$this->view->topMenuActiveItem = 'news';
 	
@@ -278,7 +269,7 @@ class ArticleController extends App_Controller_Action_ParentController{
 			$article['is_favorite'] = $this->profileService->isFavorite($article['id'], 'news', $this->view->userdata->id);
 		}
 		
-		$this->view->tags = $this->tagService->getCachedNewsTags();
+		$this->view->tags = $this->tagService->getNewsTags();
 		
 		$this->view->topMenuActiveItem = 'news';
 		$this->view->pageTitle = $article['title'];

@@ -11,8 +11,13 @@ class App_NavigationService {
 	
 	protected $staticNav;
 	
-	protected $themesService; 
-	
+	protected $themesService;
+
+	protected $tagsCacheName;
+	protected $newsTagsCacheName;
+	protected $magicTagsCacheName;
+
+
 	public function __construct(){
 		$this->articles = new Application_Model_DbTable_ArticleTable();
 		$this->tags = new Application_Model_DbTable_TagsTable();
@@ -23,6 +28,12 @@ class App_NavigationService {
 		
 		$this->navigationPath = APPLICATION_PATH . '/configs/nav.xml';
 		$this->staticNav = APPLICATION_PATH . '/configs/static-nav.xml';
+
+		$host = str_replace('.','_', $_SERVER['HTTP_HOST']);
+
+		$this->tagsCacheName =  $host . '_tags';
+		$this->newsTagsCacheName = $host . '_newstags';
+		$this->magicTagsCacheName = $host . '_magictags';
 	}
 	
 	public function refreshNavigation(){
@@ -240,7 +251,7 @@ class App_NavigationService {
 	}
 	
 	private function getDivCategories(){
-		$categoryService = new App_CategoryService();
+		$categoryService = App_CategoryService::getInstance();
 		$categories = $categoryService->structuredCategories();
 		return $categories;
 	}
@@ -287,27 +298,27 @@ class App_NavigationService {
 	
 	private function getTags(){
 		$cache = Zend_Registry::get('cache');
-		if(! $tags = $cache->load('tags',true) ){
+		if(! $tags = $cache->load($this->tagsCacheName,true) ){
 			$tags = $this->tags->fetchAll('type="a"')->toArray();
-			$cache->save($tags,'tags');
+			$cache->save($tags,$this->tagsCacheName);
 		}
 		return $tags;
 	}
 	
 	private function getNewsTags(){
 		$cache = Zend_Registry::get('cache');
-		if(! $tags = $cache->load('newstags',true) ){
+		if(! $tags = $cache->load($this->newsTagsCacheName,true) ){
 			$tags = $this->tags->fetchAll('type="n"')->toArray();
-			$cache->save($tags,'newstags');
+			$cache->save($tags,$this->newsTagsCacheName);
 		}
 		return $tags;
 	}
 	
 	private function getMagicTags(){
 		$cache = Zend_Registry::get('cache');
-		if(! $tags = $cache->load('magictags',true) ){
+		if(! $tags = $cache->load($this->magicTagsCacheName, true) ){
 			$tags = $this->tags->fetchAll('type="m"')->toArray();
-			$cache->save($tags,'magictags');
+			$cache->save($tags,$this->magicTagsCacheName);
 		}
 		return $tags;
 	}

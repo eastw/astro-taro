@@ -7,26 +7,16 @@ class MagicController extends App_Controller_Action_ParentController{
 	
 	public function init(){
 		/*Article service*/
-		$this->articleService = new App_ArticleService();
+		$this->articleService = App_ArticleService::getInstance();
 
 		/*Tags*/
-		$this->tagService = new App_TagService();
-		$tags = $this->tagService->getCachedTags();
-		if(!$tags){
-			$this->tagService->recacheArticleTags();
-		}
-		$this->view->tags = $this->tagService->getCachedTags();
-		$newstags = $this->tagService->getCachedNewsTags();
-		if(!$newstags){
-			$this->tagService->recacheNewsTags();
-		}
-		$this->view->newstags = $this->tagService->getCachedNewsTags();
+		$this->tagService = App_TagService::getInstance();
 
-		$magictags = $this->tagService->getCachedMagicTags();
-		if(!$magictags){
-			$this->tagService->recacheMagicTags();
-		}
-		$this->view->magictags = $this->tagService->getCachedMagicTags();
+		$this->view->tags = $this->tagService->getTags();
+
+		$this->view->newstags = $this->tagService->getNewsTags();
+
+		$this->view->magictags = $this->tagService->getMagicTags();
 
 		$this->profileService = new App_ProfileService($this->view->userdata);
 	}
@@ -42,7 +32,7 @@ class MagicController extends App_Controller_Action_ParentController{
 			$this->view->type = $type;
 			$this->view->pageTitle = 'Магия';
 			$this->view->topMenuActiveItem = 'magic';
-			$this->view->tags = $this->tagService->getCachedMagicTags();
+			$this->view->tags = $this->tagService->getMagicTags();
 			$this->view->navigation()->findOneById('magic')->setActive('true');
 			$paginator = Zend_Paginator::factory($query);
 			$paginator->setCurrentPageNumber($page,'');
@@ -88,7 +78,7 @@ class MagicController extends App_Controller_Action_ParentController{
 		
 		$this->view->tag = $tag;
 		
-		$this->view->tags = $this->tagService->getCachedMagicTags();
+		$this->view->tags = $this->tagService->getMagicTags();
 		
 		$query = $this->articleService->buildTagMagicQuery($tag['id']);
 		
@@ -125,13 +115,11 @@ class MagicController extends App_Controller_Action_ParentController{
 		$this->view->pageTitle = $article['title'];
 		$this->view->tag = $tag;
 		
-		$this->view->tags = $this->tagService->getCachedMagicTags();
+		$this->view->tags = $this->tagService->getMagicTags();
 		
 		if(isset($this->view->userdata) && !empty($this->view->userdata)){
 			$article['is_favorite'] = $this->profileService->isFavorite($article['id'], 'magic', $this->view->userdata->id);
 		}
-		
-		//var_dump($tag); die;
 		
 		$options = array(
 			'params' => array(

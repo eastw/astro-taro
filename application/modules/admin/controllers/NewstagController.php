@@ -5,7 +5,7 @@ class Admin_NewstagController extends Zend_Controller_Action{
 	protected $navifation;
 	
 	public function preDispatch(){
-		$this->service = new App_TagService();
+		$this->service = App_TagService::getInstance();
 		$this->navigation = new App_NavigationService();
 	}
 	

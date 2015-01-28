@@ -3,15 +3,24 @@ class App_LayoutService{
 	protected $divination;
 	protected $article;
 	protected $tagService;
+
+	protected $ratingBlockCacheName;
 	
 	public function __construct(){
 		$this->divination = new Application_Model_DbTable_DivinationTable();
 		$this->article = new Application_Model_DbTable_ArticleTable();
-		$this->tagService = new App_TagService();
+		$this->tagService = App_TagService::getInstance();
+
+		$this->ratingBlockCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . '_rating_block';
 	}
 	
 	public function getRaitingBlockData(){
-		 return $this->getRaitingBlockDataInner();
+		$cache = Zend_Registry::get('cache');
+		if(!$data = $cache->load($this->ratingBlockCacheName)) {
+			$data = $this->getRaitingBlockDataInner();
+			$cache->save($data, $this->ratingBlockCacheName);
+		}
+		return $data;
 	}
 	
 	protected function getRaitingBlockDataInner(){
@@ -40,10 +49,8 @@ class App_LayoutService{
 		$select = $this->divination->select();
 		$select->union(array($aquery,$dquery))
 			->order('raiting DESC')->limit('6');
-		//var_dump($select->assemble()); die;	
 		$stm = $select->query();
 		$result = $stm->fetchAll();
-		$tagIds = array();
 		$tags = array_merge($this->tagService->getAllArticleTags(),$this->tagService->getAllMagicTags());
 		foreach($result as $index => $item){
 			if($item['type'] == 'article' || $item['type'] == 'magic'){
@@ -57,8 +64,6 @@ class App_LayoutService{
 				}
 			}
 		}
-		//echo '<pre>';
-		//var_dump($result); die;
 		return $result;
 	}
 	

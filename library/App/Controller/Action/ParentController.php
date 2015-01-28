@@ -40,22 +40,27 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 	public function preDispatch(){
 		$start = App_UtilsService::microtime_float();
 
+		$this->view->controllerName = $this->getRequest()->getControllerName();
+		$this->view->actionName = $this->getRequest()->getActionName();
+
 		if($this->view->controllerName != 'index'){
 			/*Polls*/
 			$this->pollService = App_PollService::getInstance();
 			$this->view->poll = $this->pollService->getActivePoll();
 
-
 			/*Categories*/
-			$this->categoryService = new App_CategoryService();
+			$this->categoryService = App_CategoryService::getInstance();
 			$this->view->categories = $this->categoryService->structuredCategories();
+
+			$this->layoutService = new App_LayoutService();
+			$this->view->ratingList = $this->layoutService->getRaitingBlockData();
 		}
 
 		$this->horoscopeService = new App_HoroscopeService();
 		$this->pagesService = new App_PagesService();
-		$this->commentsService = new App_CommentsService();
+		$this->commentsService = App_CommentsService::getInstance();
 		$this->bannerService = new App_BannerService();
-		$this->layoutService = new App_LayoutService();
+
 		
 		$this->view->signs = $this->horoscopeService->getSunSigns();
 
@@ -68,9 +73,6 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 
 		$this->initDayCards();
 		
-		$this->view->controllerName = $this->getRequest()->getControllerName();
-		$this->view->actionName = $this->getRequest()->getActionName();
-
 		$pages = $this->pagesService->getAllPages();
 		$curUri = $this->getRequest()->getRequestUri();
 		foreach($pages as $page){
@@ -90,21 +92,14 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 			}
 		}
 
-
-		//TODO: need to cache this
 		$this->view->sliders = $this->bannerService->getSliderData();
 
-		//TODO: need to cache this
 		$this->view->banners = $this->bannerService->getBannersByController($this->view->controllerName);
-
-		//TODO: need to cache this + not show this on index page (slow query)
-		$this->view->ratingList = $this->layoutService->getRaitingBlockData();
-
 
 		if(!$this->view->userdata){
 			$this->prepareTweeterData();
 		}
-		//$end = App_UtilsService::microtime_float();
+		$end = App_UtilsService::microtime_float();
 		//echo "\npreDispatch() time: " . ($end - $start);
 		//echo "\nmemory usage: " . memory_get_usage();
 
@@ -233,7 +228,7 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 	}
 	
 	public function postDispatch(){
-		/*
+		$this->articleService = App_ArticleService::getInstance();
 		$db = $this->articleService->getDb();
 		$profiler = $db->getProfiler();
 		$profile = '';
@@ -243,6 +238,6 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 			}
 		}
 		echo $profile;
-		*/
+
 	}
 }

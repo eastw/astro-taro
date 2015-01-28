@@ -11,10 +11,14 @@ class App_PollService {
 
     private $pollOption;
 
+    protected $pollDataCacheName;
+
     private function __construct()
     {
         $this->poll = new Application_Model_DbTable_PollTable();
         $this->pollOption = new Application_Model_DbTable_PollOptionTable();
+
+        $this->pollDataCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . '_poll_data';
     }
 
     public static function getInstance()
@@ -34,6 +38,8 @@ class App_PollService {
             'name' => $data['name']
         );
         $this->poll->insert($insertData);
+        $cache = Zend_Registry::get('cache');
+        $cache->remove($this->pollDataCacheName);
     }
 
     public function updatePoll($data, $id){
@@ -41,10 +47,14 @@ class App_PollService {
             'name' => $data['name']
         );
         $this->poll->update($updateData,$this->poll->getAdapter()->quoteInto('id=?',$id));
+        $cache = Zend_Registry::get('cache');
+        $cache->remove($this->pollDataCacheName);
     }
 
     public function removePoll($id){
         $this->poll->delete($this->poll->getAdapter()->quoteInto('id=?',$id));
+        $cache = Zend_Registry::get('cache');
+        $cache->remove($this->pollDataCacheName);
     }
 
     public function getPollById($id){
@@ -78,6 +88,8 @@ class App_PollService {
             'poll_id' => $id
         );
         $this->pollOption->insert($insertData);
+        $cache = Zend_Registry::get('cache');
+        $cache->remove($this->pollDataCacheName);
     }
 
     public function getPollOptionById($id){
@@ -93,10 +105,14 @@ class App_PollService {
             'name' => $data['name']
         );
         $this->pollOption->update($updateData, $this->pollOption->getAdapter()->quoteInto('id=?',$id));
+        $cache = Zend_Registry::get('cache');
+        $cache->remove($this->pollDataCacheName);
     }
 
     public function removePollOption($id){
         $this->pollOption->delete($this->pollOption->getAdapter()->quoteInto('id=?',$id));
+        $cache = Zend_Registry::get('cache');
+        $cache->remove($this->pollDataCacheName);
     }
 
     public function changeActivity($id){
@@ -105,6 +121,8 @@ class App_PollService {
             'activity' => 'n'
         );
         $this->poll->update($updateData, true);
+        $cache = Zend_Registry::get('cache');
+        $cache->remove($this->pollDataCacheName);
         if($poll['activity'] == 'n'){
             $updateData['activity'] = 'y';
             $this->poll->update($updateData, $this->poll->getAdapter()->quoteInto('id=?',$id));
@@ -114,20 +132,23 @@ class App_PollService {
     }
 
     public function getActivePoll(){
-        //TODO: result must be cached
-        $query = $this->poll->getAdapter()->select();
-        $query->from(array('p'=>'poll'))
-            ->where("p.activity='y'");
-        $stm = $query->query();
-        $poll = $stm->fetch();
-
-        if($poll) {
-            $query = $this->pollOption->getAdapter()->select();
-            $query->from(array('poll_option'))
-                ->where($this->pollOption->getAdapter()->quoteInto('poll_id=?', $poll['id']))
-                ->order('id DESC');
+        $cache = Zend_Registry::get('cache');
+        if(!$poll = $cache->load($this->pollDataCacheName)){
+            $query = $this->poll->getAdapter()->select();
+            $query->from(array('p'=>'poll'))
+                ->where("p.activity='y'");
             $stm = $query->query();
-            $poll['options'] = $stm->fetchAll();
+            $poll = $stm->fetch();
+
+            if($poll) {
+                $query = $this->pollOption->getAdapter()->select();
+                $query->from(array('poll_option'))
+                    ->where($this->pollOption->getAdapter()->quoteInto('poll_id=?', $poll['id']))
+                    ->order('id DESC');
+                $stm = $query->query();
+                $poll['options'] = $stm->fetchAll();
+                $cache->save($poll, $this->pollDataCacheName);
+            }
         }
         return $poll;
     }
@@ -151,6 +172,8 @@ class App_PollService {
             );
             try {
                 $this->pollOption->update($updateData, $this->pollOption->getAdapter()->quoteInto('id IN (?)', $values));
+                $cache = Zend_Registry::get('cache');
+                $cache->remove($this->pollDataCacheName);
                 if(!$error && !empty($values)){
                     $result = array('status' => 'success');
                     $query = $this->pollOption->getAdapter()->select();

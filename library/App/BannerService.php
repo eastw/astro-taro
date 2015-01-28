@@ -6,10 +6,15 @@ class App_BannerService{
 	
 	const BANNER_TYPE_SLIDER = 's';
 	const BANNER_TYPE_ADS = 'a';
-	
+
+	protected $sliderCacheName = '';
+	protected $bannerCacheName = '';
+
 	public function __construct(){
 		$this->banner = new Application_Model_DbTable_BannerTable();
 		$this->bannerPosition = new Application_Model_DbTable_BannerPositionTable();
+		$this->sliderCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . 'slider_data';
+		$this->bannerCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . 'banner_data';
 	}
 	
 	public function buildBannerQuery($type){
@@ -38,7 +43,6 @@ class App_BannerService{
 	}
 	
 	public function addAd($data){
-		//var_dump($data); die;
 		$insertData = array();
 		$insertData['type'] = 'a';
 		$insertData['through'] = $data['through'];
@@ -59,21 +63,18 @@ class App_BannerService{
 		}
 		$id = $this->banner->insert($insertData); 
 		if($data['through'] != 'y'){
-			$position = array();
 			foreach($data['positions'] as $item){
 				$position = array(
 					'banner_id' => $id,
 					'position' => $item
 				);
-				//var_dump($item); die;
 				$this->bannerPosition->insert($position);
 			}
 		}
+		$this->cleanAllCache();
 	}
 	
 	public function saveAd($data,$id){
-		//$banner = $this->getBannerById($id);
-		//var_dump($data); die;
 		$updateData = array();
 		$updateData['through'] = $data['through'];
 		$updateData['banner'] = $data['banner'];
@@ -95,7 +96,6 @@ class App_BannerService{
 		$this->banner->update($updateData,$this->banner->getAdapter()->quoteInto('id=?',$id));
 		$this->bannerPosition->delete($this->banner->getAdapter()->quoteInto('banner_id=?',$id));
 		if($data['through'] != 'y'){
-			$position = array();
 			foreach($data['positions'] as $item){
 				$position = array(
 					'banner_id' => $id,
@@ -103,7 +103,8 @@ class App_BannerService{
 				);
 				$this->bannerPosition->insert($position);
 			}
-		} 
+		}
+		$this->cleanAllCache();
 	}
 	
 	public function addSlider($data){
@@ -128,6 +129,7 @@ class App_BannerService{
 			'link' => $data['link']
 		);
 		$this->banner->insert($insertData);
+		$this->cleanAllCache();
 	}
 	
 	public function saveSlider($data,$id){
@@ -137,10 +139,12 @@ class App_BannerService{
 			'link' => $data['link']
 		);
 		$this->banner->update($updateData, $this->banner->getAdapter()->quoteInto('id=?',$id));
+		$this->cleanAllCache();
 	}
 	
 	public function deleteBanner($id){
 		$this->banner->delete($this->banner->getAdapter()->quoteInto('id=?', $id));
+		$this->cleanAllCache();
 	}
 	
 	public function reorderSlider($id,$old_order,$direction){
@@ -180,12 +184,18 @@ class App_BannerService{
 			$data['order'] = $old_order;
 			$this->banner->update($data, $this->banner->getAdapter()->quoteInto('id=?',$change_id));
 		}
+		$this->cleanAllCache();
 	}
 	
 	public function getSliderData(){
-		$query = $this->banner->getAdapter()->select()->from(array('b' =>'banner') )->where('type="s"')->order('b.order ASC');
-		$stm = $query->query();
-		return $stm->fetchAll();
+		$cache = Zend_Registry::get('cache');
+		if(!$data = $cache->load($this->sliderCacheName,true)) {
+			$query = $this->banner->getAdapter()->select()->from(array('b' => 'banner'))->where('type="s"')->order('b.order ASC');
+			$stm = $query->query();
+			$data = $stm->fetchAll();
+			$cache->save($data, $this->sliderCacheName);
+		}
+		return $data;
 	}
 	
 	public function getSavedBannersPositions(){
@@ -213,18 +223,30 @@ class App_BannerService{
 	}
 	
 	public function getBannersByController($position){
-		$query = $this->banner->select();
-		$query->from(array('b' => 'banner'))
-			->setIntegrityCheck(FALSE)
-			->joinLeft(array('p' => 'banner_position'), 'b.id = p.banner_id',array('position'))
-			->where('p.position = ?',$position)
-			->orWhere('b.through = "y" ');
-		if($position == 'article'){
-			$query->orWhere('p.position = ?','news');
+		$cache = Zend_Registry::get('cache');
+		if(!$data = $cache->load($this->bannerCacheName .'_' . $position,true)) {
+			$query = $this->banner->select();
+			$query->from(array('b' => 'banner'))
+				->setIntegrityCheck(FALSE)
+				->joinLeft(array('p' => 'banner_position'), 'b.id = p.banner_id', array('position'))
+				->where('p.position = ?', $position)
+				->orWhere('b.through = "y" ');
+			if ($position == 'article') {
+				$query->orWhere('p.position = ?', 'news');
+			}
+			$stm = $query->query();
+			$data = $stm->fetchAll();
+			$cache->save($data, $this->bannerCacheName .'_' . $position);
 		}
-		//var_dump($query->assemble()); die;
-		$stm = $query->query();
-		$result = $stm->fetchAll();
-		return $result;
+		return $data;
+	}
+
+	protected function cleanAllCache(){
+		$cache = Zend_Registry::get('cache');
+		$cache->remove($this->sliderCacheName);
+		$positions = $this->getEtalonBannerPositions();
+		foreach($positions as $position){
+			$cache->remove($this->bannerCacheName .'_' . $position['value']);
+		}
 	}
 }

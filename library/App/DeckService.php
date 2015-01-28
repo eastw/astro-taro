@@ -62,7 +62,7 @@ class App_DeckService {
 		$absent = true;
 		$filesCount = 0;
 		$filesLimit = 0;
-		$categoryService = new App_CategoryService();
+		$categoryService = App_CategoryService::getInstance();
 		$types = $categoryService->getCategoryTypes();
 		foreach ($types as $type){
 			if($type['id'] == $deck['type_id']){

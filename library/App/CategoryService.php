@@ -15,10 +15,44 @@ class App_CategoryService{
 	const BOOK_CATEGORY_TYPE = 4;
 	const OTHER_CATEGORY_TYPE = 5;
 	const LENORMAN_CATEGORY_TYPE = 6;
+
+	private static $instance = null;
+
+	protected $rawCategoryCacheName;
+	protected $prestructuredCategoriesCacheName;
+	protected $structuredCategoriesCacheName;
+	protected $taroListDataCacheName;
+	protected $classicListDataCacheName;
+	protected $lenormanListDataCacheName;
+	protected $runeListDataCacheName;
+	protected $bookListDataCacheName;
+	protected $otherListDataCacheName;
+	protected $categoryTypesCacheName;
 	
-	public function __construct(){
+	private function __construct(){
 		$this->category = new Application_Model_DbTable_CategoryTable();
 		$this->categoryTypes = new Application_Model_DbTable_CategoryTypesTable();
+
+		$host = str_replace('.','_', $_SERVER['HTTP_HOST']);
+
+		$this->rawCategoryCacheName = $host . '_raw_categories';
+		$this->prestructuredCategoriesCacheName = $host . '_prestructured_categories';
+		$this->structuredCategoriesCacheName = $host . '_structured_categories';
+		$this->taroListDataCacheName = $host . '_taro_list_data';
+		$this->classicListDataCacheName = $host . '_classic_list_data';
+		$this->lenormanListDataCacheName = $host . '_lenorman_list_data';
+		$this->runeListDataCacheName = $host . '_rune_list_data';
+		$this->bookListDataCacheName = $host . '_book_list_data';
+		$this->otherListDataCacheName = $host . '_other_list_data';
+		$this->categoryTypesCacheName = $host . '_category_types';
+	}
+
+	public static function getInstance()
+	{
+		if(is_null(self::$instance)){
+			self::$instance = new App_CategoryService();
+		}
+		return self::$instance;
 	}
 	
 	//TODO: CACHE!
@@ -26,69 +60,64 @@ class App_CategoryService{
 		return $this->category->fetchAll()->toArray();
 	}
 	
-	//TODO: CACHE!
 	public function structuredCategories(){
 		$start = $this->time();
 		$cache = Zend_Registry::get("cache");
 		$categories = array();
-		if(!$categories = $cache->load('raw_categories',true)){
-		//if(!$returnData = $cache->load('model_auto',true)){
+		if(!$categories = $cache->load($this->rawCategoryCacheName,true)){
 			$query = $this->category->select()
 						->setIntegrityCheck(FALSE)
 						->from(array('c' => 'category'))
 						->joinLeft(array('t' => 'category_types'), 't.id = c.type_id', array('category_type' => 'type'))
 						->order('c.cat_order');
-			//var_dump($query->assemble()); die;		
 			$stm = $query->query();
 			$categories = $stm->fetchAll();
-			$cache->save($categories,'raw_categories');
+			$cache->save($categories,$this->rawCategoryCacheName);
 		}else{
-			$categories = $cache->load('raw_categories',true);
+			$categories = $cache->load($this->rawCategoryCacheName,true);
 		}
 		$prestructuredCategories = array();
-		if(!$prestructuredCategories = $cache->load('prestructured_categories',true)){
+		if(!$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true)){
 			foreach($categories as $category){
 				$prestructuredCategories[$category['parent_id']][] = $category;
 			}
-			$cache->save($prestructuredCategories,'prestructured_categories');
+			$cache->save($prestructuredCategories,$this->prestructuredCategoriesCacheName);
 		}else{
-			$prestructuredCategories = $cache->load('prestructured_categories',true);
+			$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true);
 		}
 		$structuredCategories = array();
-		if(!$structuredCategories = $cache->load('structured_categories',true)){
+		if(!$structuredCategories = $cache->load($this->structuredCategoriesCacheName,true)){
 			$structuredCategories = $this->buildTree($prestructuredCategories,0);
-			$cache->save($structuredCategories,'structured_categories');
+			$cache->save($structuredCategories,$this->structuredCategoriesCacheName);
 		}else{
-			$structuredCategories = $cache->load('structured_categories',true);
+			$structuredCategories = $cache->load($this->structuredCategoriesCacheName,true);
 		}
 		return $structuredCategories;
 	}
-	
-	//public function getRawCategories 
 	
 	public function prestructuredCategories(){
 		
 		$cache = Zend_Registry::get("cache");
 		$categories = array();
-		if(!$categories = $cache->load('raw_categories',true)){
+		if(!$categories = $cache->load($this->rawCategoryCacheName,true)){
 			$query = $this->category->select()
 				->from($this->category)->order('cat_order');
 			$stm = $query->query();
 			$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
 			$categories = $stm->fetchAll();
-			$cache->save($categories,'raw_categories');
+			$cache->save($categories,$this->rawCategoryCacheName);
 		}else{
-			$categories = $cache->load('raw_categories',true);
+			$categories = $cache->load($this->rawCategoryCacheName,true);
 		}
 		
 		$prestructuredCategories = array();
-		if(!$prestructuredCategories = $cache->load('prestructured_categories',true)){
+		if(!$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true)){
 			foreach($categories as $category){
 				$prestructuredCategories[$category['parent_id']][] = $category;
 			}
-			$cache->save($prestructuredCategories,'prestructured_categories');
+			$cache->save($prestructuredCategories,$this->prestructuredCategoriesCacheName);
 		}else{
-			$prestructuredCategories = $cache->load('prestructured_categories',true);
+			$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true);
 		}
 		
 		return $prestructuredCategories;
@@ -125,7 +154,6 @@ class App_CategoryService{
 				$node['attr'] = array('id'=>$cat['id'], 'description' => $cat['description'] );
 				$node['state'] = 'open';
 				$node['metadata'] = array('catdesc' => $cat['description'],'keywords' => $cat['seo-keywords'],'description' => $cat['seo-description'],'cat_type' => $cat['type_id'],'minidesc' => $cat['minidesc'],'image' => $cat['image'],'alias' => $cat['alias'],'category_type' => $cat['category_type']);
-				$children = array();
 				$children = $this->buildTree($cats,$cat['id']);
 				if(null != $children){
 					$node['children'] = $children; 
@@ -139,21 +167,20 @@ class App_CategoryService{
 	
 	public function saveCategories($categories){
 		$this->category->delete('true');
-		$this->saveTree($categories,0);
+		$this->saveTree($categories, 0);
 		$cache = Zend_Registry::get("cache");
-		$cache->remove('raw_categories');
-		$cache->remove('prestructured_categories');
-		$cache->remove('structured_categories');
+		$cache->remove($this->rawCategoryCacheName);
+		$cache->remove($this->prestructuredCategoriesCacheName);
+		$cache->remove($this->structuredCategoriesCacheName);
 		
 		$types = $this->getCategoryTypes();
 		foreach($types as $type){
-			$cache->remove($type['type'].'_list_data');
+			$cache->remove(str_replace('.','_', $_SERVER['HTTP_HOST']) . '_' . $type['type'].'_list_data');
 		}
 		$this->structuredCategories();
 	}
 	
 	private function saveTree($cats,$parent_id){
-		//var_dump($cats); die;
 		if(is_array($cats)){
 			foreach($cats as $index => $cat){
 				$id = -1;
@@ -192,28 +219,6 @@ class App_CategoryService{
 		}
 	}
 	
-	/*
-	private function saveTree($cats,$parent_id){
-		if(is_array($cats)){
-			foreach($cats as $index => $cat){
-				$insert = array(
-					'id' => $cat['id'],
-					'name' => $cat['name'],
-					'description' => $cat['description'],
-					'alias' => App_UtilsService::generateTranslit($cat['name']),
-					'cat_order' => $index,
-					'parent_id' => $parent_id,
-				);
-				$this->category->insert($insert);
-				if(isset($cat['children'])){
-					$this->saveTree($cat['children'],$cat['id']);
-				}
-			}
-		}
-	}
-	*/
-	
-	
 	public function getCategory($id){
 		return $this->category->fetchRow($this->category->getAdapter()->quoteInto('id=?', $id));
 	}
@@ -238,9 +243,9 @@ class App_CategoryService{
 	
 	public function getCategoryTypes(){
 		$cache = Zend_Registry::get('cache');
-		if(!$types = $cache->load('category_types',true)){
+		if(!$types = $cache->load($this->categoryTypesCacheName,true)){
 			$types = $this->categoryTypes->fetchAll()->toArray();
-			$cache->save($types,'category_types');
+			$cache->save($types, $this->categoryTypesCacheName);
 		}
 		return $types;
 	}
@@ -265,19 +270,15 @@ class App_CategoryService{
 		$this->category->update($updateData, $this->category->getAdapter()->quoteInto('id=?', $catId));
 		
 		$cache = Zend_Registry::get("cache");
-		$cache->remove('raw_categories');
-		$cache->remove('prestructured_categories');
-		$cache->remove('structured_categories');
-		$cache->remove('taro_list_data');
-		$cache->remove('classic_list_data');
-		$cache->remove('rune_list_data');
-		$cache->remove('book_list_data');
-		$cache->remove('other_list_data');
+		$cache->remove($this->rawCategoryCacheName);
+		$cache->remove($this->prestructuredCategoriesCacheName);
+		$cache->remove($this->structuredCategoriesCacheName);
+		$cache->remove($this->taroListDataCacheName);
+		$cache->remove($this->classicListDataCacheName);
+		$cache->remove($this->lenormanListDataCacheName);
+		$cache->remove($this->runeListDataCacheName);
+		$cache->remove($this->bookListDataCacheName);
+		$cache->remove($this->otherListDataCacheName);
 		
 	}
-	/*
-	public function getChildFlatCategoriesByType(){
-		
-	}
-	*/
 }

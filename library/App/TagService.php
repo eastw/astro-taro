@@ -2,9 +2,29 @@
 class App_TagService {
 	
 	protected $tags;
+
+	private static $instance = null;
+
+	protected $tagsCacheName;
+	protected $newsTagsCacheName;
+	protected $magicTagsCacheName;
 	
-	public function __construct(){
+	private function __construct(){
 		$this->tags = new Application_Model_DbTable_TagsTable();
+
+		$host = str_replace('.','_', $_SERVER['HTTP_HOST']);
+
+		$this->tagsCacheName =  $host . '_tags';
+		$this->newsTagsCacheName = $host . '_newstags';
+		$this->magicTagsCacheName = $host . '_magictags';
+	}
+
+	public static function getInstance()
+	{
+		if(is_null(self::$instance)){
+			self::$instance = new App_TagService();
+		}
+		return self::$instance;
 	}
 	
 	public function buildArticleTagsQuery(){
@@ -78,47 +98,83 @@ class App_TagService {
 	
 	public function recacheArticleTags(){
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('tags');
+		$cache->remove($this->tagsCacheName);
 		$query = $this->tags->getAdapter()->select();
 		$query->from('tags')->where('type="a"');
 		$stm = $query->query();
 		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
-		$cache->save($stm->fetchAll(),'tags');
+		$cache->save($stm->fetchAll(), $this->tagsCacheName);
 	}
 	
 	public function recacheNewsTags(){
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('newstags');
+		$cache->remove($this->newsTagsCacheName);
 		$query = $this->tags->getAdapter()->select();
 		$query->from('tags')->where('type="n"');
 		$stm = $query->query();
 		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
-		$cache->save($stm->fetchAll(),'newstags');
+		$cache->save($stm->fetchAll(), $this->newsTagsCacheName);
 	}
 	
 	public function recacheMagicTags(){
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('magictags');
+		$cache->remove($this->magicTagsCacheName);
 		$query = $this->tags->getAdapter()->select();
 		$query->from('tags')->where('type="m"');
 		$stm = $query->query();
 		$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
-		$cache->save($stm->fetchAll(),'magictags');
+		$cache->save($stm->fetchAll(), $this->magicTagsCacheName);
 	}
 	
 	public function getCachedTags(){
 		$cache = Zend_Registry::get('cache');
-		return $cache->load('tags');
+		return $cache->load($this->tagsCacheName);
+	}
+
+	public function getTags(){
+		$cache = Zend_Registry::get("cache");
+		if(!$tags = $cache->load($this->tagsCacheName, true)){
+			$query = $this->tags->getAdapter()->select();
+			$query->from('tags')->where('type="a"');
+			$stm = $query->query();
+			$tags = $stm->fetchAll();
+			$cache->save($tags, $this->tagsCacheName);
+		}
+		return $tags;
+	}
+
+	public function getNewsTags(){
+		$cache = Zend_Registry::get("cache");
+		if(!$tags = $cache->load($this->newsTagsCacheName,true)){
+			$query = $this->tags->getAdapter()->select();
+			$query->from('tags')->where('type="n"');
+			$stm = $query->query();
+			$tags = $stm->fetchAll();
+			$cache->save($tags, $this->newsTagsCacheName);
+		}
+		return $tags;
+	}
+
+	public function getMagicTags(){
+		$cache = Zend_Registry::get("cache");
+		if(!$tags = $cache->load($this->magicTagsCacheName, true)){
+			$query = $this->tags->getAdapter()->select();
+			$query->from('tags')->where('type="m"');
+			$stm = $query->query();
+			$tags = $stm->fetchAll();
+			$cache->save($tags, $this->magicTagsCacheName);
+		}
+		return $tags;
 	}
 	
 	public function getCachedNewsTags(){
 		$cache = Zend_Registry::get('cache');
-		return $cache->load('newstags');
+		return $cache->load($this->newsTagsCacheName);
 	}
 	
 	public function getCachedMagicTags(){
 		$cache = Zend_Registry::get('cache');
-		return $cache->load('magictags');
+		return $cache->load($this->magicTagsCacheName);
 	}
 	
 	public function getTagById($id){
@@ -218,6 +274,5 @@ class App_TagService {
 		}else{
 			throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
 		}
-		
 	}
 }

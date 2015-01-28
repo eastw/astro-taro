@@ -8,12 +8,22 @@ class App_ArticleService {
 	protected $articleTags;
 	
 	protected $db;
+
+	private static $instance = null;
 	
-	public function __construct(){
+	private function __construct(){
 		$this->db = Zend_Db_Table::getDefaultAdapter();//Zend_Db::factory('PDO_MYSQL', $options);
 		
 		$this->articles = new Application_Model_DbTable_ArticleTable();
 		$this->articleTags = new Application_Model_DbTable_ArticleTagsTable();
+	}
+
+	public static function getInstance()
+	{
+		if(is_null(self::$instance)){
+			self::$instance = new App_ArticleService();
+		}
+		return self::$instance;
 	}
 	
 	public function getDb(){
@@ -409,7 +419,8 @@ class App_ArticleService {
 		);
 		$this->articles->update($updateData,$this->articles->getAdapter()->quoteInto('id=?', $id));
 	}
-	
+
+	//TODO: cache this on some hours
 	public function getLastMagic(){
 		$query =$this->articles->getAdapter()->select();
 		$query->from('article')->where('type="m"')->order('date_created DESC')->limit(6);

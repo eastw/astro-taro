@@ -7,14 +7,24 @@ class App_CommentsService {
 	protected $article;
 	protected $divination;
 	protected $theme;
+
+	private static $instance = null;
 	
 	
-	public function __construct(){
+	private function __construct(){
 		//$this->db = Zend_Db_Table::getDefaultAdapter();//Zend_Db::factory('PDO_MYSQL', $options);
 		$this->comment = new Application_Model_DbTable_CommentTable();
 		$this->article = new Application_Model_DbTable_ArticleTable();
 		$this->divination = new Application_Model_DbTable_DivinationTable();
 		$this->theme = new Application_Model_DbTable_PaythemeTable();
+	}
+
+	public static function getInstance()
+	{
+		if(is_null(self::$instance)){
+			self::$instance = new App_CommentsService();
+		}
+		return self::$instance;
 	}
 	
 	public function buildCommentsQuery($type,$subtype,$sign,$resource,$user){
@@ -238,7 +248,7 @@ class App_CommentsService {
 	public function getResourcesByMask($mask,$type){
 		$result = array('resource' => array()); 
 		if($type == 'article' || $type == 'news' || $type == 'magic'){
-			$articleService = new App_ArticleService();
+			$articleService = App_ArticleService::getInstance();
 			$result['resource'] = $articleService->getArticleByMask($mask,$type); 
 		}
 		if($type == 'divination'){
@@ -250,7 +260,7 @@ class App_CommentsService {
 	
 	public function getResourceByIdAndType($id,$type){
 		if($type == 'article' || $type == 'news' || $type == 'magic'){
-			$articleService = new App_ArticleService();
+			$articleService = App_ArticleService::getInstance();
 			return $articleService->getArticleById($id);//($mask,$type);
 		}
 		if($type == 'divination'){

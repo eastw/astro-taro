@@ -3,10 +3,11 @@ class App_PagesService{
 	
 	protected $pages;
 	
-	protected $cacheName;
+	protected $pagesCacheName;
 	
 	public function __construct(){
 		$this->pages = new Application_Model_DbTable_PagesTable();
+		$this->pagesCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . '_pages';
 	}
 	
 	public function buildPagesQuery(){
@@ -15,7 +16,6 @@ class App_PagesService{
 	}
 	
 	public function addPage($data){
-		//var_dump($data); die;
 		$insertData = array(
 			'url' => $data['url'],
 			'page_name_ru' => $data['name_ru'],
@@ -26,7 +26,7 @@ class App_PagesService{
 		);
 		$this->pages->insert($insertData);
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('pages');
+		$cache->remove($this->pagesCacheName);
 	}
 	
 	public function savePage($data,$id){
@@ -40,7 +40,7 @@ class App_PagesService{
 		);
 		$this->pages->update($updateData,$this->pages->getAdapter()->quoteInto('id=?', $id));
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('pages');
+		$cache->remove($this->pagesCacheName);
 	}
 	
 	public function getPageById($id){
@@ -50,7 +50,7 @@ class App_PagesService{
 	public function deletePage($id){
 		$this->pages->delete($this->pages->getAdapter()->quoteInto('id=?', $id));
 		$cache = Zend_Registry::get('cache');
-		$cache->remove('pages');
+		$cache->remove($this->pagesCacheName);
 	}
 	public function searchPage($squery){
 		$query =$this->pages->getAdapter()->select();
@@ -66,10 +66,9 @@ class App_PagesService{
 	
 	public function getAllPages(){
 		$cache = Zend_Registry::get('cache');
-		$pages = array();
-		if(!$pages = $cache->load('pages',true)){
+		if(!$pages = $cache->load($this->pagesCacheName, true)){
 			$pages = $this->pages->fetchAll(true)->toArray();
-			$cache->save($pages,'pages');
+			$cache->save($pages, $this->pagesCacheName);
 		}
 		return $pages;
 	}

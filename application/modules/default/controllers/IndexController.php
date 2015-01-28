@@ -21,7 +21,6 @@ class IndexController extends App_Controller_Action_ParentController
     	$this->view->runeDayData = $this->service->runeDay($this->view->runeDay,$this->view->runeDayState);
     	$this->view->hexagrammDayData = $this->service->hexagrammDay($this->view->hexagrammDay);
     	
-    	//var_dump($this->view->hexagrammDayData); die;
     	if(isset($this->view->userdata) && !empty($this->view->userdata)){
     		if(isset($this->view->userdata->birthday) && !empty($this->view->userdata->birthday)){
     			$this->view->numberDayData = $this->service->numberDayData($this->view->userdata->birthday);
@@ -31,31 +30,10 @@ class IndexController extends App_Controller_Action_ParentController
 		//echo "\nindex time: \n" . ($end - $start);
     }
     
-    /*
-    public function serviceAction(){
-    	$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender();
-		
-		$data = $this->_getAllParams();
-		$email = $this->payservice->getEmail();
-		$this->service->payService($data,$email);
-	}
-	*/
-	
-	/*
-	public function servicePriceAction(){
-    	$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender();
-		
-		$data = $this->_getAllParams();
-		echo Zend_Json::encode($this->payservice->getThemePrice($data));
-	}
-	*/
-	
 	public function payserviceCommentsAction(){
 		$this->_helper->layout->disableLayout();
 		
-		$commentService = new App_CommentsService();
+		$commentService = App_CommentsService::getInstance();
 		$this->view->comments = $commentService->getPayserviceComments();
 	}
 	
