@@ -30,4 +30,3 @@ Zend_Layout::startMvc();
 
 $application->bootstrap()
             ->run();
-echo memory_get_usage();

@@ -61,9 +61,7 @@ class App_CategoryService{
 	}
 	
 	public function structuredCategories(){
-		$start = $this->time();
 		$cache = Zend_Registry::get("cache");
-		$categories = array();
 		if(!$categories = $cache->load($this->rawCategoryCacheName,true)){
 			$query = $this->category->select()
 						->setIntegrityCheck(FALSE)
@@ -72,56 +70,38 @@ class App_CategoryService{
 						->order('c.cat_order');
 			$stm = $query->query();
 			$categories = $stm->fetchAll();
-			$cache->save($categories,$this->rawCategoryCacheName);
-		}else{
-			$categories = $cache->load($this->rawCategoryCacheName,true);
+			$cache->save($categories, $this->rawCategoryCacheName);
 		}
-		$prestructuredCategories = array();
-		if(!$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true)){
+		if(!$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName, true)){
 			foreach($categories as $category){
 				$prestructuredCategories[$category['parent_id']][] = $category;
 			}
 			$cache->save($prestructuredCategories,$this->prestructuredCategoriesCacheName);
-		}else{
-			$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true);
 		}
-		$structuredCategories = array();
-		if(!$structuredCategories = $cache->load($this->structuredCategoriesCacheName,true)){
+		if(!$structuredCategories = $cache->load($this->structuredCategoriesCacheName, true)){
 			$structuredCategories = $this->buildTree($prestructuredCategories,0);
 			$cache->save($structuredCategories,$this->structuredCategoriesCacheName);
-		}else{
-			$structuredCategories = $cache->load($this->structuredCategoriesCacheName,true);
 		}
 		return $structuredCategories;
 	}
 	
 	public function prestructuredCategories(){
-		
 		$cache = Zend_Registry::get("cache");
-		$categories = array();
-		if(!$categories = $cache->load($this->rawCategoryCacheName,true)){
+		if(!$categories = $cache->load($this->rawCategoryCacheName, true)){
 			$query = $this->category->select()
 				->from($this->category)->order('cat_order');
 			$stm = $query->query();
 			$stm->setFetchMode(Zend_Db::FETCH_ASSOC);
 			$categories = $stm->fetchAll();
 			$cache->save($categories,$this->rawCategoryCacheName);
-		}else{
-			$categories = $cache->load($this->rawCategoryCacheName,true);
 		}
-		
-		$prestructuredCategories = array();
-		if(!$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true)){
+		if(!$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName, true)){
 			foreach($categories as $category){
 				$prestructuredCategories[$category['parent_id']][] = $category;
 			}
 			$cache->save($prestructuredCategories,$this->prestructuredCategoriesCacheName);
-		}else{
-			$prestructuredCategories = $cache->load($this->prestructuredCategoriesCacheName,true);
 		}
-		
 		return $prestructuredCategories;
-		
 	}
 	
 	public function flatCategories(){
