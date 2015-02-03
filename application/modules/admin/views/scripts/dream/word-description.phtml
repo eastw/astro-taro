@@ -1,0 +1,128 @@
+<?php
+$this->headScript()
+    ->appendFile(
+        '/js/ckeditor/ckeditor.js',
+        'text/javascript');
+$this->headLink()
+    ->appendStylesheet(
+        '/css/jquery-ui.css	');
+?>
+<script>
+    <!--
+        $(document).ready(function(){
+            $('#word').autocomplete({
+                minLength: 2,
+                source: '/admin/dream/words-autocomplete',
+                select: function(event, ui){
+                    $('#word-value').val(ui.item.id);
+
+                    if($('#type').val() != ''){
+                        $.post(
+                            '/admin/dream/load-word-description',
+                            {
+                                'word' : $('#word-value').val(),
+                                'type' : $('#type').val()
+                            },
+                            function(data){
+                                if(data.status == 'success'){
+                                    CKEDITOR.instances.description.setData(data.data.description);
+                                }
+                            },'json'
+                        );
+                    }
+                }
+            });
+            /*
+            $('#word').change(function(){
+                if($(this).val() != '' && $('#type').val() != ''){
+                    $.post(
+                        '/admin/dream/load-word-description',
+                        {
+                            'word' : $(this).val(),
+                            'type' : $('#type').val()
+                        },
+                        function(data){
+                            if(data.status == 'success'){
+                                CKEDITOR.instances.description.setData(data.data.description);
+                            }
+                        },'json'
+                    );
+                }
+            });
+            */
+            $('#type').change(function(){
+                if($(this).val() != '' && $('#word-value').val() != ''){
+                    $.post(
+                        '/admin/dream/load-word-description',
+                        {
+                            'word' : $('#word-value').val(),
+                            'type' : $(this).val()
+                        },
+                        function(data){
+                            if(data.status == 'success'){
+                                CKEDITOR.instances.description.setData(data.data.description);
+                            }
+                        },'json'
+                    );
+                }
+            });
+            $('#save').click(function(){
+                if($('#type').val() != '' && $('#word-value').val() != ''){
+                    $.post(
+                        '/admin/dream/save-word-description',
+                        {
+                            'word'        : $('#word-value').val(),
+                            'type'        : $('#type').val(),
+                            'description' : CKEDITOR.instances.description.getData()
+                        },
+                        function(data){
+
+                        },'json'
+                    );
+                }
+            });
+        });
+    //-->
+</script>
+<h1>Управление описаниями слова</h1>
+<b>При выборе слова очень важно выбрать его именно из выпадающего списка, а не набрать или отредактировать самому, в таком случае описание просто не будет сохранено для этого слова</b>
+<table>
+    <tr>
+        <td>
+            <div style="text-align:left;">
+                <input type="text" id="word">
+                <input type="hidden" id="word-value">
+            </div>
+        </td>
+        <td>
+            <div style="text-align:left;">
+                <select id="type">
+                    <option value="">Выберите сонник</option>
+                    <?php foreach($this->types as $type):?>
+                        <option value="<?=$type['id'];?>"><?=$type['name'] ?></option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </td>
+        <td>
+            <input id="save" type="button" value="Сохранить"/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <textarea name="description"></textarea>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    <!--
+    CKEDITOR.replace( 'description',	{
+        filebrowserBrowseUrl : '/js/ckfinder/ckfinder.html',
+        filebrowserImageBrowseUrl : '/js/ckfinder/ckfinder.html?type=Images',
+        filebrowserFlashBrowseUrl : '/js/ckfinder/ckfinder.html?type=Flash',
+        filebrowserUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+        filebrowserImageUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+        filebrowserFlashUploadUrl : '/js/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+    } );
+    //-->
+</script>

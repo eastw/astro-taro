@@ -729,6 +729,7 @@ class Admin_DivinationController extends Zend_Controller_Action{
 				if(($card['net_column'] == $column && $card['net_row'] == $row) && $error_count == 0){
 					$cards[$index] = $this->service->updateDivinationNetItemById($this->_getAllParams(), $card['id']);
 					$updated = true;
+					break;
 				}
 			}
 			if(!count($json['errors']) && !$updated){

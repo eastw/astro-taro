@@ -1,0 +1,22 @@
+<form action="<?=$this->escape($this->element->getAction());?>" 
+		method="<?=$this->escape($this->element->getMethod()); ?>"
+		enctype="<?=$this->element->getEncType(); ?>"
+		class="article-form" style="width: 800px;">
+	<table>
+		<?=$this->element->word;?>
+		<?=$this->element->title;?>
+		<?=$this->element->keywords;?>
+		<?=$this->element->seodescription;?>
+		<tr>
+			<td colspan="2">
+				<?=$this->element->page;?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right">
+				<?=$this->element->submit;?>
+				<?=$this->element->cancel;?>
+			</td>
+		</tr>
+	</table>
+</form>

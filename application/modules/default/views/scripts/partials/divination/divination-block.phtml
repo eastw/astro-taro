@@ -615,7 +615,6 @@ $(document).ready(function(){
 	<div id="inter_block4">
 		<div class="inter_header">Гадание</div>
 		<div class="inter_block3_content">
-			<?php //if($this->divination['use_sign'] == 'y'):?>
 			<?php if($this->divination['significators'] > 0):?>
 			<?php for($i = 0,$n = $this->divination['significators'];$i < $n; $i++):?>
 			<div class="signification">Сигнификатор<img src="/files/images/mark.png" alt="" /></div>
@@ -695,8 +694,6 @@ $(document).ready(function(){
 			<?php endif;?>
 			<div class="clear"></div>
 			<?php if($this->divination['significators'] == 0 ):?>
-				<br/>
-				<br/>
 				<br/>
 				<br/>
 			<?php endif;?>
