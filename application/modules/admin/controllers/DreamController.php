@@ -3,9 +3,11 @@
 class Admin_DreamController extends Zend_Controller_Action{
 
     protected $service;
+    protected $navigationService;
 
     public function preDispatch(){
         $this->service = App_DreamService::getInstance();
+        $this->navigationService = new App_NavigationService();
     }
 
     public function wordListAction(){
@@ -20,6 +22,7 @@ class Admin_DreamController extends Zend_Controller_Action{
         $paginator->setItemCountPerPage(50);
         $paginator->setPageRange(7);
         $this->view->paginator = $paginator;
+
     }
 
     public function addWordAction(){
@@ -31,12 +34,14 @@ class Admin_DreamController extends Zend_Controller_Action{
             $formData = $this->_getAllParams();
             if($form->isValid($formData)){
                 $this->service->addWord($form->getValidValues($formData));
+                $this->navigationService->refreshNavigation();
                 $this->redirect('/admin/dream/word-list');
             }else{
                 $form->populate($formData);
             }
         }
         $this->render('edit-word');
+
     }
     public function editWordAction(){
         $form = new Application_Form_WordForm();
@@ -47,6 +52,7 @@ class Admin_DreamController extends Zend_Controller_Action{
         $word = $this->service->getWordById($id);
 
         $form->word->setValue($word['word']);
+        $form->minidesc->setValue($word['minidesc']);
         $form->title->setValue($word['title']);
         $form->keywords->setValue($word['keywords']);
         $form->seodescription->setValue($word['description']);
@@ -58,6 +64,7 @@ class Admin_DreamController extends Zend_Controller_Action{
             $formData = $this->_getAllParams();
             if($form->isValid($formData)){
                 $this->service->updateWord($form->getValidValues($formData),$word['id']);
+                $this->navigationService->refreshNavigation();
                 $this->redirect((!empty($page))?'/admin/dream/word-list/page/'.$page :'/admin/dream/word-list');
             }else{
                 $form->populate($formData);
@@ -78,6 +85,7 @@ class Admin_DreamController extends Zend_Controller_Action{
         $id = $this->_getParam('id',false);
         if(null !== $id){
             $this->service->removeWord($id);
+            $this->navigationService->refreshNavigation();
             $page = $this->_getParam('page','');
             $this->redirect((!empty($page))?'/admin/dream/word-list/page/'.$page :'/admin/dream/word-list');
         }
@@ -106,6 +114,7 @@ class Admin_DreamController extends Zend_Controller_Action{
             $formData = $this->_getAllParams();
             if($form->isValid($formData)){
                 $this->service->addType($form->getValidValues($formData));
+                $this->navigationService->refreshNavigation();
                 $this->redirect('/admin/dream/type-list');
             }else{
                 $form->populate($formData);
@@ -136,6 +145,7 @@ class Admin_DreamController extends Zend_Controller_Action{
             $formData = $this->_getAllParams();
             if($form->isValid($formData)){
                 $this->service->updateType($form->getValidValues($formData), $type['id']);
+                $this->navigationService->refreshNavigation();
                 $this->redirect((!empty($page))?'/admin/dream/type-list/page/'.$page :'/admin/dream/type-list');
             }else{
                 $form->populate($formData);
@@ -148,6 +158,7 @@ class Admin_DreamController extends Zend_Controller_Action{
         $id = $this->_getParam('id',false);
         if(null !== $id){
             $this->service->removeType($id);
+            $this->navigationService->refreshNavigation();
             $page = $this->_getParam('page','');
             $this->redirect((!empty($page))?'/admin/dream/type-list/page/'.$page :'/admin/dream/type-list');
         }

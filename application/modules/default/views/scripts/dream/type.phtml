@@ -1,0 +1,43 @@
+<div id="article">
+    <div class="sonnik_opisanie">
+        <div class="item_header"><?=$this->type['name']?></div>
+        <div class="text">
+            <?=$this->type['description']?>
+            <div class="more">
+                <a href="#">Статья о соннике Миллера →</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="sonnik_header">Что приснилось?</div>
+    <div class="sonnik_search">
+        <form>
+            <input class="sonnik_input" placeholder="Начните набирать первые буквы слова" type="text" />
+            <input class="sonnik_send" type="image" src="/files/images/sendb.png" />
+        </form>
+    </div>
+    <div class="sonnik_header">Поиск по алфавиту</div>
+    <div class="sonnik_alph">
+        <?php foreach(App_DreamService::getAlphabet() as $letter): ?>
+            <a href="/sonnik/type/<?=$this->type['alias']?>/<?=$letter?>"><?=$letter?></a>
+        <?php endforeach; ?>
+    </div>
+    <div class="sonnik_here"><?=$this->letter?></div>
+    <div class="sonnik_list">
+        <div class="list_item">
+            <?php foreach($this->words['first'] as $word): ?>
+                <a href="/sonnik/word/<?=$word['alias']?>/<?=$this->type['alias']?>"><?=$word['word']?></a>
+            <?php endforeach; ?>
+        </div>
+        <div class="list_item">
+            <?php foreach($this->words['second'] as $word): ?>
+                <a href="/sonnik/word/<?=$word['alias']?>/<?=$this->type['alias']?>"><?=$word['word']?></a>
+            <?php endforeach; ?>
+        </div>
+        <div class="list_item">
+            <?php foreach($this->words['third'] as $word): ?>
+                <a href="/sonnik/word/<?=$word['alias']?>/<?=$this->type['alias']?>"><?=$word['word']?></a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>

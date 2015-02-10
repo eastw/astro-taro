@@ -238,6 +238,45 @@ class App_NavigationService {
 			}
 		}
 		//-------------------------------------------------
+
+		//--------------------------[dream]-----------------
+		$dreamService = App_DreamService::getInstance();
+		$dream = $static->xpath('//dream')[0];
+		$types = $dreamService->getAllTypes();
+		$typePages = $dream->addChild('pages');
+		if(count($type)){
+			foreach($types as $type){
+				$rootTag =  $typePages->addChild('dream-type-'.$type['alias'],'');
+				$rootTag->addChild('label',$type['name']);
+				$rootTag->addChild('id', $type['id'] . '-' . $type['alias']);
+				$rootTag->addChild('uri','/sonnik/type/' . $type['alias']);
+			}
+		}
+
+		$words = $dreamService->getAllWords();
+		if(count($words)){
+			foreach($words as $word){
+				$rootTag =  $typePages->addChild('dream-word-'.$word['alias'],'');
+				$rootTag->addChild('label', $word['word']);
+				$rootTag->addChild('id', $word['id'] . '-' . $word['alias']);
+				$rootTag->addChild('uri','/sonnik/word/' . $word['alias']);
+			}
+		}
+
+
+		/*
+		if(count($themes)){
+			$payPages = $horoscopeService->addChild('pages');
+			foreach($themes as $theme){
+				$rootTag =  $payPages->addChild('theme-'.$theme['theme_smalltype'],'');
+				$rootTag->addChild('label',$theme['theme_name']);
+				$rootTag->addChild('id',$theme[id].'-'.$theme['theme_smalltype']);
+				$rootTag->addChild('uri','/service/horoscope/'.$theme['theme_smalltype']);
+			}
+		}
+		*/
+		//--------------------------------------------------
+
 		$static->asXML($this->navigationPath);
 	}
 	

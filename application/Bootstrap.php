@@ -4,7 +4,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 	protected function _initCaching(){
 		//memcache
-
 		$frontend= array(
 	    	'lifetime' => 3600 * 3,
 	    	'automatic_serialization' => true
@@ -28,7 +27,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	   	 	$backend
 	    );
 	    
-	    //var_dump($cache); die;
 		Zend_Db_Table_Abstract::setDefaultMetadataCache($cache);
     	Zend_Registry::set('cache', $cache);
 
@@ -256,6 +254,30 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$router->addRoute(
 				'payserviceOrder',
 				new Zend_Controller_Router_Route('/service/order', array('module' => 'default','controller' => 'payservice','action' =>'send-order'))
+		);
+
+		/*-------------sonnik---------------*/
+		$router->addRoute(
+			'dreamIndex',
+			new Zend_Controller_Router_Route('/sonnik/:letter', array('module' => 'default','controller' => 'dream','action' =>'index', 'letter' => 'а'))
+		);
+		$router->addRoute(
+			'dreamTypeAndWord',
+			new Zend_Controller_Router_Route('/sonnik/:type/:word', array('module' => 'default','controller' => 'dream','action' =>'word'))
+		);
+		/*
+		$router->addRoute(
+			'dreamLetter',
+			new Zend_Controller_Router_Route('/sonnik/letter/:letter', array('module' => 'default','controller' => 'dream','action' =>'letter'))
+		);
+		*/
+		$router->addRoute(
+			'dreamTypeSingle',
+			new Zend_Controller_Router_Route('/sonnik/type/:type/:letter', array('module' => 'default','controller' => 'dream','action' =>'type', 'letter' => NULL))
+		);
+		$router->addRoute(
+			'dreamWordSingle',
+			new Zend_Controller_Router_Route('/sonnik/word/:word/:type', array('module' => 'default','controller' => 'dream','action' =>'word', 'type' => NULL))
 		);
 	}
 	

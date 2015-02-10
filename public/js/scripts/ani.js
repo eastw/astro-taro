@@ -613,7 +613,7 @@ $(document).ready(function() {
 		}
 	});
 	$('input').on('focusout', function() {
-		if (valueTemp = 'undifined') {
+		if (valueTemp = 'undefined') {
 			if($(this).attr('value') == ''){
 				$(this).css('background-color','background-color: rgb(255, 253, 214)');
 			}else{
@@ -765,11 +765,11 @@ $(document).ready(function() {
 		};		
 	});
 	
-	$('input:not(#input, .check, #poll), textarea').on('focusin', function() {
+	$('input:not(#input, .check, #poll, .sonnik_input), textarea').on('focusin', function() {
 		$(this).css({"background-color" : "#fffdd6"});
 		//$(this).val();
 	});
-	$('input:not(#input, .check, #poll), textarea').on('focusout', function() {
+	$('input:not(#input, .check, #poll, .sonnik_input), textarea').on('focusout', function() {
 	        if($(this).val() == ''){
 			$(this).css({"background-color" : "#fffdd6"});
 		}else{

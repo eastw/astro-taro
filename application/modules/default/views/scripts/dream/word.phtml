@@ -1,0 +1,13 @@
+<div id="article">
+    <div class="sonnik_opisanie">
+        <div class="item_header"><?=$this->word['word']?></div>
+        <div class="text"><?=$this->word['minidesc']?></div>
+        <div class="clear"></div>
+    </div>
+    <?php foreach($this->wordDescription as $desc):?>
+        <div class="sonnik_new_block">
+            <div class="sonnik_new_header"><?=$desc['type_name']?></div>
+            <div class="text"><?=$desc['type_description']?></div>
+        </div>
+    <?php endforeach;?>
+</div>

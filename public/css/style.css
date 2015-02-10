@@ -1195,3 +1195,35 @@ img.comp_sign {margin-top:10px; float:left;}
 
 .vote_content > div {margin-bottom:10px; font-family:'Trebuchet MS', sans-serif; font-size:14px; line-height:16px; color:#474747;}
 .vote_content > div span {font-weight:bold; color:#ff6022;}
+
+
+
+.sonnik_header {margin-bottom:15px; font-family:'Trebuchet MS'; font-size:21px; line-height:21px; color:#000;}
+.sonnik_search {width:483px; height:30px; margin-bottom:40px; background-image:url(/files/images/search.png); position:relative;}
+.sonnik_input {width:380px; margin-left:10px; margin-top:7px; border:none; background-color:transparent; color:#434c5d;}
+.sonnik_send {border:none; background-color:transparent; position:absolute; left:435px; top:3px;}
+.sonnik_alph {margin-bottom:30px;}
+.sonnik_alph a {display:inline-block; vertical-align:top; width:28px; height:28px; margin-bottom:5px; background-color:#f5f6f7; text-align:center; font-family:'Trebuchet MS'; font-size:16px; line-height:28px; color:#0075ff; text-transform:uppercase;}
+.sonnik_alph a.active {background-color:#ff6a00; color:#fff; text-decoration:none;}
+.sonnik_alph a:hover {background-color:#ff6a00; color:#fff; text-decoration:none;}
+.sonnik_here {width:35px; height:35px; margin-bottom:20px; background-color:#ff6a00; text-align:center; font-family:'Trebuchet MS'; font-size:20px; line-height:35px; color:#fff; text-transform:uppercase;}
+.sonnik_list {margin-bottom:70px;}
+.sonnik_list .list_item {display:inline-block; vertical-align:top; width:32%;}
+.sonnik_list .list_item a {display:block; font-size:16px;}
+
+.sonnik_item {width:486px; margin-bottom:15px; padding-bottom:15px; border-bottom:2px dashed #d5d5d5;}
+.sonnik_item div.item_header {margin-bottom:10px; font-size:17px;}
+.sonnik_item div.talk_like {height:16px; margin-top:15px; padding-top:4px; color:#434c5d; font-size:14px; float:right;}
+.sonnik_item div.talk_like > img {margin-left:20px; margin-right:5px;}
+.sonnik_item div.talk_like > img.lower {margin-bottom:-3px;}
+
+.sonnik_opisanie {margin-bottom:40px;}
+.sonnik_opisanie div.item_header {font-size:20px; color:#000;}
+.sonnik_opisanie div.text {font-style:italic; font-size:16px;}
+.sonnik_opisanie div.text div.more {margin-top:20px; float:right;}
+
+.sonnik_list + .soc_line {border-top:2px dotted #D5D5D5;}
+.sonnik_new_block {margin-bottom:20px; border-bottom:2px dotted #D5D5D5;}
+.sonnik_new_block .sonnik_new_header {margin-bottom:10px; font-family:'Trebuchet MS'; font-size:21px; line-height:21px; color:#fc6500;}
+.sonnik_new_block .text {margin-bottom:20px;}
+.sonnik_new_block .text span {font-weight:bold;}

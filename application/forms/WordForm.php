@@ -32,6 +32,14 @@ class Application_Form_WordForm extends Zend_Form{
 				->setValidators(array('NotEmpty'))
 				->setDecorators($decorators);
 
+		$minidesc = new Zend_Form_Element_Textarea('minidesc');
+		$minidesc->setLabel('Миниописание')
+			->addFilter('StringTrim')
+			->setRequired(true)
+			->setAttrib('style','width: 400px;')
+			->setValidators(array('NotEmpty'))
+			->setDecorators($decorators);
+
 		$title = new Zend_Form_Element_Text('title');
 		$title->setLabel('Заголовок')
 			->addFilter('StripTags')
@@ -79,7 +87,7 @@ class Application_Form_WordForm extends Zend_Form{
 		));
 		$cancel->setAttrib('onclick','window.history.back()');
 		
-		$this->addElements(array($word, $title, $keywords, $seodescription, $submit, $cancel,$page));
+		$this->addElements(array($word,$minidesc, $title, $keywords, $seodescription, $submit, $cancel,$page));
 		
 		
 		$this->addDisplayGroup(array('submit','cancel'),'buttons');

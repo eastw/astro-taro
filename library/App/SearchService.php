@@ -18,6 +18,7 @@ class App_SearchService {
 	protected $startResult;
 	protected $curPage;
 	protected $pageArray = array();
+	protected $indexes;
 	
 	public function __construct(){
 		$this->sphinx = new SphinxClient();
@@ -32,6 +33,15 @@ class App_SearchService {
 		$this->divination = new Application_Model_DbTable_DivinationTable();
 		
 		$this->tagService = App_TagService::getInstance();
+
+		$host = str_replace('.','_', $_SERVER['HTTP_HOST']);
+		$this->indexes = array(
+			$host . '_article_index',
+			$host . '_news_index',
+			$host . '_magic_index',
+			$host . '_divination_index',
+			$host . '_dream_word_index',
+		);
 	}
 	
 	protected function prepareData($page){
@@ -59,7 +69,7 @@ class App_SearchService {
 		}
 		$query = implode(' ', $tokens);
 		
-		$rawData = $this->sphinx->Query($query,'*');
+		$rawData = $this->sphinx->Query($query, implode(' ', $this->indexes));
 		
 		$result = array('items' => array(),'total' => $rawData['total_found']);
 		
@@ -219,6 +229,29 @@ class App_SearchService {
 			
 		}
 		return $result;
+	}
+
+	public function searchDreamWordsOnly($query, $page){
+		$this->prepareData($page);
+		$this->sphinx->SetLimits($this->startResult, $this->itemsPerPage);
+
+		$tokens = explode(' ',$query);
+		foreach($tokens as $index => $token){
+			$tokens[$index] = "(".$token." | *".$token."*)";
+		}
+		$query = implode(' ', $tokens);
+
+		$host = str_replace('.','_', $_SERVER['HTTP_HOST']);
+
+		$rawData = $this->sphinx->Query($query,$host . '_dream_');
+
+		$result = array('items' => array(),'total' => $rawData['total_found']);
+
+		$dreamService = App_DreamService::getInstance();
+
+		$data = $dreamService->getWordsByIds(array_keys($rawData['matches']));
+
+
 	}
 	
 	public function getPagesArray(){

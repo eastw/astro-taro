@@ -8,7 +8,8 @@ class App_DreamService {
 
     private static $instance = null;
 
-    protected $dreamPagesCacheName;
+    protected $typesCacheName;
+
 
     private function __construct()
     {
@@ -16,7 +17,8 @@ class App_DreamService {
         $this->dreamType = new Application_Model_DbTable_DreamTypeTable();
         $this->dreamWordDescription = new Application_Model_DbTable_DreamWordDescriptionTable();
 
-        $this->dreamPagesCacheName = str_replace('.','_', $_SERVER['HTTP_HOST']) . '_dream_pages';
+        $host = str_replace('.','_', $_SERVER['HTTP_HOST']);
+        $this->typesCacheName = $host . '_dream_types';
     }
 
     public static function getInstance()
@@ -39,6 +41,7 @@ class App_DreamService {
         $insertData = array(
             'word' => $data['word'],
             'alias' => App_UtilsService::generateTranslit($data['word']),
+            'minidesc' => $data['minidesc'],
             'title' => $data['title'],
             'keywords' => $data['keywords'],
             'description' => $data['seodescription']
@@ -66,6 +69,7 @@ class App_DreamService {
         $updateData = array(
             'word' => $data['word'],
             'alias' => App_UtilsService::generateTranslit($data['word']),
+            'minidesc' => $data['minidesc'],
             'title' => $data['title'],
             'keywords' => $data['keywords'],
             'description' => $data['seodescription']
@@ -99,6 +103,7 @@ class App_DreamService {
             'seodescription' => $data['seodescription']
         );
         $this->dreamType->insert($insertData);
+        Zend_Registry::get("cache")->remove($this->typesCacheName);
     }
 
     public function updateType($data, $id){
@@ -111,10 +116,12 @@ class App_DreamService {
             'seodescription' => $data['seodescription']
         );
         $this->dreamType->update($updateData,$this->dreamType->getAdapter()->quoteInto('id=?',$id));
+        Zend_Registry::get("cache")->remove($this->typesCacheName);
     }
 
     public function removeType($id){
         $this->dreamType->delete($this->dreamType->getAdapter()->quoteInto('id=?',$id));
+        Zend_Registry::get("cache")->remove($this->typesCacheName);
     }
 
     public function getWords(){
@@ -181,44 +188,131 @@ class App_DreamService {
         return $stm->fetchAll();
     }
 
-    /*Pages*/
-    public function listPagesQuery(){
-        $query = $this->horoscopePages->select();
-        $query->from('horoscope_pages')->order('id desc');
-        return $query;
+
+    public static function getAlphabet(){
+        return array('А','Б','В','Г','Д','Е','Ё','Ж','З','И','К','Л','М','Н','О','П','Р','С','Т','У',
+            'Ф','Х','Ц','Ч','Ш','Щ','Э','Ю','Я');
     }
 
-    public function addPage($data){
-        $insertData = array(
-            'horoscope_type' => $data['page_type'],
-            'name_ru' => $data['name_ru'],
-            'title' => $data['title'],
-            'keywords' => $data['seokeywords'],
-            'description' => $data['seodescription'],
-            'minidesc' => $data['minidesc'],
-        );
-        $this->horoscopePages->insert($insertData);
-        $cache = Zend_Registry::get('cache');
-        $cache->remove($this->horoscopePagesCacheName);
+    public function getAllTypes(){
+        $cache = Zend_Registry::get("cache");
+        if(!$types = $cache->load($this->typesCacheName, true)) {
+            $types = $this->dreamType->fetchAll(true)->toArray();
+            $cache->save($types, $this->typesCacheName);
+        }
+        return $types;
     }
 
-    public function savePage($data,$id){
-        $updateData = array(
-            'horoscope_type' => $data['page_type'],
-            'name_ru' => $data['name_ru'],
-            'title' => $data['title'],
-            'keywords' => $data['seokeywords'],
-            'description' => $data['seodescription'],
-            'minidesc' => $data['minidesc'],
-        );
-        $this->horoscopePages->update($updateData,$this->horoscopePages->getAdapter()->quoteInto('id=?', $id));
-        $cache = Zend_Registry::get('cache');
-        $cache->remove($this->horoscopePagesCacheName);
+    public function getWordsByLetter($letter){
+        $letter = mb_strtoupper($letter, 'UTF-8');
+        if(!in_array($letter, self::getAlphabet())){
+            throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
+        }
+        $query = $this->dreamWord->select();
+        $query->from('dream_word')->where("word LIKE '" . $letter . "%'", $letter)->order('word');
+        $stm = $query->query();
+        $rawWords = $stm->fetchAll();
+
+        $totalCount = count($rawWords);
+        $fullColumnCount = ceil($totalCount / 3);
+        //$lastColumnCount = $totalCount - $fullColumnCount * 2;
+
+        $result = array('first' => array(), 'second' => array(), 'third' => array());
+
+        foreach($rawWords as $index => $word){
+            if($index <= ($fullColumnCount-1)){
+                $result['first'][] = $word;
+            }
+            if($index > ($fullColumnCount-1) && $index <= ((2 * $fullColumnCount) - 1)){
+                $result['second'][] = $word;
+            }
+            if($index > ((2 * $fullColumnCount) - 1)){
+                $result['third'][] = $word;
+            }
+        }
+        return $result;
     }
 
-    public function deletePage($id){
-        $this->horoscopePages->delete($this->horoscopePages->getAdapter()->quoteInto('id=?', $id));
-        $cache = Zend_Registry::get('cache');
-        $cache->remove($this->horoscopePagesCacheName);
+    public function getTypeByAlias($alias){
+        $types = $this->getAllTypes();
+        $found = false;
+        foreach($types as $type){
+            if($type['alias'] == $alias){
+                $found = true;
+                break;
+            }
+        }
+        if(!$found){
+            throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
+        }
+        /*
+        $query = $this->dreamType->select();
+        $query->from('dream_type')->where($this->dreamType->getAdapter()->quoteInto('alias=?',$alias));
+        $stm = $query->query();
+        $type = $stm->fetch();
+        if(!$type){
+            throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
+        }
+        */
+        return $type;
+    }
+
+    public function getWordByAlias($alias){
+        $query = $this->dreamWord->select();
+        $query->from('dream_word')->where($this->dreamWord->getAdapter()->quoteInto('alias=?',$alias));
+        $stm = $query->query();
+        $word = $stm->fetch();
+        if(!$word){
+            throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
+        }
+        return $word;
+    }
+
+    public function getDescriptionsByWord($wordId, $typeAlias = null){
+        /*
+        $data = $this->dreamWordDescription
+            ->fetchAll($this->dreamWordDescription->getAdapter()->quoteInto('word_id=?',$wordId));
+        if($data){
+            $data = $data->toArray();
+        }
+        */
+        $query = $this->dreamWordDescription->select();
+        $query->from(array('dvd' => 'dream_word_description'))
+            ->setIntegrityCheck(false)
+            ->joinLeft(array('dt' => 'dream_type'),'dvd.type_id = dt.id',array('type_description' => 'description','type_name' => 'name'))
+            ->where($this->dreamWordDescription->getAdapter()->quoteInto('word_id=?', $wordId));
+        $stm = $query->query();
+        $data = $stm->fetchAll();
+
+        if(!is_null($typeAlias) && $typeAlias){
+            $type = $this->getTypeByAlias($typeAlias);
+            $firstElement = array();
+            foreach($data as $index => $item){
+                if($item['type_id'] == $type['id']){
+                    $firstElement = $item;
+                    unset($data[$index]);
+                    break;
+                }
+            }
+            array_unshift($data, $firstElement);
+        }
+        return $data;
+    }
+
+    public function getAllWords(){
+        $words = $this->dreamWord->fetchAll(true);
+        if($words){
+            $words->toArray();
+        }
+        return $words;
+    }
+
+    public function getWordsByIds($ids){
+        $query = $this->dreamWord->select();
+        $query->from(array('dream_word'))
+            ->setIntegrityCheck(false)
+            ->where($this->dreamWord->getAdapter()->quoteInto('id IN(?)', $ids));
+        $stm = $query->query();
+        return  $stm->fetchAll();
     }
 }

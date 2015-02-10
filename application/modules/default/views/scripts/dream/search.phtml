@@ -1,0 +1,21 @@
+<div id="result">
+	<div class="res_count">Результатов поиска: <?=$this->data['total']?></div>
+	<?php if(count($this->data['items'])):?>
+		<?php foreach($this->data['items'] as $item):?>
+		<div class="result_item">
+				<div class="theme">
+					Сонник
+				</div>
+				<div class="item_header">
+					<a href="/<?=$item['startlink']?>/content/<?=$item['tag_data']['alias']?>/<?=$item['alias']?>">
+						<?=$item['word']?>
+					</a>
+				</div>
+				<div class="text">
+
+				</div>
+		</div>
+		<?php endforeach;?>
+		<?=$this->partial('search/pagination.phtml',array('curPage' => $this->curPage, 'pagination' => $this->pagination,'searchQuery' => $this->searchQuery));?>
+	<?php endif;?>
+</div>

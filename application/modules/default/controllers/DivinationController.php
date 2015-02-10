@@ -347,8 +347,4 @@ class DivinationController extends App_Controller_Action_ParentController{
 			}
 		}
 	} 
-	
-	public function postDispatch(){
-		
-	}
 }

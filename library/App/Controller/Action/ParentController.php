@@ -90,6 +90,15 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 				$this->view->seodescription = $page['description'];
 				$this->view->minidesc = $page['minidesc'];
 			}
+			if($this->view->controllerName == 'dream'
+				&& $this->view->actionName == 'index'
+				&& App_UtilsService::cleanUrlLastSlash($page['url']) == '/sonnik')
+			{
+				$this->view->seotitle = $page['title'];
+				$this->view->seokeywords = $page['keywords'];
+				$this->view->seodescription = $page['description'];
+				$this->view->minidesc = $page['minidesc'];
+			}
 		}
 
 		$this->view->sliders = $this->bannerService->getSliderData();

@@ -20,6 +20,11 @@
 					<id>service-divination</id>
 					<uri>/service/divination</uri>
 				</payservice-divination>
+				<dream>
+					<label>Сонник</label>
+					<id>dream</id>
+					<uri>/sonnik</uri>
+				</dream>
 				<horoskop>
 					<label>Гороскопы</label>
 					<id>horoscope-list</id>
