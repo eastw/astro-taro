@@ -73,6 +73,18 @@ $(document).ready(function(){
 		$('#feedback_button').click();
 		return false;
 	});
+
+	$('#word-search-button').click(function(){
+		window.location.href = '/sonnik/search/' + encodeURIComponent($('#word-search').val());
+		return false;
+	});
+
+	$('#word-search').keyup(function(e){
+		if(e.keyCode == 13){
+			window.location.href = '/sonnik/search/' + encodeURIComponent($('#word-search').val());
+		}
+	});
+
 	
 	$('#feedback-send').click(function(){
 		$.post('/index/feedback',
@@ -355,7 +367,7 @@ function sendSpam(id){
 	$.post('/comments/abuse',
 			{
 				'id'	: id,
-				'type'	: 'spam',
+				'type'	: 'spam'
 			},function(){
 				$('#abuse-inform_'+id).delay(2000).fadeOut('slow');
 				closeAbuse();

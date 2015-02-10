@@ -225,8 +225,6 @@ class App_SearchService {
 				}
 				$this->getPagination($pagesCount, $this->curPage);
 			}
-		}else{
-			
 		}
 		return $result;
 	}
@@ -243,15 +241,28 @@ class App_SearchService {
 
 		$host = str_replace('.','_', $_SERVER['HTTP_HOST']);
 
-		$rawData = $this->sphinx->Query($query,$host . '_dream_');
+		$rawData = $this->sphinx->Query($query,$host . '_dream_word_index');
 
-		$result = array('items' => array(),'total' => $rawData['total_found']);
+		//$result = array('items' => array(),'total' => $rawData['total_found']);
+		$result = array('items' => array(),'total' => 3);
 
 		$dreamService = App_DreamService::getInstance();
 
-		$data = $dreamService->getWordsByIds(array_keys($rawData['matches']));
+		if($rawData && $rawData['total_found'] > 0){
+			if(isset($rawData['matches'])){
+				//$result['items'] = $dreamService->getWordsByIds(array(8, 5, 6));
+				$result['items'] = $dreamService->getWordsByIds(array_keys($rawData['matches']));
 
-
+				$pagesCount = $rawData['total_found'] / $this->itemsPerPage;
+				if($rawData['total_found'] % $this->itemsPerPage == 0){
+					$pagesCount = (int)$pagesCount;
+				}else{
+					$pagesCount = (int)$pagesCount + 1;
+				}
+				$this->getPagination($pagesCount, $this->curPage);
+			}
+		}
+		return $result;
 	}
 	
 	public function getPagesArray(){

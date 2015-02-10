@@ -24,6 +24,13 @@
 					<label>Сонник</label>
 					<id>dream</id>
 					<uri>/sonnik</uri>
+					<pages>
+						<dream-search>
+							<label>Поиск по соннику</label>
+							<id>dream-search</id>
+							<uri>/sonnik/search</uri>
+						</dream-search>
+					</pages>
 				</dream>
 				<horoskop>
 					<label>Гороскопы</label>

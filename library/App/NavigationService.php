@@ -243,7 +243,7 @@ class App_NavigationService {
 		$dreamService = App_DreamService::getInstance();
 		$dream = $static->xpath('//dream')[0];
 		$types = $dreamService->getAllTypes();
-		$typePages = $dream->addChild('pages');
+		$typePages = $dream->pages;
 		if(count($type)){
 			foreach($types as $type){
 				$rootTag =  $typePages->addChild('dream-type-'.$type['alias'],'');

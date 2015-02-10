@@ -1201,7 +1201,7 @@ img.comp_sign {margin-top:10px; float:left;}
 .sonnik_header {margin-bottom:15px; font-family:'Trebuchet MS'; font-size:21px; line-height:21px; color:#000;}
 .sonnik_search {width:483px; height:30px; margin-bottom:40px; background-image:url(/files/images/search.png); position:relative;}
 .sonnik_input {width:380px; margin-left:10px; margin-top:7px; border:none; background-color:transparent; color:#434c5d;}
-.sonnik_send {border:none; background-color:transparent; position:absolute; left:435px; top:3px;}
+.sonnik_send {border:none; background-color:transparent; position:absolute; left:435px; top:3px; background-image:url(/files/images/sendb.png); background-repeat: no-repeat;}
 .sonnik_alph {margin-bottom:30px;}
 .sonnik_alph a {display:inline-block; vertical-align:top; width:28px; height:28px; margin-bottom:5px; background-color:#f5f6f7; text-align:center; font-family:'Trebuchet MS'; font-size:16px; line-height:28px; color:#0075ff; text-transform:uppercase;}
 .sonnik_alph a.active {background-color:#ff6a00; color:#fff; text-decoration:none;}

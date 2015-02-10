@@ -608,7 +608,7 @@ $(document).ready(function() {
 	var valueTemp = '';
 	$('input').on('focusin', function() {
 		valueTemp = $(this).attr('value');
-		if($(this).attr('id') != 'poll') {
+		if($(this).attr('id') != 'poll' && $(this).attr('id') != 'word-search-button') {
 			$(this).attr('value', '');
 		}
 	});
@@ -765,11 +765,11 @@ $(document).ready(function() {
 		};		
 	});
 	
-	$('input:not(#input, .check, #poll, .sonnik_input), textarea').on('focusin', function() {
+	$('input:not(#input, .check, #poll, .sonnik_input, #word-search-button), textarea').on('focusin', function() {
 		$(this).css({"background-color" : "#fffdd6"});
 		//$(this).val();
 	});
-	$('input:not(#input, .check, #poll, .sonnik_input), textarea').on('focusout', function() {
+	$('input:not(#input, .check, #poll, .sonnik_input, #word-search-button), textarea').on('focusout', function() {
 	        if($(this).val() == ''){
 			$(this).css({"background-color" : "#fffdd6"});
 		}else{

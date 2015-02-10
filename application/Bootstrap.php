@@ -265,12 +265,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'dreamTypeAndWord',
 			new Zend_Controller_Router_Route('/sonnik/:type/:word', array('module' => 'default','controller' => 'dream','action' =>'word'))
 		);
-		/*
 		$router->addRoute(
-			'dreamLetter',
-			new Zend_Controller_Router_Route('/sonnik/letter/:letter', array('module' => 'default','controller' => 'dream','action' =>'letter'))
+			'dreamSearch',
+			new Zend_Controller_Router_Route('/sonnik/search/:squery/:page', array('module' => 'default','controller' => 'dream','action' =>'search','page' => NULL))
 		);
-		*/
 		$router->addRoute(
 			'dreamTypeSingle',
 			new Zend_Controller_Router_Route('/sonnik/type/:type/:letter', array('module' => 'default','controller' => 'dream','action' =>'type', 'letter' => NULL))

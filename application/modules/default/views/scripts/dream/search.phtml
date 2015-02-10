@@ -1,4 +1,16 @@
 <div id="result">
+	<div class="sonnik_search">
+		<form>
+			<input id="word-search" class="sonnik_input" name="squery" placeholder="Начните набирать первые буквы слова" type="text" value="<?=$this->searchQuery?>"/>
+			<input id="word-search-button" class="sonnik_send" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;" />
+		</form>
+	</div>
+	<div class="sonnik_header">Поиск по алфавиту</div>
+	<div class="sonnik_alph">
+		<?php foreach(App_DreamService::getAlphabet() as $letter): ?>
+			<a href="/sonnik/<?=$letter?>"><?=$letter?></a>
+		<?php endforeach; ?>
+	</div>
 	<div class="res_count">Результатов поиска: <?=$this->data['total']?></div>
 	<?php if(count($this->data['items'])):?>
 		<?php foreach($this->data['items'] as $item):?>
@@ -7,12 +19,11 @@
 					Сонник
 				</div>
 				<div class="item_header">
-					<a href="/<?=$item['startlink']?>/content/<?=$item['tag_data']['alias']?>/<?=$item['alias']?>">
+					<a href="/sonnik/word/<?=$item['alias']?>">
 						<?=$item['word']?>
 					</a>
 				</div>
 				<div class="text">
-
 				</div>
 		</div>
 		<?php endforeach;?>

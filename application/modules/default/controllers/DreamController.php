@@ -69,23 +69,21 @@ class DreamController extends App_Controller_Action_ParentController{
     }
 
     public function searchAction(){
-        $query = $this->_getParam('query',false);
+        $query = $this->_getParam('squery',false);
         $page = $this->_getParam('page',false);
         $query = preg_replace('/<\/?[^>]+>/ims','',$query);
         $page = preg_replace('/<\/?[^>]+>/ims','',$page);
         $this->view->pageTitle = 'Вы искали: '.$query;
         $this->view->searchQuery = $query;
 
-        /*
-        $navItem = $this->view->navigation()->findOneById('search');
+        $navItem = $this->view->navigation()->findOneById('dream-search');
         if($navItem){
             $navItem->setActive('true');
         }
-        */
 
         $this->preparePage($page);
         $searchService = new App_SearchService();
-        $this->view->data = $searchService->search($query,$page);
+        $this->view->data = $searchService->searchDreamWordsOnly($query,$page);
         $this->view->pagination = $searchService->getPagesArray();
     }
 
