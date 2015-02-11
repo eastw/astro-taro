@@ -145,7 +145,7 @@
 								<?php if($this->poll):?>
 									<?=$this->partial('partials/poll.phtml',array('poll' => $this->poll))?>
 								<?php endif;?>
-		                		<?=$this->partial('partials/left-column.phtml',array('categories' => $this->categories))?>
+		                		<?=$this->partial('partials/left-column.phtml',array('categories' => $this->categories,'dreamTypes' => $this->dreamTypes) )?>
 		                	</div>
 		                	<div id="column2">
 		                		<?=$this->layout()->content; ?>

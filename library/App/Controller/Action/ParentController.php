@@ -54,6 +54,10 @@ class App_Controller_Action_ParentController extends Zend_Controller_Action{
 
 			$this->layoutService = new App_LayoutService();
 			$this->view->ratingList = $this->layoutService->getRaitingBlockData();
+
+			/*Sonnik*/
+			$dreamService = App_DreamService::getInstance();
+			$this->view->dreamTypes = $dreamService->getAllTypes();
 		}
 
 		$this->horoscopeService = new App_HoroscopeService();

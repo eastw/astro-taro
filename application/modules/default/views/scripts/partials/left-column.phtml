@@ -42,6 +42,20 @@
 				</div>
 			</div>
 		</div>
+		<?php if(isset($this->dreamTypes) && count($this->dreamTypes) ): ?>
+			<div class="menu_left_item">
+				<div id="book-menu-block" class="menu_header">
+					Сонники<img alt="" src="/files/images/menu_arrow.png">
+				</div>
+				<div class="menu_content">
+					<?php foreach($this->dreamTypes as $type): ?>
+						<div class="menu_content_item">
+							<a href="/sonnik/type/<?=$type['alias']?>"><?=$type['name']?></a>
+						</div>
+					<?php endforeach;?>
+				</div>
+			</div>
+		<?php endif; ?>
 		<?php foreach($this->categories as $category):?>
 			<div class="menu_left_item">
 				<?php if(isset($category['children'])):?>
