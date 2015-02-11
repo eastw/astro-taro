@@ -136,6 +136,8 @@ class Admin_DreamController extends Zend_Controller_Action{
         $form->title->setValue($type['title']);
         $form->keywords->setValue($type['keywords']);
         $form->seodescription->setValue($type['seodescription']);
+        $form->link->setValue($type['link']);
+        $form->linktext->setValue($type['link-text']);
 
 
         $page = $this->_getParam('page','');

@@ -166,6 +166,7 @@ class App_UtilsService {
 			case 'horoscope': return 'Гороскопы';
 			case 'divination': return 'Гадания';
 			case 'payservice': return 'П. гороскоп';
+			case 'dream_word': return 'Сонник';
 		}
 	}
 	public static function commentSubtypeToRu($type, $subtype){

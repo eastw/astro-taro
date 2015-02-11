@@ -243,8 +243,8 @@ class App_SearchService {
 
 		$rawData = $this->sphinx->Query($query,$host . '_dream_word_index');
 
-		//$result = array('items' => array(),'total' => $rawData['total_found']);
-		$result = array('items' => array(),'total' => 3);
+		$result = array('items' => array(),'total' => $rawData['total_found']);
+		//$result = array('items' => array(),'total' => 3);
 
 		$dreamService = App_DreamService::getInstance();
 

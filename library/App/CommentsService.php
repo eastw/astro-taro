@@ -7,6 +7,7 @@ class App_CommentsService {
 	protected $article;
 	protected $divination;
 	protected $theme;
+	protected $dreamWord;
 
 	private static $instance = null;
 	
@@ -17,6 +18,7 @@ class App_CommentsService {
 		$this->article = new Application_Model_DbTable_ArticleTable();
 		$this->divination = new Application_Model_DbTable_DivinationTable();
 		$this->theme = new Application_Model_DbTable_PaythemeTable();
+		$this->dreamWord = new Application_Model_DbTable_DreamWordTable();
 	}
 
 	public static function getInstance()
@@ -42,7 +44,8 @@ class App_CommentsService {
 				'resource_title' => new Zend_Db_Expr(' 
 					(CASE
 						WHEN (c.type=\'article\' OR c.type=\'news\' OR c.type=\'magic\') THEN (SELECT aa.title FROM article aa WHERE aa.id=c.resource_id)
-						WHEN (c.type=\'divination\') THEN (SELECT dd.name FROM divination dd WHERE dd.id=c.resource_id) 
+						WHEN (c.type=\'divination\') THEN (SELECT dd.name FROM divination dd WHERE dd.id=c.resource_id)
+						WHEN (c.type=\'dream_word\') THEN (SELECT dw.word FROM dream_word dw WHERE dw.id=c.resource_id)
 					END) 
 				 ')))
 			->setIntegrityCheck(FALSE)
@@ -65,6 +68,9 @@ class App_CommentsService {
 			}
 			if($type == 'divination'){
 				$query->joinLeft(array('d' => 'divination'), 'c.resource_id = d.id', array('divination_id'=>'id','divination_title'=>'name'));
+			}
+			if($type == 'dream_word'){
+				$query->joinLeft(array('dw' => 'dream_word'), 'c.resource_id = dw.id', array('word_id'=>'id','word' => 'name'));
 			}
 			$query->where($this->comment->getAdapter()->quoteInto('c.resource_id=?', $resource));
 		}
@@ -101,7 +107,7 @@ class App_CommentsService {
 					'comments_count' => new Zend_Db_Expr('comments_count +1')
 				);
 				$resource = null;
-				if($data['type'] != 'numerology' &&  $data['type'] != 'horoscope' && $data['type'] != 'payservice'){
+				if($data['type'] != 'numerology' &&  $data['type'] != 'horoscope' && $data['type'] != 'payservice' && $data['type'] != 'dream_word'){
 					if($data['type'] == 'article' || $data['type'] == 'magic' || $data['type'] == 'news'){
 						$resource = $this->article;
 					}

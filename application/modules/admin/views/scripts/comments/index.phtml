@@ -160,11 +160,13 @@ function clearResource(){
 					<?=($this->type != 'horoscope' && $this->type != 'numerology' && $this->type != 'payservice')?'disabled="disabled"':'';?>
 				>
 					<option value=""></option>
-					<?php foreach($this->subtypes as $subtype):?>
-						<option value="<?=$subtype['id']?>"
-							<?=(isset($this->subtype)&& $this->subtype == $subtype['id'])?'selected="selected"':''?>
-							><?=$subtype['value']?></option>
-					<?php endforeach;?>
+					<?php if(count($this->subtypes)):?>
+						<?php foreach($this->subtypes as $subtype):?>
+							<option value="<?=$subtype['id']?>"
+								<?=(isset($this->subtype)&& $this->subtype == $subtype['id'])?'selected="selected"':''?>
+								><?=$subtype['value']?></option>
+						<?php endforeach;?>
+					<?php endif;?>
 				</select>
 			</td>
 			<td>

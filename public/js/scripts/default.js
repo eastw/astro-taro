@@ -251,6 +251,24 @@ function bigArticleVote(id){
 			function(data){
 			});
 }
+
+function dreamVote(id){
+	var voteCount = $('#vote-count-' + id).text();
+	var voteCountInt = parseInt(voteCount);
+	$('#vote-count-' + id).text(++voteCountInt);
+	$('#head-vote-count').text(voteCountInt);
+
+	$('.big_like').attr('onclick','');
+	$('.big_like').attr('style','cursor:default');
+
+	$.post(
+		'/dream/vote',
+		{
+			'id': id
+		},
+		function(data){
+		});
+}
 function addFavorite(id,type,subtype){
 	$('#favorite-link').html('<img src="/files/images/upr_img1.png"/>В избранном');
 	$.post('/profile/favorite',

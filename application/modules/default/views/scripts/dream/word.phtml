@@ -10,4 +10,14 @@
             <div class="text"><?=$desc['type_description']?></div>
         </div>
     <?php endforeach;?>
+    <?=$this->partial('partials/social.phtml',array())?>
+    <div class="big_like"
+        <?=(isset($_COOKIE['vote_word_'.$this->word['id']]))?'':'onclick="dreamVote(\''.$this->word['id'].'\')"'?>
+        <?=(isset($_COOKIE['vote_word_'.$this->word['id']]))?'style="cursor:default;"':''?>
+        >
+        <div id="vote-count-<?=$this->word['id']?>" class="big_like_count">
+            <?=$this->word['raiting']?>
+        </div>
+    </div>
+    <?=$this->partial('partials/comments.phtml',array('attributes' => $this->attributes,'userdata' => $this->userdata,'comments' => $this->comments))?>
 </div>

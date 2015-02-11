@@ -3,17 +3,19 @@
         <div class="item_header"><?=$this->type['name']?></div>
         <div class="text">
             <?=$this->type['description']?>
+            <?php if(!empty($this->type['link']) && !empty($this->type['link-text'])):?>
             <div class="more">
-                <a href="#">Статья о соннике Миллера →</a>
+                <a href="<?=$this->type['link']?>"><?=$this->type['link-text']?> →</a>
             </div>
+            <?php endif;?>
         </div>
         <div class="clear"></div>
     </div>
     <div class="sonnik_header">Что приснилось?</div>
     <div class="sonnik_search">
         <form>
-            <input class="sonnik_input" placeholder="Начните набирать первые буквы слова" type="text" />
-            <input class="sonnik_send" type="image" src="/files/images/sendb.png" />
+            <input id="word-search" class="sonnik_input" name="squery" placeholder="Начните набирать первые буквы слова" type="text" value=""/>
+            <input id="word-search-button" class="sonnik_send" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;" />
         </form>
     </div>
     <div class="sonnik_header">Поиск по алфавиту</div>

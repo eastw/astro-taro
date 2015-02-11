@@ -277,6 +277,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			'dreamWordSingle',
 			new Zend_Controller_Router_Route('/sonnik/word/:word/:type', array('module' => 'default','controller' => 'dream','action' =>'word', 'type' => NULL))
 		);
+		$router->addRoute(
+			'dreamVote',
+			new Zend_Controller_Router_Route('/sonnik/vote', array('module' => 'default','controller' => 'dream','action' =>'vote'))
+		);
 	}
 	
 }

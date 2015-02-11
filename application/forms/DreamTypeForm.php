@@ -66,6 +66,24 @@ class Application_Form_DreamTypeForm extends Zend_Form{
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
+
+		$text = new Zend_Form_Element_Text('linktext');
+		$text->setLabel('Текст ссылки на статью')
+			->addFilter('StripTags')
+			->addFilter('StringTrim')
+			->setRequired(true)
+			->setAttrib('style','width: 400px;')
+			->setValidators(array('NotEmpty'))
+			->setDecorators($decorators);
+
+		$link = new Zend_Form_Element_Text('link');
+		$link->setLabel('Ссылка на статью')
+			->addFilter('StripTags')
+			->addFilter('StringTrim')
+			->setRequired(true)
+			->setAttrib('style','width: 400px;')
+			->setValidators(array('NotEmpty'))
+			->setDecorators($decorators);
 		
 
 		$page = new Zend_Form_Element_Hidden('page');
@@ -88,7 +106,7 @@ class Application_Form_DreamTypeForm extends Zend_Form{
 		));
 		$cancel->setAttrib('onclick','window.history.back()');
 		
-		$this->addElements(array($name, $description, $title, $keywords, $seodescription, $submit, $cancel,$page));
+		$this->addElements(array($name, $description, $title, $keywords, $seodescription, $text, $link, $submit, $cancel,$page));
 		
 		
 		$this->addDisplayGroup(array('submit','cancel'),'buttons');

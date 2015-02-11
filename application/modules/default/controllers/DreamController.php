@@ -57,7 +57,7 @@ class DreamController extends App_Controller_Action_ParentController{
                     ->getDescriptionsByWord($this->view->word['id'],
                         $this->_getParam('type',false));
         $this->view->pageTitle = $this->view->word['word'];
-
+        $this->view->topMenuActiveItem = 'dream';
         $this->view->seotitle = $this->view->word['title'];
         $this->view->seokeywords = $this->view->word['keywords'];
         $this->view->seodescription = $this->view->word['description'];
@@ -66,6 +66,14 @@ class DreamController extends App_Controller_Action_ParentController{
         if($navItem){
             $navItem->setActive('true');
         }
+        $this->view->attributes = array(
+            'type' => 'dream_word',
+            'subtype' => '',
+            'sign' => '',
+            'resource_id' => $this->view->word['id']
+        );
+        $commentsService = App_CommentsService::getInstance();
+        $this->view->comments = $commentsService->getComments('dream_word', '', '', $this->view->word['id']);
     }
 
     public function searchAction(){
@@ -98,5 +106,19 @@ class DreamController extends App_Controller_Action_ParentController{
             $this->view->curPage = 1;
         }
         //$this->view->curPage = $page;
+    }
+
+    public function voteAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $id = $this->_getParam('id',false);
+
+        if($id && $this->getRequest()->isPost()){
+            if(!isset($_COOKIE['vote_word_' . $id])){
+                setcookie('vote_word_'.$id, 'vote', time() + 3600*24*140, '/');
+                $this->service->setVote($id);
+            }
+        }
     }
 }

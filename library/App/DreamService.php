@@ -44,7 +44,7 @@ class App_DreamService {
             'minidesc' => $data['minidesc'],
             'title' => $data['title'],
             'keywords' => $data['keywords'],
-            'description' => $data['seodescription']
+            'description' => $data['seodescription'],
         );
         $this->dreamWord->insert($insertData);
     }
@@ -72,7 +72,7 @@ class App_DreamService {
             'minidesc' => $data['minidesc'],
             'title' => $data['title'],
             'keywords' => $data['keywords'],
-            'description' => $data['seodescription']
+            'description' => $data['seodescription'],
         );
         $this->dreamWord->update($updateData,$this->dreamWord->getAdapter()->quoteInto('id=?',$id));
     }
@@ -100,7 +100,9 @@ class App_DreamService {
             'description' => $data['description'],
             'title' => $data['title'],
             'keywords' => $data['keywords'],
-            'seodescription' => $data['seodescription']
+            'seodescription' => $data['seodescription'],
+            'link' => $data['link'],
+            'link-text' => $data['linktext'],
         );
         $this->dreamType->insert($insertData);
         Zend_Registry::get("cache")->remove($this->typesCacheName);
@@ -113,7 +115,9 @@ class App_DreamService {
             'description' => $data['description'],
             'title' => $data['title'],
             'keywords' => $data['keywords'],
-            'seodescription' => $data['seodescription']
+            'seodescription' => $data['seodescription'],
+            'link' => $data['link'],
+            'link-text' => $data['linktext'],
         );
         $this->dreamType->update($updateData,$this->dreamType->getAdapter()->quoteInto('id=?',$id));
         Zend_Registry::get("cache")->remove($this->typesCacheName);
@@ -254,6 +258,7 @@ class App_DreamService {
             throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
         }
         */
+        //var_dump($type); die;
         return $type;
     }
 
@@ -314,5 +319,12 @@ class App_DreamService {
             ->where($this->dreamWord->getAdapter()->quoteInto('id IN(?)', $ids));
         $stm = $query->query();
         return  $stm->fetchAll();
+    }
+
+    public function setVote($id){
+        $updateData = array(
+            'raiting' => new Zend_Db_Expr('raiting + 1')
+        );
+        $this->dreamWord->update($updateData, $this->dreamWord->getAdapter()->quoteInto('id=?', $id));
     }
 }
