@@ -267,7 +267,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		);
 		$router->addRoute(
 			'dreamSearch',
-			new Zend_Controller_Router_Route('/sonnik/search/:squery/:page', array('module' => 'default','controller' => 'dream','action' =>'search','page' => NULL))
+			new Zend_Controller_Router_Route('/sonnik/search/:squery/:page', array('module' => 'default','controller' => 'dream','action' =>'search','squery' => NULL, 'page' => NULL))
 		);
 		$router->addRoute(
 			'dreamTypeSingle',

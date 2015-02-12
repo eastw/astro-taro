@@ -1,15 +1,27 @@
 <div id="article">
     <div class="sonnik_opisanie">
         <div class="item_header"><?=$this->word['word']?></div>
-        <div class="text"><?=$this->word['minidesc']?></div>
+        <div class="text">
+            <?=$this->word['minidesc']?>
+            <div class="more">
+                <a href="/moon">Сны по лунному календарю, сбудется ли сон? →</a>
+            </div>
+        </div>
         <div class="clear"></div>
     </div>
     <?php foreach($this->wordDescription as $desc):?>
         <div class="sonnik_new_block">
             <div class="sonnik_new_header"><?=$desc['type_name']?></div>
-            <div class="text"><?=$desc['type_description']?></div>
+            <div class="text"><?=$desc['description']?></div>
         </div>
     <?php endforeach;?>
+    <div class="sonnik_search">
+        <form>
+            <input id="word-search" class="sonnik_input" name="squery" placeholder="Наберите ключевое слово из вашего сна" type="text" value=""/>
+            <input id="word-search-button" class="sonnik_send" type="submit" value="Поиск" />
+        </form>
+    </div>
+    <?=$this->partial('partials/also.phtml',array('type'=>$this->controllerName))?>
     <?=$this->partial('partials/social.phtml',array())?>
     <div class="big_like"
         <?=(isset($_COOKIE['vote_word_'.$this->word['id']]))?'':'onclick="dreamVote(\''.$this->word['id'].'\')"'?>

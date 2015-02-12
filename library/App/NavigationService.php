@@ -246,7 +246,7 @@ class App_NavigationService {
 		$typePages = $dream->pages;
 		if(count($type)){
 			foreach($types as $type){
-				$rootTag =  $typePages->addChild('dream-type-'.$type['alias'],'');
+				$rootTag =  $typePages->addChild('dream-type-' . $type['id'] . '-' . $type['alias'], '');
 				$rootTag->addChild('label',$type['name']);
 				$rootTag->addChild('id', $type['id'] . '-' . $type['alias']);
 				$rootTag->addChild('uri','/sonnik/type/' . $type['alias']);
@@ -256,7 +256,7 @@ class App_NavigationService {
 		$words = $dreamService->getAllWords();
 		if(count($words)){
 			foreach($words as $word){
-				$rootTag =  $typePages->addChild('dream-word-'.$word['alias'],'');
+				$rootTag =  $typePages->addChild('dream-word-' . $word['id'] . '-' . $word['alias'],'');
 				$rootTag->addChild('label', $word['word']);
 				$rootTag->addChild('id', $word['id'] . '-' . $word['alias']);
 				$rootTag->addChild('uri','/sonnik/word/' . $word['alias']);

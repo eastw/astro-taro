@@ -45,7 +45,6 @@ class Application_Form_DreamTypeForm extends Zend_Form{
 		$title->setLabel('Заголовок')
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
@@ -54,7 +53,6 @@ class Application_Form_DreamTypeForm extends Zend_Form{
 		$keywords->setLabel('Keywords')
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
@@ -62,7 +60,6 @@ class Application_Form_DreamTypeForm extends Zend_Form{
 		$seodescription = new Zend_Form_Element_Textarea('seodescription');
 		$seodescription->setLabel('Seo description')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
@@ -71,7 +68,6 @@ class Application_Form_DreamTypeForm extends Zend_Form{
 		$text->setLabel('Текст ссылки на статью')
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
@@ -80,7 +76,6 @@ class Application_Form_DreamTypeForm extends Zend_Form{
 		$link->setLabel('Ссылка на статью')
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);

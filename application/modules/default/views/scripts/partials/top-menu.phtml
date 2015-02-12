@@ -170,11 +170,13 @@
             <div id="menu_left">
             	<div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'horoscope')?' corner_vip':''?>">
                 	<a href="/horoscope">Гороскопы</a>
-                    <?=''//$this->partial('partials/horoscope/menu.phtml',array('signs' => $this->signs,'curSign' => $this->curSign))?>
                 </div>
                 <div class="lilac_item">
                 	<a href="/gadaniya/taro">Гадания</a>
                 </div>
+				<div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'dream')?' corner_vip_white':''?>" >
+					<a href="/sonnik">Сонник</a>
+				</div>
                 <div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'numerology')?' corner_vip':''?>">
                 	<a href="/numerology">Нумерология</a>
                 </div>
@@ -187,9 +189,6 @@
                 <div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'service')?' corner_vip':''?>" >
                 	<a href="/service/horoscope">Услуги</a>
                 </div>
-				<div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'dream')?' corner_vip_white':''?>" >
-					<a href="/sonnik">Сонник</a>
-				</div>
             </div>
             <div id="menu_right">
             	<div class="lilac_item<?=(isset($this->topMenuActiveItem) && $this->topMenuActiveItem == 'news')?' corner_vip_white':''?>">

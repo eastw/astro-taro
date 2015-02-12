@@ -35,7 +35,6 @@ class Application_Form_WordForm extends Zend_Form{
 		$minidesc = new Zend_Form_Element_Textarea('minidesc');
 		$minidesc->setLabel('Миниописание')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
@@ -44,7 +43,6 @@ class Application_Form_WordForm extends Zend_Form{
 		$title->setLabel('Заголовок')
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
@@ -53,7 +51,6 @@ class Application_Form_WordForm extends Zend_Form{
 		$keywords->setLabel('Keywords')
 			->addFilter('StripTags')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);
@@ -61,7 +58,6 @@ class Application_Form_WordForm extends Zend_Form{
 		$seodescription = new Zend_Form_Element_Textarea('seodescription');
 		$seodescription->setLabel('Seo description')
 			->addFilter('StringTrim')
-			->setRequired(true)
 			->setAttrib('style','width: 400px;')
 			->setValidators(array('NotEmpty'))
 			->setDecorators($decorators);

@@ -75,13 +75,17 @@ $(document).ready(function(){
 	});
 
 	$('#word-search-button').click(function(){
-		window.location.href = '/sonnik/search/' + encodeURIComponent($('#word-search').val());
+		var query = jQuery.trim($('#word-search').val());
+		if(query != ''){
+			window.location.href = '/sonnik/search/' + encodeURIComponent(query);
+		}
 		return false;
 	});
 
 	$('#word-search').keyup(function(e){
-		if(e.keyCode == 13){
-			window.location.href = '/sonnik/search/' + encodeURIComponent($('#word-search').val());
+		var query = jQuery.trim($('#word-search').val());
+		if(e.keyCode == 13 && query != ''){
+			window.location.href = '/sonnik/search/' + encodeURIComponent(query);
 		}
 	});
 

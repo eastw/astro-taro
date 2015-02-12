@@ -27,10 +27,12 @@ class Admin_DreamController extends Zend_Controller_Action{
 
     public function addWordAction(){
         $form = new Application_Form_WordForm();
+
         $this->view->form = $form;
         $this->view->actionType = 'add';
 
         if($this->getRequest()->isPost()){
+            $form->word->setValidators(array('NotEmpty',new App_Validate_ExistWord()));
             $formData = $this->_getAllParams();
             if($form->isValid($formData)){
                 $this->service->addWord($form->getValidValues($formData));

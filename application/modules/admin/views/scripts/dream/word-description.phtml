@@ -76,7 +76,10 @@ $this->headLink()
                             'description' : CKEDITOR.instances.description.getData()
                         },
                         function(data){
-
+                            if(data.status == 'success'){
+                                $('#message').show();
+                                $('#message').delay(2000).fadeOut('slow');
+                            }
                         },'json'
                     );
                 }
@@ -106,6 +109,13 @@ $this->headLink()
         </td>
         <td>
             <input id="save" type="button" value="Сохранить"/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <div id="message" style="border: 1px solid green;display:none;">
+                <span style="color: #009900">Описание сохранено</span>
+            </div>
         </td>
     </tr>
     <tr>

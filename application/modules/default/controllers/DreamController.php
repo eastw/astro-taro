@@ -13,6 +13,7 @@ class DreamController extends App_Controller_Action_ParentController{
             throw new Zend_Controller_Action_Exception('Что то пошло не так.. Страница не найдена!', 404);
         }
         $this->view->pageTitle = 'Сонник';
+        $this->view->letter = $letter;
         $this->view->types = $this->service->getAllTypes();
         $this->view->words = $this->service->getWordsByLetter($letter);
 

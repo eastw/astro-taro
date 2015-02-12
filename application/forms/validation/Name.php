@@ -9,9 +9,6 @@ class Application_Form_Validation_Name extends Zend_Validate_Abstract{
 
 	public function isValid($value){
 		$this->_setValue((string)$value);
-
-		var_dump($value); die;
-
 		return true;
 	}
 }
