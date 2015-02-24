@@ -677,7 +677,9 @@ class App_DivinationService {
 			'raiting' => new Zend_Db_Expr('raiting + 1')
 		);
 		$this->divination->update($updateData,$this->divination->getAdapter()->quoteInto('id=?', $id));
-		
+		$cache = Zend_Registry::get('cache');
+		$divination = $this->getDivinationById($id);
+		$cache->remove(str_replace('.','_', $_SERVER['HTTP_HOST']) . '_'  . $divination['type'] . '_list_data');
 	}
 	
 	public function getDivinationsByCategory($categoryId){
