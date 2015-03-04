@@ -1,3 +1,6 @@
+<?= $this->headLink()
+	->appendStylesheet(
+		'/css/jquery-ui.css	');?>
 <script type="text/javascript">
 <!--
 $(document).ready(function(){
@@ -33,6 +36,61 @@ function change_activity(id){
 				}
 			},'json');
 }
+function addDeck(id, name){
+	$('#dialog').dialog({
+		'width': 600,
+		'modal': true,
+		'open': function(){
+			$('#progress').show();
+			$('#deck_name').text(name);
+			$.post(
+				'/admin/divination/get-categories',
+				{
+					'id' : id
+				}, function(data){
+					var html = '';
+					for(var i = 0; i < data.length; i++){
+						html += '<option value="' + data[i]['id'] + '">' + data[i]['name'];
+						html += '</option>';
+					}
+					$('#category').html(html);
+					$('#progress').hide();
+				}, 'json');
+		},
+		'close': function(){
+			$('#category').html('<option value=""></option>');
+			$('#progress').hide();
+		},
+		'buttons': {
+			'Добавить': function(){
+				var category_id = $('#category option:selected').val();
+				if(category_id != '') {
+					$('#progress').show();
+					$.post(
+						'/admin/divination/add-deck-to-category',
+						{
+							'category_id': category_id,
+							'deck_id': id
+						},
+						function (data) {
+							if (data.status == 'success') {
+								$('#progress').hide();
+								$('#success').show();
+								$('#success').delay(2000).fadeOut('slow');
+							}
+						}, 'json'
+					);
+				}
+			},
+			'Отмена': function(){
+				$('#category').html('<option value=""></option>');
+				$('#progress').hide();
+				$(this).dialog('close');
+			}
+		}
+	});
+	return false;
+}
 //-->
 </script>
 <h1>Управление колодами</h1>
@@ -49,11 +107,14 @@ function change_activity(id){
 </table>
 <table class="admin-table" id="deck-table" style="width:950px;margin-left: 30px;">
 	<tr>
-		<th style="width:60%">
+		<th style="width:50%">
 			Название колоды 
 		</th>
 		<th style="width:10%">
 			Активность
+		</th>
+		<th style="width:10%">
+			Добавить колоду в раздел гадания
 		</th>
 		<th style="width:30%">
 			Действия
@@ -69,6 +130,9 @@ function change_activity(id){
 			<a style="cursor:pointer;" id="<?=$item['id']?>" onclick="change_activity('<?=$item['id']?>')"><?=($item['activity'] == 'y')?'Акт':'Неакт';?></a>
 		</td>
 		<td>
+			<a onclick="addDeck('<?=$item['id']?>','<?=$item['name']?>')" style="cursor: pointer">Добавить</a>
+		</td>
+		<td>
 			<a href="/admin/divination/cards-deck/id/<?=$item['id']?>">Задать карты</a>
 			<a href="/admin/divination/edit-deck/id/<?=$item['id']?><?=(!empty($this->page)?'/page/'.$this->page:'');?>">Ред.</a> / 
 			<a style="cursor:pointer" onclick="confirmation('<?=$item['id']?>','<?=(!empty($this->page)?$this->page: (''))?>')">Удалить</a>
@@ -82,3 +146,26 @@ function change_activity(id){
 	</tr>
 	<?php endif;?>
 </table>
+<div id="dialog" style="display:none;">
+	<div id="progress" style="display:none;">
+		<img src="/files/images/progressbar.gif" />
+	</div>
+	<div id="success" style="display:none;">
+		<span style="color:green">Колода была успешно добавлена в раздел гаданий</span>
+	</div>
+	<div id="errors" style="display:none;">
+
+	</div>
+	<table>
+		<tr>
+			<td>
+				Добавить колоду "<span id="deck_name"></span>" в гадания раздела
+			</td>
+			<td>
+				<select id="category">
+					<option value=""></option>
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>

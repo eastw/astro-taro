@@ -261,4 +261,10 @@ class App_CategoryService{
 		$cache->remove($this->otherListDataCacheName);
 		
 	}
+
+	public function getCategoriesByDeckId($id){
+		$deckService = new App_DeckService();
+		$deck = $deckService->getDeckById($id);
+		return $this->getChildCategoriesByType($deck['type_id']);
+	}
 }

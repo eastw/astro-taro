@@ -914,4 +914,26 @@ class Admin_DivinationController extends Zend_Controller_Action{
 			$this->service->saveMatch($this->_getAllParams());
 		}
 	}
+
+	public function getCategoriesAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+		$id = $this->_getParam('id',false);
+		if($id){
+			$categoryService = App_CategoryService::getInstance();
+			echo Zend_Json::encode($categoryService->getCategoriesByDeckId($id));
+		}
+	}
+
+	public function addDeckToCategoryAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+
+		$categoryId = $this->_getParam('category_id', false);
+		$deckId = $this->_getParam('deck_id', false);
+		if($categoryId){
+			echo Zend_Json::encode($this->service->addDeckToDivinationCategory($categoryId, $deckId));
+		}
+	}
+
 }

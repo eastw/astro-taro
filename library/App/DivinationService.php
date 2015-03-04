@@ -875,4 +875,37 @@ class App_DivinationService {
 			}
 		}
 	}
+
+	public function addDeckToDivinationCategory($categoryId, $deckId){
+		$divinations = $this->getDivinationsByCategory($categoryId);
+
+		$ids = [];
+		foreach($divinations as $item){
+			$ids[] = $item['id'];
+		}
+
+		$query = $this->divinationDecks->select();
+		$query->from('divination_decks')
+			->where($this->divinationDecks->getAdapter()->quoteInto('divination_id IN (?)', $ids));
+		$stm = $query->query();
+		$divinationDecks = $stm->fetchAll();
+		//$test = $query->assemble();
+		$reorderDivinationDecks = [];
+		foreach($divinationDecks as $item){
+			if(!isset($reorderDivinationDecks[$item['divination_id']])) {
+				$reorderDivinationDecks[$item['divination_id']] = [];
+			}
+			$reorderDivinationDecks[$item['divination_id']][] = $item['deck_id'];
+		}
+		foreach($reorderDivinationDecks as $index => $item){
+			if(!in_array($deckId, array_values($item))){
+				$insertData = [
+					'divination_id' => $index,
+					'deck_id' => $deckId
+				];
+				$this->divinationDecks->insert($insertData);
+			}
+		}
+		return ['status' => 'success'];
+	}
 }
